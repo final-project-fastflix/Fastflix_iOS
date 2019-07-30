@@ -16,7 +16,7 @@ protocol UserViewDelegate: class {
 
 class UserView: UIView {
 
-  let imageView: UIImageView = {
+  let userImageView: UIImageView = {
     let imageView = UIImageView()
     return imageView
   }()
@@ -27,7 +27,11 @@ class UserView: UIView {
     }
   }
   
-  var profileImage: UIImage?
+  var profileImage: UIImage? {
+    didSet {
+      userImageView.image = profileImage
+    }
+  }
   
   var profileUserName: String? {
     didSet {
@@ -62,14 +66,19 @@ class UserView: UIView {
     setupTapGestureForEditImageView()
   }
   
-  func setUserUI(userName: String) {
-    profileUserName = userName
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func setNeedsLayout() {
+    addSubViews()
+    setupSNP()
   }
   
   private func setupTapGestureForImageView() {
     let tap = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
-    imageView.addGestureRecognizer(tap)
-    imageView.isUserInteractionEnabled = true
+    userImageView.addGestureRecognizer(tap)
+    userImageView.isUserInteractionEnabled = true
   }
   
   private func setupTapGestureForEditImageView() {
@@ -78,35 +87,17 @@ class UserView: UIView {
     editImageView.isUserInteractionEnabled = true
   }
   
-  func configureImage(imageURLString: String?) {
-    let imageURL = URL(string: imageURLString ?? "ImagesData.shared.imagesUrl[5]")
-    self.imageView.kf.setImage(with: imageURL, options: [.processor(CroppingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])
-  }
-  
-  @objc private func buttonTapped() {
-    if isEditing {
-      delegate?.profileChangeTapped(tag: tag, userName: profileUserName!, userImage: imageView.image!)
-    } else {
-//      APICenter.shared.saveSubUserID(id: tag)
-      delegate?.didSelectUser(tag: tag)
-    }
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
   private func addSubViews() {
-    [imageView, profileButton, editImageView].forEach { self.addSubview($0) }
-    imageView.addSubview(editImageView)
+    [userImageView, profileButton, editImageView].forEach { self.addSubview($0) }
+    userImageView.addSubview(editImageView)
   }
   
   private func setupSNP(){
-    imageView.snp.makeConstraints {
+    userImageView.snp.makeConstraints {
       $0.top.equalTo(self.snp.top)
       $0.leading.equalTo(self.snp.leading)
       $0.trailing.equalTo(self.snp.trailing)
-      $0.height.equalTo(self.imageView.snp.width)
+      $0.height.equalTo(self.userImageView.snp.width)
     }
     
     editImageView.snp.makeConstraints {
@@ -114,11 +105,30 @@ class UserView: UIView {
     }
     
     profileButton.snp.makeConstraints {
-      $0.top.equalTo(imageView.snp.bottom).offset(10)
+      $0.top.equalTo(userImageView.snp.bottom).offset(10)
       $0.leading.equalTo(self.snp.leading)
       $0.trailing.equalTo(self.snp.trailing)
       $0.height.equalTo(18)
       $0.bottom.equalTo(self.snp.bottom)
     }
   }
+  
+  func setUserUI(userName: String) {
+    profileUserName = userName
+  }
+  
+  func configureImage(imageURLString: String?) {
+    let imageURL = URL(string: imageURLString ?? "ImagesData.shared.imagesUrl[5]")
+    self.userImageView.kf.setImage(with: imageURL, options: [.processor(CroppingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])
+  }
+  
+  @objc private func buttonTapped() {
+    if isEditing {
+      delegate?.profileChangeTapped(tag: tag, userName: profileUserName!, userImage: userImageView.image!)
+    } else {
+//      APICenter.shared.saveSubUserID(id: tag)
+      delegate?.didSelectUser(tag: tag)
+    }
+  }
+  
 }
