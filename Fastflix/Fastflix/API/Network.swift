@@ -24,11 +24,6 @@ final class APICenter {
     return getSubUserID()
   }
   
-  
-  
-  
-  
-  
   // MARK: - 필요한 헤더를 가져옴
   private func getHeader(needSubuser: Bool) -> ([String: String]) {
     
@@ -50,6 +45,152 @@ final class APICenter {
   }
   
   
+  func getBrandNewMovie(completion: @escaping (Result<BrandNewMovie>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    
+    let req = Alamofire.request(RequestString.getBrandNewMovieURL.rawValue, method: .get, headers: header)
+    
+    req.responseJSON(queue: .global()) { (res) in
+      switch res.result {
+      case .success(_):
+        guard let data = res.data else {
+          completion(.failure(ErrorType.NoData))
+          return }
+        
+        guard let result = try? JSONDecoder().decode(BrandNewMovie.self, from: data) else {
+          completion(.failure(ErrorType.FailToParsing))
+          return }
+        
+        completion(.success(result))
+        
+      case .failure(let err):
+        print("Error: ", err)
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+  }
+  
+  
+  // when click Fork Btn. result -> 0 == no fork, 1 == fork
+  func toggleForkMovie(movieID: Int, completion: @escaping (Result<Int>) -> ()) {
+    let header = getHeader(needSubuser: false)
+    let subUserID = getSubUserID()
+    
+    let parameters = [
+      "movieid": "\(movieID)",
+      "subuserid": "\(subUserID)"
+    ]
+    
+    
+    Alamofire.upload(multipartFormData: { (MultipartFormData) in
+      for (key, value) in parameters {
+        MultipartFormData.append(value.data(using: .utf8)!, withName: key)
+      }
+    }, to: RequestString.toggleForkMovieURL.rawValue, method: .post, headers: header) {
+      switch $0 {
+      case .success(let upload, _, _):
+        upload.responseJSON { res in
+          guard let data = res.data else {
+            completion(.failure(ErrorType.NoData))
+            return }
+          
+          guard let result = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Int] else {
+            completion(.failure(ErrorType.FailToParsing))
+            return }
+          
+          guard let state = result["marked"] else {
+            completion(.failure(ErrorType.FailToParsing))
+            return }
+          
+          completion(.success(state))
+        }
+      case .failure(let err):
+        print("result: ", err)
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+  }
+  
+  // when click hate Btn. result -> 0 == no hate, 1 == hate
+  func toggleHateMovie(movieID: Int, completion: @escaping (Result<Int>) -> ()) {
+    let header = getHeader(needSubuser: false)
+    let subUserID = getSubUserID()
+    
+    let parameters = [
+      "movieid": "\(movieID)",
+      "subuserid": "\(subUserID)"
+    ]
+    
+    
+    Alamofire.upload(multipartFormData: { (MultipartFormData) in
+      for (key, value) in parameters {
+        MultipartFormData.append(value.data(using: .utf8)!, withName: key)
+      }
+    }, to: RequestString.toggleHateMovieURL.rawValue, method: .post, headers: header) {
+      switch $0 {
+      case .success(let upload, _, _):
+        upload.responseJSON { res in
+          guard let data = res.data else {
+            completion(.failure(ErrorType.NoData))
+            return }
+          
+          guard let result = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Int] else {
+            completion(.failure(ErrorType.FailToParsing))
+            return }
+          
+          guard let state = result["response"] else {
+            completion(.failure(ErrorType.FailToParsing))
+            return }
+          
+          completion(.success(state))
+        }
+      case .failure(let err):
+        print("result: ", err)
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+  }
+  
+  
+  // when click hate Btn. result -> 0 == no hate, 1 == hate
+  func toggleLikeMovie(movieID: Int, completion: @escaping (Result<Int>) -> ()) {
+    let header = getHeader(needSubuser: false)
+    let subUserID = getSubUserID()
+    
+    let parameters = [
+      "movieid": "\(movieID)",
+      "subuserid": "\(subUserID)"
+    ]
+    
+    
+    Alamofire.upload(multipartFormData: { (MultipartFormData) in
+      for (key, value) in parameters {
+        MultipartFormData.append(value.data(using: .utf8)!, withName: key)
+      }
+    }, to: RequestString.toggleLikeMovieURL.rawValue, method: .post, headers: header) {
+      switch $0 {
+      case .success(let upload, _, _):
+        upload.responseJSON { res in
+          guard let data = res.data else {
+            completion(.failure(ErrorType.NoData))
+            return }
+          
+          guard let result = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Int] else {
+            completion(.failure(ErrorType.FailToParsing))
+            return }
+          
+          guard let state = result["response"] else {
+            completion(.failure(ErrorType.FailToParsing))
+            return }
+          
+          completion(.success(state))
+        }
+      case .failure(let err):
+        print("result: ", err)
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+  }
   
   
   
@@ -175,6 +316,8 @@ final class APICenter {
     }
   }
   
+  
+  
   // MARK: 유저디폴트에 키값"token"로 토큰값 저장하기
   private func saveToken(token: String) {
     path.set(token, forKey: "token")
@@ -205,12 +348,15 @@ final class APICenter {
   // MARK: 서브유저 생성
   func createSubUser(name: String, kid: Bool, completion: @escaping (Result<[SubUser]>) -> ()) {
     
-    let headers = getHeader(needSubuser: false)
+//    let headers = getHeader(needSubuser: false)
+    let headers = [
+      "Authorization": "Token 2e6b45cdbf3fa610d87adf5408faa707836b83c9"
+    ]
     
-    let parameters: [String : Any] =
+    let parameters =
       [
-        "name": name,
-        "kid": NSNumber(value: kid)
+        "name": "\(name)",
+        "kid": "\(kid)"
         ]
     
     Alamofire.request(RequestString.createSubUserURL.rawValue, method: .post, parameters: parameters, headers: headers)
@@ -219,7 +365,7 @@ final class APICenter {
           guard response.result.isSuccess,
             let _ = response.result.value else {
               print("Error while fetching tags: \(String(describing: response.result.error))")
-              completion(.failure(ErrorType.NoData))
+              completion(.failure(ErrorType.networkError))
               return
           }
           guard let data = response.data else {
@@ -227,7 +373,7 @@ final class APICenter {
             return
           }
           guard let origin = try? JSONDecoder().decode(SubUserList.self, from:data) else {
-            completion(.failure(ErrorType.NoData))
+            completion(.failure(ErrorType.FailToParsing))
             return
           }
           let subUserArr = origin.subUserList
@@ -235,57 +381,7 @@ final class APICenter {
         
           //서브유저 정보들 넘기기
           completion(.success(subUserArr))
-        
-        
-        
-        
-//      switch response.result {
-//      case .success(let response):
-//        print("========성공 성공 성공=========")
-//        guard let data = response.data else {
-//            completion(.failure(ErrorType.NoData))
-//            return }
-//        guard let origin = try? JSONDecoder().decode(SubUserList.self, from: data) else {
-//            completion(.failure(ErrorType.NoData))
-//            return }
-//        let subUserArr = origin.subUserList
-//        print("유저생성 subUser: ", subUserArr)
-//
-//        //서브유저 정보들 넘기기
-//        completion(.success(subUserArr))
-//
-//      case .failure(let err):
-//        print(err)
-//        completion(.failure(ErrorType.NoData))
-//        break
-//        }
     }
-    
-//    switch $0 {
-//    case .success(let upload, _, _):
-//      upload.responseJSON { (res) in
-//        //          print("run", res.data as? [String: String])
-//        guard let data = res.data else {
-//          completion(.failure(ErrorType.NoData))
-//          return }
-//        guard let origin = try? JSONDecoder().decode(Login.self, from: data) else {
-//          completion(.failure(ErrorType.NoData))
-//          return }
-//        let token = origin.token
-//        let subUserArr = origin.subUserList
-//        print("subUser: ", subUserArr)
-//
-//        // 토큰값 유저디폴트에 저장하기
-//        self.saveToken(token: token)
-//
-//        completion(.success(subUserArr))
-//      }
-//    case .failure(let err):
-//      print(err)
-//      completion(.failure(ErrorType.NoData))
-//      break
-//    }
-    
   }
   
 }
