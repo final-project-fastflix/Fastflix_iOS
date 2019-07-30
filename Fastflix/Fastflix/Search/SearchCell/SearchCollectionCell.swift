@@ -10,7 +10,13 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+protocol SearchCollectionCellDelegate: class {
+  func resignKeyboard()
+}
+
 class SearchCollectionCell: UICollectionViewCell {
+  
+  weak var delegate: SearchCollectionCellDelegate?
   
   static let identifier = "SearchCollectionCell"
   
@@ -25,6 +31,13 @@ class SearchCollectionCell: UICollectionViewCell {
     addSubViews()
     setupSNP()
   }
+  
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    delegate?.resignKeyboard()
+    self.contentView.endEditing(true)
+  }
+  
   
   private func addSubViews() {
     [searchImageView]
