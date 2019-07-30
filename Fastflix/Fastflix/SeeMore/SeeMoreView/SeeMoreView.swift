@@ -18,8 +18,10 @@ class SeeMoreView: UIView {
   
   let subUserSingle = SubUserSingleton.shared
   
-  var profileCount = 0
-  var viewArray: [ProfileView] = []
+//  var profileCount = 0
+  var numberOfUsers: Int?
+  var subUserList: [SubUser]?
+  
   var delegate: SeeMoreViewDelegate?
   
   let datas = [ "앱설정", "계정", "개인정보", "고객 센터", "로그아웃"]
@@ -50,23 +52,30 @@ class SeeMoreView: UIView {
     return label
   }()
   
-  lazy var profileView: ProfileView = {
-    let view = ProfileView()
-    view.configure(image: UIImage(named: "profile3"), name: "hea")
-    return view
-  }()
+//  lazy var profileView: ProfileView = {
+//    let view = ProfileView()
+////    view.configure(image: UIImage(named: "profile3"), name: "hea")
+//    return view
+//  }()
   
-  lazy var profileAddView: ProfileView = {
-    let view = ProfileView()
-    view.configure(image: nil, name: nil)
-    view.profileNameLabel.textColor = .gray
-    let tap = UITapGestureRecognizer(target: self, action: #selector(profileAddDidTap(_:)))
-    view.userImageView.addGestureRecognizer(tap)
-    view.userImageView.isUserInteractionEnabled = true
-    return view
-  }()
+//  lazy var profileAddView: ProfileView = {
+//    let view = ProfileView()
+////    view.configure(image: nil, name: nil)
+//    view.profileNameLabel.textColor = .gray
+//    let tap = UITapGestureRecognizer(target: self, action: #selector(profileAddDidTap(_:)))
+//    view.userImageView.addGestureRecognizer(tap)
+//    view.userImageView.isUserInteractionEnabled = true
+//    return view
+//  }()
   
   let tableView = UITableView()
+  
+  var profileView1 = UserView()
+  var profileView2 = UserView()
+  var profileView3 = UserView()
+  var profileView4 = UserView()
+  var profileView5 = UserView()
+  lazy var viewArray = [profileView1, profileView2, profileView3, profileView4, profileView5]
   
   lazy var profileStackView: UIStackView = {
     let view = UIStackView()
@@ -82,11 +91,12 @@ class SeeMoreView: UIView {
     addSubViews()
     setupSNP()
     setupTableView()
-    
+    setUserViews()
   }
   
   func setupStackView() {
     viewArray.forEach { profileStackView.addArrangedSubview($0) }
+  
   }
   
   
@@ -124,7 +134,38 @@ class SeeMoreView: UIView {
       $0.top.equalTo(profileStackView.snp.bottom).offset(25)
       $0.centerX.equalToSuperview()
     }
+  }
+  
+  func setUserViews() {
     
+    switch numberOfUsers {
+    case 5:
+      profileView5.profileUserName = subUserList?[4].name
+      profileView5.tag = (subUserList?[4].id)!
+      profileView5.configureImage(imageURLString: subUserList?[4].profileInfo.profileImagePath)
+      fallthrough
+    case 4:
+      profileView4.profileUserName = subUserList?[3].name
+      profileView4.tag = (subUserList?[3].id)!
+      profileView4.configureImage(imageURLString: subUserList?[3].profileInfo.profileImagePath)
+      fallthrough
+    case 3:
+      profileView3.profileUserName = subUserList?[2].name
+      profileView3.tag = (subUserList?[2].id)!
+      profileView3.configureImage(imageURLString: subUserList?[2].profileInfo.profileImagePath)
+      fallthrough
+    case 2:
+      profileView2.profileUserName = subUserList?[1].name
+      profileView2.tag = (subUserList?[1].id)!
+      profileView2.configureImage(imageURLString: subUserList?[1].profileInfo.profileImagePath)
+      fallthrough
+    case 1:
+      profileView1.profileUserName = subUserList?[0].name
+      profileView1.tag = (subUserList?[0].id)!
+      profileView1.configureImage(imageURLString: subUserList?[0].profileInfo.profileImagePath)
+    default:
+      return
+    }
   }
   
   @objc func profileAdminBtnDidTap(_ sender: UIButton) {

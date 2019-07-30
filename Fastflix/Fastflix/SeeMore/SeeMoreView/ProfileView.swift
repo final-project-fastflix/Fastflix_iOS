@@ -35,11 +35,11 @@ class ProfileView: UIView {
     return label
   }()
   
-  func configure(image: UIImage?, name: String?) {
-    profileNameLabel.text = name ?? "테스트"
-    let newImg = image ?? UIImage(named: "profileAdd")
-    userImageView.image = image
-  }
+//  func configure(image: UIImage?, name: String?) {
+//    profileNameLabel.text = name ?? "테스트"
+//    let newImg = image ?? UIImage(named: "profileAdd")
+//    userImageView.image = image
+//  }
   
   var profileImage: UIImage? {
     didSet {
@@ -91,7 +91,7 @@ class ProfileView: UIView {
   }
   
   func setUserUI(userName: String) {
-    profileUserName = userName
+    profileUserName = userName ?? "테스트"
   }
   
   func configureImage(imageURLString: String?) {
