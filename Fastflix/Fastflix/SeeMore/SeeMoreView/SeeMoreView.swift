@@ -30,13 +30,12 @@ class SeeMoreView: UIView {
     return topView
   }()
   
-  
   let profileAdminBtn: UIButton = {
     let button = UIButton(type: .custom)
     button.addTarget(self, action: #selector(profileAdminBtnDidTap(_:)), for: .touchUpInside)
     button.setImage(UIImage(named: "profileEdit"), for: .normal)
     button.setTitle("  프로필 관리", for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
     button.setTitleColor(.gray, for: .normal)
     return button
   }()
