@@ -26,12 +26,7 @@ class SearchView: UIView {
   lazy var offset = UIOffset(horizontal: (searchBar.frame.width - 100) / 2, vertical: 0)
   let noOffset = UIOffset(horizontal: 0, vertical: 0)
   
-  
-//  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//    print("run about touchMethod")
-//    self.searchBar.endEditing(true)
-//
-//  }
+
   
   override func didMoveToSuperview() {
     addSubViews()
@@ -115,12 +110,14 @@ extension SearchView: UISearchBarDelegate {
   
   func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
     
-    searchBar.setPositionAdjustment(offset, for: .search)
+//    searchBar.setPositionAdjustment(offset, for: .search)
     print("end")
+//    if searchBar.text?.isEmpty == false {
+//      searchBar.setPositionAdjustment(offset, for: .search)
+//      print("되나여")
+//    }
     return true
   }
-  
-
   
 }
 
