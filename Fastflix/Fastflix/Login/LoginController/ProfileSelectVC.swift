@@ -230,7 +230,7 @@ class ProfileSelectVC: UIViewController {
 //          $0.top.equalTo(self.introlabel.snp.bottom).offset(UIScreen.main.bounds.width * 0.32 + 40)
         }
       }
-      [profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
         $0.layoutIfNeeded()
       }
       print("======================유저 1명======================")
@@ -245,7 +245,7 @@ class ProfileSelectVC: UIViewController {
 //          $0.top.equalTo(self.profileImageView1.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
         }
       }
-      [profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
         $0.layoutIfNeeded()
       }
       print("======================유저 2명======================")
@@ -260,7 +260,7 @@ class ProfileSelectVC: UIViewController {
           $0.top.equalTo(self.introlabel.snp.bottom).offset(UIScreen.main.bounds.width * 0.32 + 78)
         }
       }
-      [profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
         $0.layoutIfNeeded()
       }
       print("======================유저 3명======================")
@@ -275,7 +275,8 @@ class ProfileSelectVC: UIViewController {
           $0.top.equalTo(self.introlabel.snp.bottom).offset((UIScreen.main.bounds.width * 0.32 + 78)*2)
         }
       }
-      [profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach {
+        $0.setNeedsLayout()
         $0.layoutIfNeeded()
       }
       print("======================유저 4명======================")
@@ -288,10 +289,11 @@ class ProfileSelectVC: UIViewController {
           $0.top.equalTo(self.profileImageView3.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
         }
       }
-      [profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
+      addProfileView.isHidden = true
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach {
+        $0.setNeedsLayout()
         $0.layoutIfNeeded()
       }
-      addProfileView.isHidden = true
       print("======================유저 5명======================")
     default:
       addProfileView.isHidden = true

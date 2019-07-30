@@ -19,8 +19,14 @@ class SeeMoreView: UIView {
   let subUserSingle = SubUserSingleton.shared
   
 //  var profileCount = 0
+  
   var numberOfUsers: Int?
-  var subUserList: [SubUser]?
+  var subUserList: [SubUser]? {
+    didSet {
+      numberOfUsers = subUserList?.count
+    }
+  }
+  
   
   var delegate: SeeMoreViewDelegate?
   
@@ -75,33 +81,40 @@ class SeeMoreView: UIView {
   var profileView3 = ProfileView()
   var profileView4 = ProfileView()
   var profileView5 = ProfileView()
-  lazy var viewArray = [profileView1, profileView2, profileView3, profileView4, profileView5]
+  var addView = AddView()
+  lazy var viewArray = [profileView1, profileView2, profileView3, profileView4, profileView5, addView]
   
   lazy var profileStackView: UIStackView = {
     let view = UIStackView()
     view.axis = .horizontal
-    view.distribution = .fillEqually
-    view.spacing = 20
+//    view.distribution = .fillEqually
+    view.spacing = 15
     return view
   }()
 
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     
-    addSubViews()
-    setupSNP()
-    setupTableView()
+    
     
   }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
     subUserList = subUserSingle.subUserList
+    numberOfUsers = subUserSingle.subUserList?.count
+    
     print("씨모어의 뷰의 유저리스트: ",  subUserList)
     print("씨모어뷰의 싱글톤의 유저리스트: ", SubUserSingleton.shared.subUserList)
+    
+    addSubViews()
+    setupSNP()
+    setupTableView()
+    
+    
     setupStackView()
     setUserViews()
+    setupProfileLayout()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -142,8 +155,13 @@ class SeeMoreView: UIView {
       $0.leading.trailing.bottom.equalToSuperview()
     }
     
+    addView.snp.makeConstraints {
+      $0.width.equalTo(60)
+      $0.height.equalTo(75)
+    }
+    
     profileStackView.snp.makeConstraints {
-      $0.top.equalTo(topView.snp.top).offset(20)
+      $0.top.equalTo(topView.snp.top).offset(45)
       $0.height.equalTo(80)
       $0.centerX.equalTo(topView.snp.centerX)
     }
@@ -155,6 +173,9 @@ class SeeMoreView: UIView {
   }
   
   func setUserViews() {
+    
+    print("유저숫자는???????", numberOfUsers)
+    print("서브유저는???????", subUserList)
     
     switch numberOfUsers {
     case 5:
@@ -185,6 +206,56 @@ class SeeMoreView: UIView {
       return
     }
   }
+  
+  func setupProfileLayout() {
+    
+    switch numberOfUsers {
+    case 1:
+      [profileView2, profileView3, profileView4, profileView5].forEach { $0.isHidden = true }
+      [profileView1,addView].forEach { $0.isHidden = false }
+      
+      [profileView1, profileView2, profileView3, profileView4, profileView5, addView].forEach {
+        $0.setNeedsLayout()
+        $0.layoutIfNeeded()
+      }
+      print("======================유저 1명======================")
+    case 2:
+      [profileView3, profileView4, profileView5].forEach { $0.isHidden = true }
+      [profileView1, profileView2, addView].forEach { $0.isHidden = false }
+ 
+      [profileView1, profileView2, profileView3, profileView4, profileView5, addView].forEach { $0.setNeedsLayout()
+        $0.layoutIfNeeded()
+      }
+      print("======================유저 2명======================")
+    case 3:
+      [profileView4, profileView5].forEach { $0.isHidden = true }
+      [profileView1, profileView2, profileView3, addView].forEach { $0.isHidden = false }
+
+      [profileView1, profileView2, profileView3, profileView4, profileView5, addView].forEach { $0.setNeedsLayout()
+        $0.layoutIfNeeded()
+      }
+      print("======================유저 3명======================")
+    case 4:
+      profileView5.isHidden = true
+      [profileView1, profileView2, profileView3, profileView4, addView].forEach { $0.isHidden = false }
+
+      [profileView1, profileView2, profileView3, profileView4, profileView5, addView].forEach { $0.setNeedsLayout()
+        $0.layoutIfNeeded()
+      }
+      print("======================유저 4명======================")
+    case 5:
+      [profileView1, profileView2, profileView3, profileView4, profileView5].forEach { $0.isHidden = false }
+      addView.isHidden = true
+      [profileView1, profileView2, profileView3, profileView4, profileView5, addView].forEach { $0.setNeedsLayout()
+        $0.layoutIfNeeded()
+      }
+      print("======================유저 5명======================")
+    default:
+      addView.isHidden = true
+    }
+  }
+  
+  
   
   @objc func profileAdminBtnDidTap(_ sender: UIButton) {
     print("@@@@profileAdminBtnDidTap")

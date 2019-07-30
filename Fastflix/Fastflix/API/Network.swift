@@ -381,7 +381,7 @@ final class APICenter {
     }
   }
   
-  // 서브유저리스트 받아오기
+  // 토큰값으로 바로 로그인시에 서브유저리스트 받아오기
   func getSubUserList(completion: @escaping (Result<[SubUser]>) -> ()) {
     
     let headers = getHeader(needSubuser: false)

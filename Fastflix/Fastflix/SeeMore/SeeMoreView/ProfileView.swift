@@ -21,6 +21,7 @@ class ProfileView: UIView {
   
   let userImageView: UIImageView = {
     let imageView = UIImageView()
+    imageView.backgroundColor = #colorLiteral(red: 0, green: 0.9035767317, blue: 0.6621386409, alpha: 1)
     return imageView
   }()
   
@@ -57,9 +58,9 @@ class ProfileView: UIView {
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
-    addsubviews()
-    setupSNP()
-    setupConfigure()
+//    addsubviews()
+//    setupSNP()
+//    setupConfigure()
   }
   
   override init(frame: CGRect) {
@@ -81,7 +82,7 @@ class ProfileView: UIView {
     userImageView.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview()
       $0.top.equalToSuperview()
-      $0.height.width.equalTo(60)
+      $0.height.width.equalTo(55)
     }
     
     profileNameLabel.snp.makeConstraints {

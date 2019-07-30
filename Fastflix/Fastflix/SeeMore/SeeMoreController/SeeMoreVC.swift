@@ -12,8 +12,8 @@ class SeeMoreVC: UIViewController {
   
   let subUserSingle = SubUserSingleton.shared
   
-  var profileCount = 0
-  var viewArr: [ProfileView] = []
+//  var profileCount = 0
+//  var viewArr: [ProfileView] = []
 
   override func loadView() {
     let seeMoreView = SeeMoreView()
@@ -34,17 +34,17 @@ class SeeMoreVC: UIViewController {
   }
   
   // profile 생성
-  func makeProfileView() {
-    // 0일때 5일때 예외처리
-    for idx in 0...profileCount {
-      let view: ProfileView = {
-        let view = ProfileView()
-        //        view.configure(image: <#T##UIImage?#>, name: <#T##String?#>)
-        return view
-      }()
-      viewArr.append(view)
-    }
-  }
+//  func makeProfileView() {
+//    // 0일때 5일때 예외처리
+//    for idx in 0...profileCount {
+//      let view: ProfileView = {
+//        let view = ProfileView()
+//        //        view.configure(image: <#T##UIImage?#>, name: <#T##String?#>)
+//        return view
+//      }()
+//      viewArr.append(view)
+//    }
+//  }
   
   func setupUsers() {
     
