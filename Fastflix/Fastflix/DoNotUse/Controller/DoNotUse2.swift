@@ -16,7 +16,7 @@ final class DoNotUse2: UITableViewController {
   private let streamingCell: StreamingCell = {
     let cell = StreamingCell()
     cell.configure(url: streamingUrl)
-    return cell
+    return cell 
   }()
   
   private let floatingHomeView = FloatingView()
