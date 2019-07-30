@@ -44,7 +44,45 @@ final class APICenter {
     }
   }
   
+  func getListOfFork(completion: @escaping (Result<ListOfFork>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    
+    Alamofire.request(RequestString.getListOfForkURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (data) in
+      switch data.result {
+      case .success(let data):
+        guard let result = try? JSONDecoder().decode(ListOfFork.self, from: data) else {
+          completion(.failure(ErrorType.FailToParsing))
+          return
+        }
+        
+        completion(.success(result))
+      case .failure(let err):
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+  }
   
+  // 미리보기 Data
+  func getPreviewData(completion: @escaping (Result<PreviewData>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    
+    Alamofire.request(RequestString.getPreviewDataURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (data) in
+      switch data.result {
+      case .success(let value):
+        guard let result = try? JSONDecoder().decode(PreviewData.self, from: value) else {
+          completion(.failure(ErrorType.FailToParsing))
+          return
+        }
+        completion(.success(result))
+        
+      case .failure(let err):
+        dump(err)
+        completion(.failure(ErrorType.NoData))
+      }
+    }
+  }
+  
+  // get recent Movies
   func getBrandNewMovie(completion: @escaping (Result<BrandNewMovie>) -> ()) {
     let header = getHeader(needSubuser: true)
     
@@ -120,7 +158,6 @@ final class APICenter {
       "movieid": "\(movieID)",
       "subuserid": "\(subUserID)"
     ]
-    
     
     Alamofire.upload(multipartFormData: { (MultipartFormData) in
       for (key, value) in parameters {

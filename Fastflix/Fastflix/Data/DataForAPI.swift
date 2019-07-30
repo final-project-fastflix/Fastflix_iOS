@@ -20,7 +20,46 @@ enum RequestString: String {
   case getBrandNewMovieURL = "http://52.78.134.79/movies/brand_new/"
   case toggleHateMovieURL = "http://52.78.134.79/movies/dislike/"
   case toggleLikeMovieURL = "http://52.78.134.79//movies/like/"
+  case getPreviewDataURL = "http://52.78.134.79/movies/preview/"
+  case getListOfForkURL = "http://52.78.134.79/movies/my_list/"
 }
+
+
+// MARK: - ListOfForkElement
+struct ListOfForkElement: Codable {
+  let id: Int
+  let name: String
+  let horizontalImagePath: String
+  let verticalImage: String
+  
+  enum CodingKeys: String, CodingKey {
+    case id, name
+    case horizontalImagePath = "horizontal_image_path"
+    case verticalImage = "vertical_image"
+  }
+}
+
+typealias ListOfFork = [ListOfForkElement]
+
+// MARK: - PreviewDatum
+struct PreviewDatas: Codable {
+  let id: Int
+  let name: String
+  let circleImage: JSONNull?
+  let logoImagePath: String
+  let videoFile: String
+  let verticalSampleVideoFile: JSONNull?
+  
+  enum CodingKeys: String, CodingKey {
+    case id, name
+    case circleImage = "circle_image"
+    case logoImagePath = "logo_image_path"
+    case videoFile = "video_file"
+    case verticalSampleVideoFile = "vertical_sample_video_file"
+  }
+}
+
+typealias PreviewData = [PreviewDatas]
 
 // MARK: - BrandNewMovieElement
 struct BrandNewMovieElement: Codable {
