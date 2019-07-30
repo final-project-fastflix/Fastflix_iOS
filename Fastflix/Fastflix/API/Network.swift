@@ -348,10 +348,7 @@ final class APICenter {
   // MARK: 서브유저 생성
   func createSubUser(name: String, kid: Bool, completion: @escaping (Result<[SubUser]>) -> ()) {
     
-//    let headers = getHeader(needSubuser: false)
-    let headers = [
-      "Authorization": "Token 2e6b45cdbf3fa610d87adf5408faa707836b83c9"
-    ]
+    let headers = getHeader(needSubuser: false)
     
     let parameters =
       [
@@ -381,6 +378,36 @@ final class APICenter {
         
           //서브유저 정보들 넘기기
           completion(.success(subUserArr))
+    }
+  }
+  
+  // 서브유저리스트 받아오기
+  func getSubUserList(completion: @escaping (Result<[SubUser]>) -> ()) {
+    
+    let headers = getHeader(needSubuser: false)
+    
+    Alamofire.request(RequestString.requestSubUserListURL.rawValue, method: .get, headers: headers)
+      .validate()
+      .responseJSON { response in
+        guard response.result.isSuccess,
+          let _ = response.result.value else {
+            print("Error while fetching tags: \(String(describing: response.result.error))")
+            completion(.failure(ErrorType.networkError))
+            return
+        }
+        guard let data = response.data else {
+          completion(.failure(ErrorType.NoData))
+          return
+        }
+        guard let origin = try? JSONDecoder().decode([SubUser].self, from:data) else {
+          completion(.failure(ErrorType.FailToParsing))
+          return
+        }
+        let subUserArr = origin
+        print("유저생성 subUser: ", subUserArr)
+        
+        //서브유저 정보들 넘기기
+        completion(.success(subUserArr))
     }
   }
   

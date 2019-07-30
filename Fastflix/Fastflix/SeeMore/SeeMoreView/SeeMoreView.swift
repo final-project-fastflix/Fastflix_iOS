@@ -70,11 +70,11 @@ class SeeMoreView: UIView {
   
   let tableView = UITableView()
   
-  var profileView1 = UserView()
-  var profileView2 = UserView()
-  var profileView3 = UserView()
-  var profileView4 = UserView()
-  var profileView5 = UserView()
+  var profileView1 = ProfileView()
+  var profileView2 = ProfileView()
+  var profileView3 = ProfileView()
+  var profileView4 = ProfileView()
+  var profileView5 = ProfileView()
   lazy var viewArray = [profileView1, profileView2, profileView3, profileView4, profileView5]
   
   lazy var profileStackView: UIStackView = {
@@ -87,12 +87,29 @@ class SeeMoreView: UIView {
 
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
-    setupStackView()
+    
     addSubViews()
     setupSNP()
     setupTableView()
+    
+  }
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    
+    subUserList = subUserSingle.subUserList
+    print("씨모어의 뷰의 유저리스트: ",  subUserList)
+    print("씨모어뷰의 싱글톤의 유저리스트: ", SubUserSingleton.shared.subUserList)
+    setupStackView()
     setUserViews()
   }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  
+  
   
   func setupStackView() {
     viewArray.forEach { profileStackView.addArrangedSubview($0) }
@@ -127,6 +144,7 @@ class SeeMoreView: UIView {
     
     profileStackView.snp.makeConstraints {
       $0.top.equalTo(topView.snp.top).offset(20)
+      $0.height.equalTo(80)
       $0.centerX.equalTo(topView.snp.centerX)
     }
     

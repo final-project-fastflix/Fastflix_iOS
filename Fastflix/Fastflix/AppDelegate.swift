@@ -10,8 +10,10 @@ import UIKit
 
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
-
+  
   var window: UIWindow? 
+  
+  let subUserSingle = SubUserSingleton.shared
   
   static var instance: AppDelegate {
     return (UIApplication.shared.delegate as! AppDelegate)
@@ -43,9 +45,30 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     // 2) "token"값 있을때 (로그인없이)홈화면
     let tabBar = MainTabBarController()
     
+    // 🔶토큰값이 있을때의 확인 프로세스 추가🔶
+    // 토큰이 있다면 =====> 서브유저리스트를 받아서 싱글톤에 저장
+    if token != nil {
+      APICenter.shared.getSubUserList() {
+        switch $0 {
+        case .success(let subUsers):
+          print("Get SubuserList Success!!!")
+          print("value: ", subUsers)
+          self.subUserSingle.subUserList = subUsers
+          
+          // 그리고 유저디폴트에 저장된 서브유저아이디와 같은 값이 있다면 계속사용, 없다면 첫번째 싱글톤의 첫번째 유저의 아이디를 유저디폴트에 저장해서 사용
+          if self.subUserSingle.subUserList?.filter({ $0.id == APICenter.shared.getSubUserID() }) == nil {
+            APICenter.shared.saveSubUserID(id: (self.subUserSingle.subUserList?[0].id)!)
+          }
+          
+        case .failure(let err):
+          print("fail to login, reason: ", err)
+        }
+      }
+    }
     
     // "token"값 nil일때는 1)안내화면으로 / nil이 아닐때는 2) 홈화면으로
     let rootVC = token == nil ? beforeLoginNavi : tabBar
+    
     
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.backgroundColor = .clear

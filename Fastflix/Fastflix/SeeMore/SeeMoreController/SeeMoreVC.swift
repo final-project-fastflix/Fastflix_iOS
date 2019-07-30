@@ -10,6 +10,8 @@ import SnapKit
 
 class SeeMoreVC: UIViewController {
   
+  let subUserSingle = SubUserSingleton.shared
+  
   var profileCount = 0
   var viewArr: [ProfileView] = []
 
@@ -24,7 +26,7 @@ class SeeMoreVC: UIViewController {
     super.viewDidLoad()
     view.backgroundColor = #colorLiteral(red: 0.05203045685, green: 0.05203045685, blue: 0.05203045685, alpha: 1)
     setupNavi()
-    
+    setupUsers()
   }
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -43,6 +45,16 @@ class SeeMoreVC: UIViewController {
       viewArr.append(view)
     }
   }
+  
+  func setupUsers() {
+    
+    
+    
+    
+  }
+  
+  
+  
   
   private func setupNavi() {
     navigationController?.setNavigationBarHidden(false, animated: true)

@@ -204,15 +204,15 @@ class ProfileChangeVC: UIViewController {
     print("새로바뀐 유저정보 저장관련 메서드 넣어야함")
     saveChangedUserInfo()
     
-    guard let navi = presentingViewController as? UINavigationController else {return}
-    guard let vc = navi.viewControllers[0] as? ProfileSelectVC else {return}
-    
-    vc.numberOfUsers = subUserSingle.subUserList?.count
-    vc.subUserList = subUserSingle.subUserList
+//    guard let navi = presentingViewController as? UINavigationController else {return}
+//    guard let vc = navi.viewControllers[0] as? ProfileSelectVC else {return}
+//
+//    vc.numberOfUsers = subUserSingle.subUserList?.count
+//    vc.subUserList = subUserSingle.subUserList
     
 //    vc.view.layoutIfNeeded()
-    vc.view.setNeedsLayout()
-    vc.view.layoutIfNeeded()
+//    vc.view.setNeedsLayout()
+//    vc.view.layoutIfNeeded()
     
 //    vc.viewDidLoad()
 //    vc.viewWillAppear(false)
@@ -236,6 +236,8 @@ class ProfileChangeVC: UIViewController {
           print("value: ", subUsers)
           
           self.subUserSingle.subUserList = subUsers
+          
+          
           
         case .failure(let err):
           print("fail to login, reason: ", err)

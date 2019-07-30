@@ -62,6 +62,17 @@ class ProfileView: UIView {
     setupConfigure()
   }
   
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    addsubviews()
+    setupSNP()
+    setupConfigure()
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   private func addsubviews() {
     [userImageView, profileNameLabel].forEach { addSubview($0) }
   }
@@ -69,14 +80,15 @@ class ProfileView: UIView {
   private func setupSNP() {
     userImageView.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview()
-      $0.top.equalToSuperview().offset(15)
+      $0.top.equalToSuperview()
       $0.height.width.equalTo(60)
     }
     
     profileNameLabel.snp.makeConstraints {
-      $0.top.equalTo(userImageView.snp.bottom).offset(10)
+      $0.top.equalTo(userImageView.snp.bottom).offset(8)
       $0.bottom.equalToSuperview()
       $0.centerX.equalToSuperview()
+      $0.leading.trailing.equalToSuperview()
     }
   }
 
@@ -91,7 +103,7 @@ class ProfileView: UIView {
   }
   
   func setUserUI(userName: String) {
-    profileUserName = userName ?? "테스트"
+    profileUserName = userName
   }
   
   func configureImage(imageURLString: String?) {
