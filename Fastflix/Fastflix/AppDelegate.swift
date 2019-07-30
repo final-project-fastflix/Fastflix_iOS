@@ -11,7 +11,7 @@ import UIKit
 @UIApplicationMain
 final class AppDelegate: UIResponder, UIApplicationDelegate {
 
-  var window: UIWindow?
+  var window: UIWindow? 
   
   static var instance: AppDelegate {
     return (UIApplication.shared.delegate as! AppDelegate)
