@@ -178,7 +178,7 @@
 				5295216222D5D53C00174BC1 /* Data */,
 				5295216322D5D55800174BC1 /* API */,
 				C1FC3F5A22EC7EE7008E1FE9 /* Launch */,
-				C1FC3F5822EC7E69008E1FE9 /* DoNotUSe */,
+				C1FC3F5822EC7E69008E1FE9 /* DoNotUse */,
 				5295215422D5D3E900174BC1 /* Assets.xcassets */,
 				5295215922D5D3EA00174BC1 /* Info.plist */,
 			);
@@ -408,12 +408,12 @@
 			path = LoginController;
 			sourceTree = "<group>";
 		};
-		C1FC3F5822EC7E69008E1FE9 /* DoNotUSe */ = {
+		C1FC3F5822EC7E69008E1FE9 /* DoNotUse */ = {
 			isa = PBXGroup;
 			children = (
 				C1FC3F5922EC7E76008E1FE9 /* Controller */,
 			);
-			path = DoNotUSe;
+			path = DoNotUse;
 			sourceTree = "<group>";
 		};
 		C1FC3F5922EC7E76008E1FE9 /* Controller */ = {
