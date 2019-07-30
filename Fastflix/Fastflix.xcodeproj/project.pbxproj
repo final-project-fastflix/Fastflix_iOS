@@ -61,6 +61,9 @@
 		C1FC3F4122EAE5BB008E1FE9 /* AlertExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F4022EAE5BB008E1FE9 /* AlertExtension.swift */; };
 		C1FC3F6022EC9E9F008E1FE9 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F5F22EC9E9E008E1FE9 /* SearchView.swift */; };
 		C1FC3F6222ECA67A008E1FE9 /* SearchCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F6122ECA67A008E1FE9 /* SearchCollectionCell.swift */; };
+		C1FC3F7C22F0457F008E1FE9 /* DownloadTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F7B22F0457F008E1FE9 /* DownloadTableCell.swift */; };
+		C1FC3F7E22F045AF008E1FE9 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F7D22F045AF008E1FE9 /* DownloadView.swift */; };
+		C1FC3F8222F04622008E1FE9 /* EmptyDownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F8122F04622008E1FE9 /* EmptyDownloadView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -122,6 +125,9 @@
 		C1FC3F4022EAE5BB008E1FE9 /* AlertExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertExtension.swift; sourceTree = "<group>"; };
 		C1FC3F5F22EC9E9E008E1FE9 /* SearchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		C1FC3F6122ECA67A008E1FE9 /* SearchCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionCell.swift; sourceTree = "<group>"; };
+		C1FC3F7B22F0457F008E1FE9 /* DownloadTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DownloadTableCell.swift; path = Fastflix/Download/DownloadCell/DownloadTableCell.swift; sourceTree = SOURCE_ROOT; };
+		C1FC3F7D22F045AF008E1FE9 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DownloadView.swift; path = Fastflix/Download/DownloadView/DownloadView.swift; sourceTree = SOURCE_ROOT; };
+		C1FC3F8122F04622008E1FE9 /* EmptyDownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDownloadView.swift; sourceTree = "<group>"; };
 		E29600FEE1EEB7B6DD9E0171 /* Pods_Fastflix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fastflix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -237,8 +243,8 @@
 			isa = PBXGroup;
 			children = (
 				C1FC3F5122EC7D8A008E1FE9 /* DownloadController */,
-				C1FC3F4F22EC7D86008E1FE9 /* DownloadCell */,
-				C1FC3F5022EC7D88008E1FE9 /* DownloadView */,
+				C1FC3F7F22F045D9008E1FE9 /* DownloadCell */,
+				C1FC3F8022F045E8008E1FE9 /* DownloadView */,
 			);
 			path = Download;
 			sourceTree = "<group>";
@@ -326,20 +332,6 @@
 				C1FC3F6122ECA67A008E1FE9 /* SearchCollectionCell.swift */,
 			);
 			path = SearchCell;
-			sourceTree = "<group>";
-		};
-		C1FC3F4F22EC7D86008E1FE9 /* DownloadCell */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DownloadCell;
-			sourceTree = "<group>";
-		};
-		C1FC3F5022EC7D88008E1FE9 /* DownloadView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DownloadView;
 			sourceTree = "<group>";
 		};
 		C1FC3F5122EC7D8A008E1FE9 /* DownloadController */ = {
@@ -447,6 +439,23 @@
 				52BA342922DDE513005F8489 /* MainTabBarController.swift */,
 			);
 			path = MainTabBar;
+			sourceTree = "<group>";
+		};
+		C1FC3F7F22F045D9008E1FE9 /* DownloadCell */ = {
+			isa = PBXGroup;
+			children = (
+				C1FC3F7B22F0457F008E1FE9 /* DownloadTableCell.swift */,
+			);
+			path = DownloadCell;
+			sourceTree = "<group>";
+		};
+		C1FC3F8022F045E8008E1FE9 /* DownloadView */ = {
+			isa = PBXGroup;
+			children = (
+				C1FC3F7D22F045AF008E1FE9 /* DownloadView.swift */,
+				C1FC3F8122F04622008E1FE9 /* EmptyDownloadView.swift */,
+			);
+			path = DownloadView;
 			sourceTree = "<group>";
 		};
 		D3DAF0B40D3A1BD1093E39D6 /* Pods */ = {
@@ -588,6 +597,7 @@
 				C1FC3F3822E8B1FD008E1FE9 /* MyContentCollectionCell.swift in Sources */,
 				C1CA09C622E17130009B1296 /* DataForAPI.swift in Sources */,
 				C143560822DCAA98005189E9 /* OriginalCollectionCell.swift in Sources */,
+				C1FC3F8222F04622008E1FE9 /* EmptyDownloadView.swift in Sources */,
 				47AC179B22E234E700D6AACD /* PlayerViewController.swift in Sources */,
 				5295216B22D5D5E600174BC1 /* DoNotUse2.swift in Sources */,
 				C1FC3F0422E594E1008E1FE9 /* CreateProfileVC.swift in Sources */,
@@ -613,7 +623,9 @@
 				52BA342A22DDE513005F8489 /* MainTabBarController.swift in Sources */,
 				477F4F6722E76257003268F9 /* UserView.swift in Sources */,
 				52BA342E22DDE7D5005F8489 /* ImageCell.swift in Sources */,
+				C1FC3F7C22F0457F008E1FE9 /* DownloadTableCell.swift in Sources */,
 				C14355F622DB0B18005189E9 /* PreviewTableCell.swift in Sources */,
+				C1FC3F7E22F045AF008E1FE9 /* DownloadView.swift in Sources */,
 				C1FC3F0622E59631008E1FE9 /* CreateProfileView.swift in Sources */,
 				C1FC3F0A22E5A725008E1FE9 /* ProfileView.swift in Sources */,
 				52BA342C22DDE7BB005F8489 /* StreamingCell.swift in Sources */,

@@ -22,27 +22,13 @@ class SearchVC: UIViewController {
   override func loadView() {
     
     self.view = searchView
-    view.backgroundColor = .clear
-    navigationItem.searchController = searchView.searchController
-     setupNavi()
+    view.backgroundColor = #colorLiteral(red: 0.05203045685, green: 0.05203045685, blue: 0.05203045685, alpha: 1)
   }
   
-  override var prefersStatusBarHidden: Bool {
-    return searchView.searchController.isActive
-    
-  }
+
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
-  
-  private func setupNavi() {
-    self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.05203045685, green: 0.05203045685, blue: 0.05203045685, alpha: 1)
-//    navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-    navigationController?.navigationBar.shadowImage = UIImage()
-    navigationController?.navigationBar.isTranslucent = true
-    self.setNeedsStatusBarAppearanceUpdate()
-  }
- 
-  
-  
+
+
 }
