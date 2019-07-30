@@ -16,7 +16,34 @@ enum RequestString: String {
   case createSubUserURL = "http://52.78.134.79/accounts/create_sub_user/"
   case changeProfileListURL = "http://52.78.134.79/accounts/change_profile/"
   case getMainImgURL = "http://52.78.134.79/movies/"
+  case toggleForkMovieURL = "http://52.78.134.79/movies/add_delete_my_list/"
+  case getBrandNewMovieURL = "http://52.78.134.79/movies/brand_new/"
+  case toggleHateMovieURL = "http://52.78.134.79/movies/dislike/"
+  case toggleLikeMovieURL = "http://52.78.134.79//movies/like/"
 }
+
+// MARK: - BrandNewMovieElement
+struct BrandNewMovieElement: Codable {
+  let id: Int
+  let name: String
+  let sampleVideoFile: JSONNull?
+  let logoImagePath: String
+  let horizontalImagePath: String
+  let verticalImage: String
+  
+  enum CodingKeys: String, CodingKey {
+    case id, name
+    case sampleVideoFile = "sample_video_file"
+    case logoImagePath = "logo_image_path"
+    case horizontalImagePath = "horizontal_image_path"
+    case verticalImage = "vertical_image"
+  }
+}
+
+typealias BrandNewMovie = [BrandNewMovieElement]
+
+
+
 
 // MARK: - ProfileImageElement
 struct ProfileImageElement: Codable {
