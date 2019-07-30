@@ -16,8 +16,10 @@ import Kingfisher
 
 class SeeMoreView: UIView {
   
+  let subUserSingle = SubUserSingleton.shared
+  
   var profileCount = 0
-  var viewArr: [ProfileView] = []
+  var viewArray: [ProfileView] = []
   var delegate: SeeMoreViewDelegate?
   
   let datas = [ "앱설정", "계정", "개인정보", "고객 센터", "로그아웃"]
@@ -53,19 +55,21 @@ class SeeMoreView: UIView {
     view.configure(image: UIImage(named: "profile3"), name: "hea")
     return view
   }()
+  
   lazy var profileAddView: ProfileView = {
     let view = ProfileView()
     view.configure(image: nil, name: nil)
     view.profileNameLabel.textColor = .gray
-    view.profileImageBtn.addTarget(self, action: #selector(profileAddDidTap(_:)), for: .touchUpInside)
-    
+    let tap = UITapGestureRecognizer(target: self, action: #selector(profileAddDidTap(_:)))
+    view.userImageView.addGestureRecognizer(tap)
+    view.userImageView.isUserInteractionEnabled = true
     return view
   }()
   
   let tableView = UITableView()
   
   lazy var profileStackView: UIStackView = {
-    let view = UIStackView(arrangedSubviews: viewArr)
+    let view = UIStackView()
     view.axis = .horizontal
     view.distribution = .fillEqually
     view.spacing = 20
@@ -74,11 +78,17 @@ class SeeMoreView: UIView {
 
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
+    setupStackView()
     addSubViews()
     setupSNP()
     setupTableView()
     
   }
+  
+  func setupStackView() {
+    viewArray.forEach { profileStackView.addArrangedSubview($0) }
+  }
+  
   
   private func setupTableView() {
     tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -105,10 +115,10 @@ class SeeMoreView: UIView {
       $0.leading.trailing.bottom.equalToSuperview()
     }
     
-      profileStackView.snp.makeConstraints {
-        $0.top.equalTo(topView.snp.top).offset(20)
-        $0.centerX.equalTo(topView.snp.centerX)
-      }
+    profileStackView.snp.makeConstraints {
+      $0.top.equalTo(topView.snp.top).offset(20)
+      $0.centerX.equalTo(topView.snp.centerX)
+    }
     
     profileAdminBtn.snp.makeConstraints {
       $0.top.equalTo(profileStackView.snp.bottom).offset(25)
@@ -121,7 +131,7 @@ class SeeMoreView: UIView {
     print("@@@@profileAdminBtnDidTap")
   }
   
-  @objc func profileAddDidTap(_ sender: UIButton) {
+  @objc func profileAddDidTap(_ sender: Any) {
     print("프로필추가추가추가추가추가추가")
     
     //    let createProfielVC = CreateProfileVC()

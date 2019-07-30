@@ -86,7 +86,11 @@ class ProfileSelectVC: UIViewController {
   var addProfileView = AddProfileView()
   
   var numberOfUsers: Int?
-  var subUserList: [SubUser]?
+  var subUserList: [SubUser]? {
+    didSet {
+      numberOfUsers = subUserList?.count
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()

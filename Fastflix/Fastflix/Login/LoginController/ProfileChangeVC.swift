@@ -131,8 +131,8 @@ class ProfileChangeVC: UIViewController {
     view.backgroundColor = .black
     userView.profileUserName = "변경"
     subUserNameTextField.text = userName ?? ""
-    userView.imageView.image = userImage ?? UIImage(named: "profile1")
-    profileChangeLabel.text = isUserCreating == false ? "프로필 변경" : "프로필 만들기"
+    userView.userImageView.image = userImage ?? UIImage(named: "profile1")
+    profileChangeLabel.text = isUserCreating! ? "프로필 만들기" : "프로필 변경"
     subUserNameTextField.delegate = self
   }
   
@@ -211,6 +211,9 @@ class ProfileChangeVC: UIViewController {
     vc.subUserList = subUserSingle.subUserList
     
 //    vc.view.layoutIfNeeded()
+    vc.view.setNeedsLayout()
+    vc.view.layoutIfNeeded()
+    
 //    vc.viewDidLoad()
 //    vc.viewWillAppear(false)
 //    vc.viewDidAppear(false)
