@@ -20,8 +20,6 @@ class SearchCollectionCell: UICollectionViewCell {
     return imageView
   }()
   
-  
-  
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     addSubViews()
