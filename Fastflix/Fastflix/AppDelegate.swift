@@ -21,7 +21,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     checkLoginState()
-    APICenter.shared.toggleLikeMovie(movieID: 304) { (result) in
+    APICenter.shared.getListOfFork() { (result) in
       switch result {
       case .success(let value):
         print("result1: ", value)
