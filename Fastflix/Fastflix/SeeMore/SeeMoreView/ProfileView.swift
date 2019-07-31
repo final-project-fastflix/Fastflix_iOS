@@ -11,9 +11,9 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-protocol ProfileViewDelegate: class {
-  func didSelectUser(tag: Int)
-}
+//protocol ProfileViewDelegate: class {
+//  func didSelectUser(tag: Int)
+//}
 
 class ProfileView: UIView {
 
@@ -54,7 +54,7 @@ class ProfileView: UIView {
     }
   }
   
-  weak var delegate: ProfileViewDelegate?
+//  weak var delegate: ProfileViewDelegate?
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
@@ -67,7 +67,14 @@ class ProfileView: UIView {
     super.init(frame: frame)
     addsubviews()
     setupSNP()
+//    setupConfigure()
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    print("셀렉트 되었나요?:", isSelected)
     setupConfigure()
+    
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -82,7 +89,7 @@ class ProfileView: UIView {
     userImageView.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview()
       $0.top.equalToSuperview()
-      $0.height.width.equalTo(55)
+      $0.height.width.equalTo(60)
     }
     
     profileNameLabel.snp.makeConstraints {
@@ -95,7 +102,7 @@ class ProfileView: UIView {
 
   func setupConfigure() {
     profileNameLabel.textColor = !isSelected ? #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1) : #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    profileNameLabel.font = !isSelected ? UIFont.systemFont(ofSize: 10) : UIFont.boldSystemFont(ofSize: 10)
+    profileNameLabel.font = !isSelected ? UIFont.systemFont(ofSize: 11) : UIFont.boldSystemFont(ofSize: 11)
     
     if isSelected {
       userImageView.layer.borderWidth = 2
@@ -112,7 +119,7 @@ class ProfileView: UIView {
     self.userImageView.kf.setImage(with: imageURL, options: [.processor(CroppingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])
   }
   
-  @objc private func buttonTapped() {
-      delegate?.didSelectUser(tag: tag)
-  }
+//  @objc private func buttonTapped() {
+//      delegate?.didSelectUser(tag: tag)
+//  }
 }

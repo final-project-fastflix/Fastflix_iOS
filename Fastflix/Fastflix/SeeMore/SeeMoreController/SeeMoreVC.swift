@@ -69,6 +69,10 @@ class SeeMoreVC: UIViewController {
 
 }
 extension SeeMoreVC: SeeMoreViewDelegate {
+  func didSelectUser(tag: Int) {
+    
+  }
+  
   func logoutCellDidTap(indexPath: IndexPath) {
     switch indexPath {
     case IndexPath(row: 0, section: 0): break

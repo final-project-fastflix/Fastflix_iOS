@@ -95,12 +95,21 @@ class MyContentView: UIView {
     collectionView.dataSource = self
     collectionView.delegate = self
     layout.scrollDirection = .vertical
-    collectionView.backgroundColor = .clear
+    collectionView.backgroundColor = .black
     self.collectionView.collectionViewLayout = layout
-    layout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 0, right: 20)
-    layout.minimumLineSpacing = 10
-    layout.minimumInteritemSpacing = 20
-     layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 4.3, height: UIScreen.main.bounds.height / 4)
+    
+    
+    layout.sectionInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+    layout.minimumLineSpacing = 12
+    layout.minimumInteritemSpacing = 14
+    let width = (UIScreen.main.bounds.width - 44)/3
+    layout.itemSize = CGSize(width: width, height: width * 1.3818)
+    
+    
+    
+    
+    
+    
     
     layout.sectionHeadersPinToVisibleBounds = true
     collectionView.showsHorizontalScrollIndicator = false
