@@ -11,9 +11,9 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-//protocol ProfileViewDelegate: class {
-//  func didSelectUser(tag: Int)
-//}
+protocol ProfileViewDelegate: class {
+  func didSelectUser(tag: Int)
+}
 
 class ProfileView: UIView {
 
@@ -54,7 +54,7 @@ class ProfileView: UIView {
     }
   }
   
-//  weak var delegate: ProfileViewDelegate?
+  weak var delegate: ProfileViewDelegate?
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
@@ -68,7 +68,15 @@ class ProfileView: UIView {
     addsubviews()
     setupSNP()
 //    setupConfigure()
+    setupTapGesture()
   }
+  
+  private func setupTapGesture() {
+    let tap = UITapGestureRecognizer(target: self, action: #selector(profileDidTap))
+    userImageView.addGestureRecognizer(tap)
+    userImageView.isUserInteractionEnabled = true
+  }
+  
   
   override func layoutSubviews() {
     super.layoutSubviews()
@@ -107,7 +115,12 @@ class ProfileView: UIView {
     if isSelected {
       userImageView.layer.borderWidth = 2
       userImageView.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    }else {
+      userImageView.layer.borderWidth = 0
+      userImageView.layer.borderColor = .none
     }
+    
+    
   }
   
   func setUserUI(userName: String) {
@@ -119,7 +132,8 @@ class ProfileView: UIView {
     self.userImageView.kf.setImage(with: imageURL, options: [.processor(CroppingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])
   }
   
-//  @objc private func buttonTapped() {
-//      delegate?.didSelectUser(tag: tag)
-//  }
+  @objc private func profileDidTap() {
+    print("눌렀습니다:::::::나의 Tag:",self.tag)
+    delegate?.didSelectUser(tag: self.tag)
+  }
 }

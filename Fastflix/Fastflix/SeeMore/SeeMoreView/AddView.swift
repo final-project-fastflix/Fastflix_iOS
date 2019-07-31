@@ -53,6 +53,8 @@ class AddView: UIView {
   
   private func setupTapGesture() {
     let tap = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
+    tap.numberOfTapsRequired = 1
+    tap.numberOfTouchesRequired = 1
     addProfileButton.addGestureRecognizer(tap)
     addProfileButton.isUserInteractionEnabled = true
   }

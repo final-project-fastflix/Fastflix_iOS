@@ -69,9 +69,16 @@ class SeeMoreVC: UIViewController {
 
 }
 extension SeeMoreVC: SeeMoreViewDelegate {
-  func didSelectUser(tag: Int) {
-    
+  func addProfileButtonDidTap() {
+    let profileSelectVC = ProfileSelectVC()
+    let navi = UINavigationController(rootViewController: profileSelectVC)
+    profileSelectVC.isFromSeeMoreView = true
+    self.present(navi, animated: true) {
+      profileSelectVC.changeButtonTapped()
+    }
+  
   }
+  
   
   func logoutCellDidTap(indexPath: IndexPath) {
     switch indexPath {

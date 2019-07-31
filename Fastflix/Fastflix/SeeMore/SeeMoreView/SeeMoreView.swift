@@ -7,7 +7,7 @@
 //
 protocol SeeMoreViewDelegate: class {
   func logoutCellDidTap(indexPath: IndexPath)
-  func didSelectUser(tag: Int)
+  func addProfileButtonDidTap()
 }
 
 import UIKit
@@ -17,8 +17,6 @@ import Kingfisher
 class SeeMoreView: UIView {
   
   let subUserSingle = SubUserSingleton.shared
-  
-//  var profileCount = 0
   
   var numberOfUsers: Int?
   var subUserList: [SubUser]? {
@@ -74,42 +72,11 @@ class SeeMoreView: UIView {
 
   let tableView = UITableView()
   
-  var profileView1: ProfileView = {
-    let view = ProfileView()
-    let tap = UITapGestureRecognizer(target: self, action: #selector(profileViewDidTap(_:)))
-    view.addGestureRecognizer(tap)
-    view.isUserInteractionEnabled = true
-    return view
-  }()
-  var profileView2: ProfileView = {
-    let view = ProfileView()
-    let tap = UITapGestureRecognizer(target: self, action: #selector(profileViewDidTap(_:)))
-    view.addGestureRecognizer(tap)
-    view.isUserInteractionEnabled = true
-    return view
-  }()
-  var profileView3: ProfileView = {
-    let view = ProfileView()
-    let tap = UITapGestureRecognizer(target: self, action: #selector(profileViewDidTap(_:)))
-    view.addGestureRecognizer(tap)
-    view.isUserInteractionEnabled = true
-    return view
-  }()
-  var profileView4: ProfileView = {
-    let view = ProfileView()
-    let tap = UITapGestureRecognizer(target: self, action: #selector(profileViewDidTap(_:)))
-    view.addGestureRecognizer(tap)
-    view.isUserInteractionEnabled = true
-    return view
-  }()
-  var profileView5: ProfileView = {
-    let view = ProfileView()
-    let tap = UITapGestureRecognizer(target: self, action: #selector(profileViewDidTap(_:)))
-    view.addGestureRecognizer(tap)
-    view.isUserInteractionEnabled = true
-    return view
-  }()
-  
+  var profileView1 = ProfileView()
+  var profileView2 = ProfileView()
+  var profileView3 = ProfileView()
+  var profileView4 = ProfileView()
+  var profileView5 = ProfileView()
   var addView = AddView()
   lazy var viewArray = [profileView1, profileView2, profileView3, profileView4, profileView5, addView]
   
@@ -135,6 +102,7 @@ class SeeMoreView: UIView {
     
     print("씨모어의 뷰의 유저리스트: ",  subUserList)
     print("씨모어뷰의 싱글톤의 유저리스트: ", SubUserSingleton.shared.subUserList)
+    setupDelegate()
     addSubViews()
     setupSNP()
     setupTableView()
@@ -147,6 +115,10 @@ class SeeMoreView: UIView {
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  private func setupDelegate() {
+    [profileView1, profileView2, profileView3, profileView4, profileView5].forEach { $0.delegate = self }
   }
   
   func checkingSelectedSubUser() {
@@ -308,13 +280,16 @@ class SeeMoreView: UIView {
   }
   
   
-  
+  // "프로필 관리"누르면
   @objc func profileAdminBtnDidTap(_ sender: UIButton) {
     print("@@@@profileAdminBtnDidTap")
+    delegate?.addProfileButtonDidTap()
   }
   
-  @objc func profileViewDidTap(_ sender: Any) {
+  @objc func profileViewDidTap(_ sender: ProfileView) {
     print("프로필선택")
+    print("프로필 눌렀당",sender.tag)
+    
     
     //    let createProfielVC = CreateProfileVC()
     //    present(createProfielVC, animated: true)
@@ -408,6 +383,16 @@ extension SeeMoreView: UITableViewDelegate {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     delegate?.logoutCellDidTap(indexPath: indexPath)
+  }
+}
+
+extension SeeMoreView: ProfileViewDelegate {
+  func didSelectUser(tag: Int) {
+    print("전달되었습니다.", tag)
+    APICenter.shared.saveSubUserID(id: tag)
+    checkingSelectedSubUser()
+    setUserViews()
+    setupProfileLayout()
   }
 
 }
