@@ -21,9 +21,9 @@ class MyContentVC: UIViewController {
     return .lightContent
   }
   
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+  }
   
   override func loadView() {
     

@@ -35,17 +35,10 @@ class MyContentCollectionCell: UICollectionViewCell {
   private func setupSNP() {
     pokeImageView.snp.makeConstraints {
       $0.top.leading.trailing.bottom.equalToSuperview()
-//       $0.top.leading.trailing.bottom.equalTo(contentView)
-      
     }
   }
   
   func configure(imageUrlString: String) {
       pokeImageView.kf.setImage(with: URL(string: imageUrlString), options: [.processor(CroppingImageProcessor(size: CGSize(width: 150, height: 200))), .scaleFactor(UIScreen.main.scale)])
   }
-  
-  
-  
-  
-  
 }
