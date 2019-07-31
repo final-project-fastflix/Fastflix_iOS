@@ -21,7 +21,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     checkLoginState()
-    APICenter.shared.getListOfFork() { (result) in
+    APICenter.shared.getTop10() { (result) in
       switch result {
       case .success(let value):
         print("result1: ", value)
