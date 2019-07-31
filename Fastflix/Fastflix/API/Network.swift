@@ -44,6 +44,8 @@ final class APICenter {
     }
   }
   
+  
+  // 시청중인 목록 가져오기
   func getFollowUpList(completion: @escaping (Result<FollowUp>) -> ()) {
     let header = getHeader(needSubuser: true)
     

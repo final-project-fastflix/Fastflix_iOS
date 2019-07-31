@@ -30,6 +30,7 @@ enum RequestString: String {
   case getPauseTimeMovieURL = "http://52.78.134.79/movies/paused_time/"
   case getFollowUpListURL = "http://52.78.134.79/movies/followup/"
   case changeProfileInfoURL = "http://52.78.134.79/accounts/change_sub_user/"
+  case deleteProfileInfoURL = "http://52.78.134.79/accounts/delete_sub_user/"
 }
 
 
