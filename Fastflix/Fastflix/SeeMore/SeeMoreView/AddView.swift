@@ -17,7 +17,7 @@ class AddView: UIView {
   lazy var addProfileButton: UIButton = {
     let button = UIButton()
     button.setTitle("+", for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .light)
     button.titleLabel?.textAlignment = .center
 //    button.contentEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 18, right: 15)
     button.setTitleColor(.white, for: .normal)
@@ -30,9 +30,9 @@ class AddView: UIView {
   lazy var profileButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("프로필추가", for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 8, weight: .medium)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 11, weight: .medium)
     button.titleLabel?.textAlignment = .center
-    button.setTitleColor(.white, for: .normal)
+    button.setTitleColor(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), for: .normal)
     button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     return button
   }()
@@ -79,7 +79,7 @@ class AddView: UIView {
     }
     
     profileButton.snp.makeConstraints {
-      $0.top.equalTo(addProfileButton.snp.bottom).offset(5)
+      $0.top.equalTo(addProfileButton.snp.bottom).offset(10)
       $0.leading.trailing.bottom.equalToSuperview()
       $0.height.equalTo(10)
     }
