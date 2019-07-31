@@ -146,9 +146,7 @@ class LoginVC: UIViewController {
   }
   
   private func addSubViews() {
-    
     [navigationView, stackView, passwordButton].forEach { view.addSubview($0)}
-    
   }
   
   private func setupSNP() {
@@ -156,47 +154,39 @@ class LoginVC: UIViewController {
     emailTextField.snp.makeConstraints {
       $0.height.equalTo(viewHeight)
     }
-    
     passwordField.snp.makeConstraints {
       $0.height.equalTo(viewHeight)
     }
-    
     loginButton.snp.makeConstraints {
       $0.height.equalTo(viewHeight)
     }
-    
     stackView.snp.makeConstraints {
       $0.centerX.centerY.equalToSuperview()
       $0.leading.equalTo(view.snp.leading).offset(30)
       $0.trailing.equalTo(view.snp.trailing).offset(-30)
     }
-    
     passwordButton.snp.makeConstraints {
       $0.top.equalTo(stackView.snp.bottom).offset(10)
       $0.leading.equalTo(view.snp.leading).offset(30)
       $0.trailing.equalTo(view.snp.trailing).offset(-30)
       $0.height.equalTo(viewHeight)
     }
-    
     navigationView.snp.makeConstraints {
       $0.top.equalTo(view.snp.top)
       $0.leading.equalTo(view.snp.leading)
       $0.trailing.equalTo(view.snp.trailing)
       $0.height.equalTo(UIScreen.main.bounds.height * 0.11)
     }
-    
     logoView.snp.makeConstraints {
       $0.bottom.equalTo(navigationView.snp.bottom).offset(8)
       $0.centerX.equalTo(navigationView.snp.centerX)
       $0.width.equalToSuperview().multipliedBy(0.25)
       $0.height.equalTo(logoView.snp.width).multipliedBy(0.70)
     }
-    
     customerCenterButton.snp.makeConstraints {
       $0.centerY.equalTo(logoView.snp.centerY)
       $0.trailing.equalTo(view.snp.trailing).offset(-15)
     }
-    
     backButton.snp.makeConstraints {
       $0.centerY.equalTo(logoView.snp.centerY)
       $0.width.height.equalTo(14)
@@ -229,7 +219,6 @@ class LoginVC: UIViewController {
       case .failure(let err):
         print("fail to login, reason: ", err)
       }
-      
     }
   }
   
@@ -244,7 +233,7 @@ class LoginVC: UIViewController {
     navigationController?.popViewController(animated: true)
   }
   
-  // 이메일텍스트필드, 비밀번호 텍스트필드 두가지 다 채워져 있을때, 로그인 버튼 빨간색으로 변경
+  // MARK: - 이메일텍스트필드, 비밀번호 텍스트필드 두가지 다 채워져 있을때, 로그인 버튼 빨간색으로 변경
   @objc private func editingChanged(_ textField: UITextField) {
     if textField.text?.count == 1 {
       if textField.text?.first == " " {
@@ -265,7 +254,7 @@ class LoginVC: UIViewController {
   }
 }
 
-// 텍스트필드 델리게이트 구현
+// MARK: - 텍스트필드 델리게이트 구현
 extension LoginVC: UITextFieldDelegate {
   // 텍스트필드 편집 시작하면 백그라운드 색 변경
   func textFieldDidBeginEditing(_ textField: UITextField) {

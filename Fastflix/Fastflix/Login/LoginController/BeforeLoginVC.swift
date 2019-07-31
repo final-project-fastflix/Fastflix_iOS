@@ -11,13 +11,6 @@ import SnapKit
 
 class BeforeLoginVC: UIViewController {
   
-  // 스크롤뷰
-  let scrollView: UIScrollView = {
-    let sv = UIScrollView()
-    sv.backgroundColor = .black
-    return sv
-  }()
-  
   // 네이게이션뷰
   lazy var navigationView: UIView = {
     let view = UIView()
@@ -46,13 +39,7 @@ class BeforeLoginVC: UIViewController {
     return button
   }()
   
-  // 스크롤되는 화면
-  let firstView: UIView = {
-    let view = UIView()
-    view.backgroundColor = .clear
-    return view
-  }()
-  
+  // 영화포스터 모인 첫번째 백그라운드 이미지
   let backgroundView: UIView = {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "netfilxbackground")
@@ -60,6 +47,21 @@ class BeforeLoginVC: UIViewController {
     return imageView
   }()
   
+  // 스크롤뷰
+  let scrollView: UIScrollView = {
+    let sv = UIScrollView()
+    sv.backgroundColor = .black
+    return sv
+  }()
+  
+  // 스크롤되는 첫번째 글자올려진 투명 화면
+  let firstView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .clear
+    return view
+  }()
+  
+  // 두번째 화면 (첫번째 그림 안내 화면)
   let introView1: UIImageView = {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "intro1")
@@ -69,6 +71,7 @@ class BeforeLoginVC: UIViewController {
     return imageView
   }()
   
+  // 세번째 화면 (두번째 그림 안내 화면)
   let introView2: UIImageView = {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "intro2")
@@ -77,6 +80,7 @@ class BeforeLoginVC: UIViewController {
     return imageView
   }()
   
+  // 네번째 화면 (세번째 그림 안내 화면)
   let introView3: UIImageView = {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "intro3")
