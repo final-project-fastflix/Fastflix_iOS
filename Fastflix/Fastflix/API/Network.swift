@@ -44,6 +44,26 @@ final class APICenter {
     }
   }
   
+  
+  // MARK: - Top10Element
+  func getTop10(completion: @escaping (Result<Top10>) -> ()) {
+    
+    let header = getHeader(needSubuser: true)
+    
+    Alamofire.request(RequestString.getTop10URL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (res) in
+      switch res.result {
+      case .success(let value):
+        guard let result = try? JSONDecoder().decode(Top10.self, from: value) else {
+          completion(.failure(ErrorType.FailToParsing))
+          return }
+        completion(.success(result))
+      case .failure(_):
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+  }
+  
+  // MARK: - ListOfForkElement
   func getListOfFork(completion: @escaping (Result<ListOfFork>) -> ()) {
     let header = getHeader(needSubuser: true)
     

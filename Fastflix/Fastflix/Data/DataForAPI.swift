@@ -22,8 +22,30 @@ enum RequestString: String {
   case toggleLikeMovieURL = "http://52.78.134.79//movies/like/"
   case getPreviewDataURL = "http://52.78.134.79/movies/preview/"
   case getListOfForkURL = "http://52.78.134.79/movies/my_list/"
+  case getTop10URL = "http://52.78.134.79/movies/most_likes/"
+  case getPauseTimeMovieURL = "http://52.78.134.79/movies/paused_time/"
 }
 
+
+// MARK: - Top10Element
+struct Top10Element: Codable {
+  let id: Int
+  let name: String
+  let sampleVideoFile: JSONNull?
+  let logoImagePath: String
+  let horizontalImagePath: String
+  let verticalImage: String
+  
+  enum CodingKeys: String, CodingKey {
+    case id, name
+    case sampleVideoFile = "sample_video_file"
+    case logoImagePath = "logo_image_path"
+    case horizontalImagePath = "horizontal_image_path"
+    case verticalImage = "vertical_image"
+  }
+}
+
+typealias Top10 = [Top10Element]
 
 // MARK: - ListOfForkElement
 struct ListOfForkElement: Codable {
