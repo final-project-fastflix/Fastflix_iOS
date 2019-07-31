@@ -19,7 +19,6 @@ class AddView: UIView {
     button.setTitle("+", for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 40, weight: .light)
     button.titleLabel?.textAlignment = .center
-//    button.contentEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 18, right: 15)
     button.setTitleColor(.white, for: .normal)
     button.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
     button.clipsToBounds = true
@@ -46,11 +45,16 @@ class AddView: UIView {
     setupTapGesture()
   }
   
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   override func layoutSubviews() {
     super.layoutSubviews()
     addProfileButton.layer.cornerRadius = addProfileButton.frame.width / 2
   }
   
+  // 버튼에 제스쳐 넣어서 더 잘 눌리도록
   private func setupTapGesture() {
     let tap = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
     tap.numberOfTapsRequired = 1
@@ -59,14 +63,9 @@ class AddView: UIView {
     addProfileButton.isUserInteractionEnabled = true
   }
   
-  
+  // MARK: - 프로필 추가 눌렀을 시에 델리게이트를 통해 SeeMoreView로 전달
   @objc private func buttonTapped() {
-    print("프로필추가 눌렀당")
     delegate?.addProfileButtonTapped()
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
   
   private func addSubViews() {

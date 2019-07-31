@@ -11,75 +11,66 @@ import SnapKit
 class SeeMoreVC: UIViewController {
   
   let subUserSingle = SubUserSingleton.shared
-  
-//  var profileCount = 0
-//  var viewArr: [ProfileView] = []
 
+  // MARK: - loadView() 뷰체인지
   override func loadView() {
     let seeMoreView = SeeMoreView()
     self.view = seeMoreView
-//    seeMoreView.profileStackView.addArrangedSubview(viewArr)
     seeMoreView.delegate = self
   }
   
+  // MARK: - viewDidLoad()
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = #colorLiteral(red: 0.05203045685, green: 0.05203045685, blue: 0.05203045685, alpha: 1)
     setupNavi()
-    setupUsers()
   }
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
   
-  // profile 생성
-//  func makeProfileView() {
-//    // 0일때 5일때 예외처리
-//    for idx in 0...profileCount {
-//      let view: ProfileView = {
-//        let view = ProfileView()
-//        //        view.configure(image: <#T##UIImage?#>, name: <#T##String?#>)
-//        return view
-//      }()
-//      viewArr.append(view)
-//    }
-//  }
-  
-  func setupUsers() {
-    
-    
-    
-    
-  }
-  
-  
-  
-  
+  // MARK: - 네비게이션바 투명처리
   private func setupNavi() {
     navigationController?.setNavigationBarHidden(false, animated: true)
     navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
     navigationController?.navigationBar.shadowImage = UIImage()
     navigationController?.navigationBar.isTranslucent = true
-    
-    
   }
-  
-  
-
 }
+
 extension SeeMoreVC: SeeMoreViewDelegate {
-  func addProfileButtonDidTap() {
+  
+  // MARK: - 델리게이트 실행 - "프로필 관리 버튼 눌렀을 때"
+  func profileAdminButtonDidTap() {
+    // 프로필선택화면 띄움 - 로그인쪽의 뷰컨트롤러 재활용
     let profileSelectVC = ProfileSelectVC()
     let navi = UINavigationController(rootViewController: profileSelectVC)
+    
+    // (로그인화면이 아닌) Seemore화면에서 넘어갔다는 속성을 "true"로 넘겨줌 - true일경우, 유저선택화면이 아닌 바로 유저편집으로 넘어감
     profileSelectVC.isFromSeeMoreView = true
     self.present(navi, animated: true) {
       profileSelectVC.changeButtonTapped()
     }
+  }
+  
+  // MARK: - "프로필 추가 버튼을 눌렀을 때"
+  func addProfileButtonDidTap() {
+    // 프로필선택화면 띄움
+    let profileSelectVC = ProfileSelectVC()
+    let navi = UINavigationController(rootViewController: profileSelectVC)
+    
+    // 유저편집으로 넘어가기
+    profileSelectVC.isFromSeeMoreView = true
+    
+    // 뷰 띄우고나서 바로 프로필추가 누른 효과
+    self.present(navi, animated: true) {
+      profileSelectVC.addProfileButtonTapped()
+    }
   
   }
   
-  
+  // MARK: - "로그아웃 셀의 버튼 눌렀을 때"
   func logoutCellDidTap(indexPath: IndexPath) {
     switch indexPath {
     case IndexPath(row: 0, section: 0): break
@@ -89,9 +80,7 @@ extension SeeMoreVC: SeeMoreViewDelegate {
   
       let mycontentVC = MyContentVC()
       navigationController?.show(mycontentVC, sender: nil)
-//      navigationController?.navigationBar.isHidden = true
       navigationItem.setHidesBackButton(true, animated: true)
-
       
     case IndexPath(row: 0, section: 2):
       print("앱설정")
@@ -101,7 +90,6 @@ extension SeeMoreVC: SeeMoreViewDelegate {
         let path = UserDefaults.standard
         path.removeObject(forKey: "token")
         AppDelegate.instance.checkLoginState()
-        
         print("로그아웃됨")
       }
       
