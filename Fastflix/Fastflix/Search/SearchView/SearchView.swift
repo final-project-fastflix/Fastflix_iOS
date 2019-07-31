@@ -9,7 +9,6 @@
 import UIKit
 import SnapKit
 
-
 class SearchView: UIView {
   
   private let layout = UICollectionViewFlowLayout()
@@ -110,12 +109,8 @@ extension SearchView: UISearchBarDelegate {
   
   func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
     
-//    searchBar.setPositionAdjustment(offset, for: .search)
+    searchBar.setPositionAdjustment(offset, for: .search)
     print("end")
-//    if searchBar.text?.isEmpty == false {
-//      searchBar.setPositionAdjustment(offset, for: .search)
-//      print("되나여")
-//    }
     return true
   }
   
