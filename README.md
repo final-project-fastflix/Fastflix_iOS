@@ -80,3 +80,5 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 19.07.29  feat: allen - singleton for Subuserlist, and creating a Subuser request is fixed.
 
 19.07.30  docs: tass - remake Repo
+
+19.0731 feat: allen - SeemoreVC's user's isSelected property, and CollectionView's layout.

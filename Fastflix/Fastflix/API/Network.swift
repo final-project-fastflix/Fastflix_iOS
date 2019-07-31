@@ -44,7 +44,45 @@ final class APICenter {
     }
   }
   
+  func getListOfFork(completion: @escaping (Result<ListOfFork>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    
+    Alamofire.request(RequestString.getListOfForkURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (data) in
+      switch data.result {
+      case .success(let data):
+        guard let result = try? JSONDecoder().decode(ListOfFork.self, from: data) else {
+          completion(.failure(ErrorType.FailToParsing))
+          return
+        }
+        
+        completion(.success(result))
+      case .failure(let err):
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+  }
   
+  // 미리보기 Data
+  func getPreviewData(completion: @escaping (Result<PreviewData>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    
+    Alamofire.request(RequestString.getPreviewDataURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (data) in
+      switch data.result {
+      case .success(let value):
+        guard let result = try? JSONDecoder().decode(PreviewData.self, from: value) else {
+          completion(.failure(ErrorType.FailToParsing))
+          return
+        }
+        completion(.success(result))
+        
+      case .failure(let err):
+        dump(err)
+        completion(.failure(ErrorType.NoData))
+      }
+    }
+  }
+  
+  // get recent Movies
   func getBrandNewMovie(completion: @escaping (Result<BrandNewMovie>) -> ()) {
     let header = getHeader(needSubuser: true)
     
@@ -120,7 +158,6 @@ final class APICenter {
       "movieid": "\(movieID)",
       "subuserid": "\(subUserID)"
     ]
-    
     
     Alamofire.upload(multipartFormData: { (MultipartFormData) in
       for (key, value) in parameters {
@@ -348,10 +385,7 @@ final class APICenter {
   // MARK: 서브유저 생성
   func createSubUser(name: String, kid: Bool, completion: @escaping (Result<[SubUser]>) -> ()) {
     
-//    let headers = getHeader(needSubuser: false)
-    let headers = [
-      "Authorization": "Token 2e6b45cdbf3fa610d87adf5408faa707836b83c9"
-    ]
+    let headers = getHeader(needSubuser: false)
     
     let parameters =
       [
@@ -381,6 +415,36 @@ final class APICenter {
         
           //서브유저 정보들 넘기기
           completion(.success(subUserArr))
+    }
+  }
+  
+  // 토큰값으로 바로 로그인시에 서브유저리스트 받아오기
+  func getSubUserList(completion: @escaping (Result<[SubUser]>) -> ()) {
+    
+    let headers = getHeader(needSubuser: false)
+    
+    Alamofire.request(RequestString.requestSubUserListURL.rawValue, method: .get, headers: headers)
+      .validate()
+      .responseJSON { response in
+        guard response.result.isSuccess,
+          let _ = response.result.value else {
+            print("Error while fetching tags: \(String(describing: response.result.error))")
+            completion(.failure(ErrorType.networkError))
+            return
+        }
+        guard let data = response.data else {
+          completion(.failure(ErrorType.NoData))
+          return
+        }
+        guard let origin = try? JSONDecoder().decode([SubUser].self, from:data) else {
+          completion(.failure(ErrorType.FailToParsing))
+          return
+        }
+        let subUserArr = origin
+        print("유저생성 subUser: ", subUserArr)
+        
+        //서브유저 정보들 넘기기
+        completion(.success(subUserArr))
     }
   }
   
