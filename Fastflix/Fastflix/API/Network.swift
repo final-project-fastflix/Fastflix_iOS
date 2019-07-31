@@ -44,6 +44,22 @@ final class APICenter {
     }
   }
   
+  func getFollowUpList(completion: @escaping (Result<FollowUp>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    
+    Alamofire.request(RequestString.getFollowUpListURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (res) in
+      switch res.result {
+      case .success(let value):
+        guard let result = try? JSONDecoder().decode(FollowUp.self, from: value) else {
+          completion(.failure(ErrorType.FailToParsing))
+          return }
+        completion(.success(result))
+      case .failure(_):
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+  }
+  
   
   // MARK: - Top10Element
   func getTop10(completion: @escaping (Result<Top10>) -> ()) {
@@ -317,13 +333,13 @@ final class APICenter {
     
     let request = Alamofire.request(RequestString.movieURL.rawValue, method: .get, headers: headers)
     
-    request.response(queue: .main) {
+    request.response(queue: .global()) {
       guard let data = $0.data else {
         completion(.failure(ErrorType.NoData))
         return }
       guard let resultData = try? JSONDecoder().decode(RequestMovie.self, from: data) else {
         completion(.failure(ErrorType.FailToParsing))
-//        print("data: ", data as? [String])
+        //        print("data: ", data as? [String])
         return }
       completion(.success(resultData))
     }
@@ -411,30 +427,30 @@ final class APICenter {
       [
         "name": "\(name)",
         "kid": "\(kid)"
-        ]
+    ]
     
     Alamofire.request(RequestString.createSubUserURL.rawValue, method: .post, parameters: parameters, headers: headers)
       .validate()
       .responseJSON { response in
-          guard response.result.isSuccess,
-            let _ = response.result.value else {
-              print("Error while fetching tags: \(String(describing: response.result.error))")
-              completion(.failure(ErrorType.networkError))
-              return
-          }
-          guard let data = response.data else {
-            completion(.failure(ErrorType.NoData))
+        guard response.result.isSuccess,
+          let _ = response.result.value else {
+            print("Error while fetching tags: \(String(describing: response.result.error))")
+            completion(.failure(ErrorType.networkError))
             return
-          }
-          guard let origin = try? JSONDecoder().decode(SubUserList.self, from:data) else {
-            completion(.failure(ErrorType.FailToParsing))
-            return
-          }
-          let subUserArr = origin.subUserList
-          print("유저생성 subUser: ", subUserArr)
+        }
+        guard let data = response.data else {
+          completion(.failure(ErrorType.NoData))
+          return
+        }
+        guard let origin = try? JSONDecoder().decode(SubUserList.self, from:data) else {
+          completion(.failure(ErrorType.FailToParsing))
+          return
+        }
+        let subUserArr = origin.subUserList
+        print("유저생성 subUser: ", subUserArr)
         
-          //서브유저 정보들 넘기기
-          completion(.success(subUserArr))
+        //서브유저 정보들 넘기기
+        completion(.success(subUserArr))
     }
   }
   
@@ -465,6 +481,104 @@ final class APICenter {
         
         //서브유저 정보들 넘기기
         completion(.success(subUserArr))
+    }
+  }
+  
+  func changeProfileInfo(id: Int, name: String?, kid: Bool?, imgPath: String?, completion: @escaping (Result<Int>) -> ()) {
+    let header = [
+      "Authorization": "Token \(getToken())",
+      "Content-Type": "application/json"
+    ]
+    
+    let body = pickupBody(id: id, name: name, kid: kid, imgPath: imgPath)
+    
+    Alamofire.upload(body, to: RequestString.changeProfileInfoURL.rawValue, method: .patch, headers: header).responseJSON(queue: .global()) { (res) in
+      switch res.result {
+      case .success(let value):
+        let dict = value as? [String: Int]
+        guard let result = dict?["response"] else {
+          completion(.failure(ErrorType.FailToParsing))
+          return }
+        completion(.success(result))
+      case .failure(_):
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+    
+    
+    
+  }
+  
+  func pickupBody(id: Int, name: String?, kid: Bool?, imgPath: String?) -> Data {
+    
+    if name != nil && kid != nil && imgPath != nil {
+      let body = """
+        {
+        "sub_user_id": \(id),
+        "name": "\(name!)",
+        "kid": \(kid!),
+        "profile_image_path": "\(imgPath!)"
+        }
+        """.data(using: .utf8)
+      return body!
+    } else if name != nil && kid != nil && imgPath == nil {
+      let body = """
+        {
+        "sub_user_id": \(id),
+        "name": "\(name!)",
+        "kid": \(kid!)
+        }
+        """.data(using: .utf8)
+      return body!
+    } else if name != nil && kid == nil && imgPath != nil {
+      let body = """
+        {
+        "sub_user_id": \(id),
+        "name": "\(name!)",
+        "profile_image_path": "\(imgPath!)"
+        }
+        """.data(using: .utf8)
+      return body!
+    } else if name != nil && kid == nil && imgPath == nil {
+      let body = """
+        {
+        "sub_user_id": \(id),
+        "name": "\(name!)"
+        }
+        """.data(using: .utf8)
+      return body!
+    } else if name == nil && kid != nil && imgPath != nil {
+      let body = """
+        {
+        "sub_user_id": \(id),
+        "kid": \(kid!),
+        "profile_image_path": "\(imgPath!)"
+        }
+        """.data(using: .utf8)
+      return body!
+    } else if name == nil && kid != nil && imgPath == nil {
+      let body = """
+        {
+        "sub_user_id": \(id),
+        "kid": \(kid!)
+        }
+        """.data(using: .utf8)
+      return body!
+    } else if name == nil && kid == nil && imgPath != nil {
+      let body = """
+        {
+        "sub_user_id": \(id)
+        "profile_image_path": "\(imgPath!)"
+        }
+        """.data(using: .utf8)
+      return body!
+    } else {
+      let body = """
+        {
+        "sub_user_id": \(id)
+        }
+        """.data(using: .utf8)
+      return body!
     }
   }
   
