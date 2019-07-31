@@ -218,18 +218,11 @@ class LoginVC: UIViewController {
       case .success(let subUsers):
         print("Login Success!!!")
         print("value: ", subUsers)
-
-//        DispatchQueue.main.async {
-//          AppDelegate.instance.checkLoginState()
-//        }
         
         self.subUserSingle.subUserList = subUsers
         
         let profileSelectVC = ProfileSelectVC()
         let navi = UINavigationController(rootViewController: profileSelectVC)
-        
-//        profileSelectVC.numberOfUsers = subUsers.count
-//        profileSelectVC.subUserList = subUsers
         
         self.present(navi, animated: false)
         

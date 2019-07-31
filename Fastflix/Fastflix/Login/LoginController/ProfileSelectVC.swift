@@ -86,7 +86,11 @@ class ProfileSelectVC: UIViewController {
   var addProfileView = AddProfileView()
   
   var numberOfUsers: Int?
-  var subUserList: [SubUser]?
+  var subUserList: [SubUser]? {
+    didSet {
+      numberOfUsers = subUserList?.count
+    }
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -97,17 +101,12 @@ class ProfileSelectVC: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-//    subUserList = nil
-//    numberOfUsers = nil
-//    subUserList = subUserSingle.subUserList
-//    numberOfUsers = subUserSingle.subUserList?.count
+
     
     print("싱글톤의 유저리스트 viewWillAppear:", subUserSingle.subUserList)
     print("서브유저리스트 viewWillAppear:", subUserList)
     print("numberOfUsers viewWillAppear:", numberOfUsers)
     
-//    addSubViews()
-//    setFuntions()
   }
   
 //  override func viewWillLayoutSubviews() {
@@ -115,13 +114,18 @@ class ProfileSelectVC: UIViewController {
 //    self.view.translatesAutoresizingMaskIntoConstraints = false
 //  }
   
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+//    view.setTranslatesAutoresizingMaskIntoConstraints(true)
+  }
+  
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-//    subUserList = nil
-//    numberOfUsers = nil
+
     subUserList = subUserSingle.subUserList
     numberOfUsers = subUserSingle.subUserList?.count
+    
     addSubViews()
     setFuntions()
     
@@ -216,40 +220,81 @@ class ProfileSelectVC: UIViewController {
     
     switch numberOfUsers {
     case 1:
-      [ profileImageView2, profileImageView3, profileImageView4, profileImageView5 ].forEach { $0.isHidden = true }
-      addProfileView.snp.makeConstraints {
-        $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-        $0.centerX.equalToSuperview().offset(70)
-        $0.top.equalTo(introlabel.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+      [profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = true }
+      [profileImageView1].forEach { $0.isHidden = false }
+      UIView.animate(withDuration: 0.1) {
+        self.addProfileView.snp.makeConstraints {
+          $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
+          $0.centerX.equalToSuperview().offset(70)
+          $0.top.equalTo(self.introlabel.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+//          $0.top.equalTo(self.introlabel.snp.bottom).offset(UIScreen.main.bounds.width * 0.32 + 40)
+        }
       }
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
+        $0.layoutIfNeeded()
+      }
+      print("======================유저 1명======================")
     case 2:
-      [ profileImageView3, profileImageView4, profileImageView5 ].forEach { $0.isHidden = true }
-      addProfileView.snp.makeConstraints {
-        $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-        $0.centerX.equalToSuperview()
-        $0.top.equalTo(profileImageView1.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+      [profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = true }
+      [profileImageView1, profileImageView2].forEach { $0.isHidden = false }
+      UIView.animate(withDuration: 0.1) {
+        self.addProfileView.snp.makeConstraints {
+          $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
+          $0.centerX.equalToSuperview()
+          $0.top.equalTo(self.introlabel.snp.bottom).offset(UIScreen.main.bounds.width * 0.32 + 78)
+//          $0.top.equalTo(self.profileImageView1.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+        }
       }
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
+        $0.layoutIfNeeded()
+      }
+      print("======================유저 2명======================")
     case 3:
-      [ profileImageView4, profileImageView5 ].forEach { $0.isHidden = true }
-      addProfileView.snp.makeConstraints {
-        $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-        $0.centerX.equalToSuperview().offset(70)
-        $0.top.equalTo(profileImageView1.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+      [profileImageView4, profileImageView5].forEach { $0.isHidden = true }
+      [profileImageView1, profileImageView2, profileImageView3].forEach { $0.isHidden = false }
+      UIView.animate(withDuration: 0.1) {
+        self.addProfileView.snp.makeConstraints {
+          $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
+          $0.centerX.equalToSuperview().offset(70)
+//          $0.top.equalTo(self.profileImageView1.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+          $0.top.equalTo(self.introlabel.snp.bottom).offset(UIScreen.main.bounds.width * 0.32 + 78)
+        }
       }
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
+        $0.layoutIfNeeded()
+      }
+      print("======================유저 3명======================")
     case 4:
       profileImageView5.isHidden = true
-      addProfileView.snp.makeConstraints {
-        $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-        $0.centerX.equalToSuperview()
-        $0.top.equalTo(profileImageView3.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4].forEach { $0.isHidden = false }
+      UIView.animate(withDuration: 0.1) {
+        self.addProfileView.snp.makeConstraints {
+          $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
+          $0.centerX.equalToSuperview()
+//          $0.top.equalTo(self.profileImageView3.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+          $0.top.equalTo(self.introlabel.snp.bottom).offset((UIScreen.main.bounds.width * 0.32 + 78)*2)
+        }
       }
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach {
+        $0.setNeedsLayout()
+        $0.layoutIfNeeded()
+      }
+      print("======================유저 4명======================")
     case 5:
-      addProfileView.snp.makeConstraints {
-        $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-        $0.centerX.equalToSuperview()
-        $0.top.equalTo(profileImageView3.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = false }
+      UIView.animate(withDuration: 0.1) {
+        self.addProfileView.snp.makeConstraints {
+          $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
+          $0.centerX.equalToSuperview()
+          $0.top.equalTo(self.profileImageView3.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+        }
       }
       addProfileView.isHidden = true
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach {
+        $0.setNeedsLayout()
+        $0.layoutIfNeeded()
+      }
+      print("======================유저 5명======================")
     default:
       addProfileView.isHidden = true
     }
