@@ -12,6 +12,14 @@ import AVKit
 
 class MainHomeVC: UIViewController {
   
+  let downloadPath = APICenter.shared
+  
+  var mainImageCellData: MainImgCellData?
+  
+  var preViewCellData: PreviewData?
+  
+  
+  
   var originValue: CGFloat = 0
   
   var compareArr: [CGFloat] = []
@@ -22,7 +30,6 @@ class MainHomeVC: UIViewController {
     }
     set {
       guard newValue >= -94 || newValue <= 0 else { return }
-//      print("newValue", floatingView.frame)
       floatingView.frame.origin.y = newValue
     }
   }
@@ -97,7 +104,7 @@ class MainHomeVC: UIViewController {
     tableView.register(MainImageTableCell.self, forCellReuseIdentifier: MainImageTableCell.identifier)
     tableView.register(PreviewTableCell.self, forCellReuseIdentifier: PreviewTableCell.identifier)
     tableView.register(OriginalTableCell.self, forCellReuseIdentifier: OriginalTableCell.identifier)
-    tableView.register(MainCell.self, forCellReuseIdentifier: MainCell.identifier)
+    tableView.register(SubCell.self, forCellReuseIdentifier: SubCell.identifier)
     
   }
   
@@ -115,8 +122,23 @@ extension MainHomeVC: UITableViewDataSource {
       let cell = tableView.dequeueReusableCell(withIdentifier: MainImageTableCell.identifier, for: indexPath) as! MainImageTableCell
       cell.selectionStyle = .none
       cell.movieDetailLabel.text = " 슈퍼히어로 ･ 사이보그 & 로봇 ･ SF ･ 액션 ･ 할리우드 영화 "
-      cell.configure(imageURLString: ImagesData.shared.imagesUrl[2], logoImageURLString: ImagesData.shared.imagesUrl[4])
+      APICenter.shared.getMainImgCellData { (res) in
+        DispatchQueue.main.async {
+          switch res {
+          case .success(let value):
+            let bigImgStr = value[0].mainMovie.bigImagePath
+            let logoImgStr = value[0].mainMovie.logoImagePath
+            cell.configure(imageURLString: bigImgStr, logoImageURLString: logoImgStr)
+          case .failure(let err):
+            print("MainHomeMainImageCellNoData -> ", err)
+            cell.configure(imageURLString: ImagesData.shared.imagesUrl[2], logoImageURLString: ImagesData.shared.imagesUrl[4])
+          }
+          
+        }
+        
+      }
       return cell
+      
       
     case 1:
       let cell = tableView.dequeueReusableCell(withIdentifier: PreviewTableCell.identifier, for: indexPath) as! PreviewTableCell
@@ -135,7 +157,7 @@ extension MainHomeVC: UITableViewDataSource {
       return cell
       
     default:
-      let cell = tableView.dequeueReusableCell(withIdentifier: MainCell.identifier, for: indexPath) as! MainCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
       cell.configure(url: imageUrls, title: "\(indexPath)")
       return cell
     }
@@ -318,4 +340,39 @@ extension MainHomeVC: FloatingViewDelegate {
     mainPokeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
     tabBarController?.viewControllers?[0] = mainPokeVC
   }
+}
+
+
+extension MainHomeVC {
+  
+  
+  
+  func getMainImgCellData() {
+    downloadPath.getMainImgCellData { (result) in
+      switch result {
+      case .success(let value):
+        self.mainImageCellData = value
+      case .failure(let err):
+        dump(err)
+        self.mainImageCellData = nil
+      }
+    }
+  }
+  
+  func getPreViewData() {
+    downloadPath.getPreviewData { (result) in
+      switch result {
+      case .success(let value):
+        self.preViewCellData = value
+      case .failure(let err):
+        dump(err)
+        self.preViewCellData = nil
+      }
+    }
+  }
+  
+  
+  
+  
+  
 }

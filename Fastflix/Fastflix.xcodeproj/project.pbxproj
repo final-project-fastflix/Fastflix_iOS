@@ -33,7 +33,7 @@
 		52BA342A22DDE513005F8489 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA342922DDE513005F8489 /* MainTabBarController.swift */; };
 		52BA342C22DDE7BB005F8489 /* StreamingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA342B22DDE7BB005F8489 /* StreamingCell.swift */; };
 		52BA342E22DDE7D5005F8489 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA342D22DDE7D5005F8489 /* ImageCell.swift */; };
-		52BA343022DDE7EF005F8489 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA342F22DDE7EF005F8489 /* MainCell.swift */; };
+		52BA343022DDE7EF005F8489 /* SubCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA342F22DDE7EF005F8489 /* SubCell.swift */; };
 		C14355F422DB0B11005189E9 /* PreviewCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14355F322DB0B11005189E9 /* PreviewCollectionCell.swift */; };
 		C14355F622DB0B18005189E9 /* PreviewTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14355F522DB0B18005189E9 /* PreviewTableCell.swift */; };
 		C14355F822DB0E22005189E9 /* MainImageTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14355F722DB0E22005189E9 /* MainImageTableCell.swift */; };
@@ -97,7 +97,7 @@
 		52BA342922DDE513005F8489 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		52BA342B22DDE7BB005F8489 /* StreamingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingCell.swift; sourceTree = "<group>"; };
 		52BA342D22DDE7D5005F8489 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
-		52BA342F22DDE7EF005F8489 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
+		52BA342F22DDE7EF005F8489 /* SubCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCell.swift; sourceTree = "<group>"; };
 		C14355F322DB0B11005189E9 /* PreviewCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewCollectionCell.swift; sourceTree = "<group>"; };
 		C14355F522DB0B18005189E9 /* PreviewTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewTableCell.swift; sourceTree = "<group>"; };
 		C14355F722DB0E22005189E9 /* MainImageTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainImageTableCell.swift; sourceTree = "<group>"; };
@@ -304,7 +304,7 @@
 				C143560722DCAA98005189E9 /* OriginalCollectionCell.swift */,
 				52BA342B22DDE7BB005F8489 /* StreamingCell.swift */,
 				52BA342D22DDE7D5005F8489 /* ImageCell.swift */,
-				52BA342F22DDE7EF005F8489 /* MainCell.swift */,
+				52BA342F22DDE7EF005F8489 /* SubCell.swift */,
 				47FF9DC222DE3C51005C7BAD /* DetailViewUpperCell.swift */,
 				47FF9DC422DE3C98005C7BAD /* DetailViewBelowCell.swift */,
 				47FF9DC622DE3CC4005C7BAD /* DetailCollectionViewCell.swift */,
@@ -615,7 +615,7 @@
 				C143560A22DCAAD5005189E9 /* OriginalTableCell.swift in Sources */,
 				47AC179722E2341E00D6AACD /* BeforeLoginVC.swift in Sources */,
 				C14355F422DB0B11005189E9 /* PreviewCollectionCell.swift in Sources */,
-				52BA343022DDE7EF005F8489 /* MainCell.swift in Sources */,
+				52BA343022DDE7EF005F8489 /* SubCell.swift in Sources */,
 				C1FC3EFE22E4899C008E1FE9 /* MainHomeVC.swift in Sources */,
 				C1E21BE622DF1BB400930115 /* LaunchScreenVC.swift in Sources */,
 				47FF9DC722DE3CC4005C7BAD /* DetailCollectionViewCell.swift in Sources */,
@@ -775,7 +775,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				DEVELOPMENT_TEAM = G4MM77V7NH;
+=======
+				DEVELOPMENT_TEAM = KNHX5B578D;
+>>>>>>> develop
 				INFOPLIST_FILE = Fastflix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -795,7 +799,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+<<<<<<< HEAD
 				DEVELOPMENT_TEAM = G4MM77V7NH;
+=======
+				DEVELOPMENT_TEAM = KNHX5B578D;
+>>>>>>> develop
 				INFOPLIST_FILE = Fastflix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (

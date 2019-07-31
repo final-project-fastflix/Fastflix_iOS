@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainCell: UITableViewCell {
+class SubCell: UITableViewCell {
   
   static let identifier = "MainCell"
   
@@ -81,7 +81,7 @@ class MainCell: UITableViewCell {
   
 }
 
-extension MainCell: UICollectionViewDataSource {
+extension SubCell: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return urls?.count ?? 0
