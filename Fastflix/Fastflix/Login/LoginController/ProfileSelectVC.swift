@@ -49,7 +49,7 @@ class ProfileSelectVC: UIViewController {
     button.setTitle("변경", for: .normal)
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
     button.setTitleColor(.white, for: .normal)
-    button.addTarget(self, action: #selector(changeButtonTapped(_:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
     return button
   }()
   
@@ -92,6 +92,8 @@ class ProfileSelectVC: UIViewController {
     }
   }
   
+  var isFromSeeMoreView: Bool = false
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     configure()
@@ -128,6 +130,10 @@ class ProfileSelectVC: UIViewController {
     
     addSubViews()
     setFuntions()
+    
+    if isFromSeeMoreView {
+      changeButtonTapped()
+    }
     
     print("싱글톤의 유저리스트 viewDidAppear:", subUserSingle.subUserList)
     print("서브유저리스트 viewDidAppear:", subUserList)
@@ -338,7 +344,7 @@ class ProfileSelectVC: UIViewController {
     navCon.isNavigationBarHidden = true
   }
   
-  @objc private func changeButtonTapped(_ sender: UIButton) {
+  @objc func changeButtonTapped() {
     [profileManageLabel, finishButton].forEach { $0.isHidden = false }
     [changeButton, logoView, introlabel ].forEach { $0.isHidden = true }
     [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isEditing = true }
@@ -355,9 +361,13 @@ class ProfileSelectVC: UIViewController {
   
   
   @objc private func finishButtonTapped(_ sender: UIButton) {
-    [profileManageLabel, finishButton].forEach { $0.isHidden = true }
-    [changeButton, logoView, introlabel ].forEach { $0.isHidden = false }
-    [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isEditing = false }
+    if isFromSeeMoreView {
+      dismiss(animated: true)
+    }else {
+      [profileManageLabel, finishButton].forEach { $0.isHidden = true }
+      [changeButton, logoView, introlabel ].forEach { $0.isHidden = false }
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isEditing = false }
+    }
   }
   
   private func setFuntions() {
