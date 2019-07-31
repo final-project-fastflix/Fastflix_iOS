@@ -39,7 +39,7 @@ final class DoNotUse2: UITableViewController {
     tableView.register(MainImageTableCell.self, forCellReuseIdentifier: MainImageTableCell.identifier)
     tableView.register(PreviewTableCell.self, forCellReuseIdentifier: PreviewTableCell.identifier)
     tableView.register(OriginalTableCell.self, forCellReuseIdentifier: OriginalTableCell.identifier)
-    tableView.register(MainCell.self, forCellReuseIdentifier: MainCell.identifier)
+    tableView.register(SubCell.self, forCellReuseIdentifier: SubCell.identifier)
     
   }
   
@@ -73,7 +73,7 @@ final class DoNotUse2: UITableViewController {
       return cell
       
     default:
-      let cell = tableView.dequeueReusableCell(withIdentifier: MainCell.identifier, for: indexPath) as! MainCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
       cell.configure(url: imageUrls, title: "\(indexPath)")
       return cell
     }

@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol CellData {
+  
+}
+
 // MARK: - URLString
 enum RequestString: String {
   case loginURL = "http://52.78.134.79/accounts/login/"
@@ -24,7 +28,44 @@ enum RequestString: String {
   case getListOfForkURL = "http://52.78.134.79/movies/my_list/"
   case getTop10URL = "http://52.78.134.79/movies/most_likes/"
   case getPauseTimeMovieURL = "http://52.78.134.79/movies/paused_time/"
+  case getFollowUpListURL = "http://52.78.134.79/movies/followup/"
+  case changeProfileInfoURL = "http://52.78.134.79/accounts/change_sub_user/"
 }
+
+
+// MARK: - FollowUpElement
+struct FollowUpElement: Codable {
+  let movie: Movie
+  let toBeContinue, progressBar: Int
+  
+  enum CodingKeys: String, CodingKey {
+    case movie
+    case toBeContinue = "to_be_continue"
+    case progressBar = "progress_bar"
+  }
+}
+
+// MARK: - Movie
+struct Movie: Codable {
+  let id: Int
+  let name: String
+  let videoFile: JSONNull?
+  let logoImagePath: String
+  let horizontalImagePath: String
+  let verticalImage: String
+  let realRunningTime: Int
+  
+  enum CodingKeys: String, CodingKey {
+    case id, name
+    case videoFile = "video_file"
+    case logoImagePath = "logo_image_path"
+    case horizontalImagePath = "horizontal_image_path"
+    case verticalImage = "vertical_image"
+    case realRunningTime = "real_running_time"
+  }
+}
+
+typealias FollowUp = [FollowUpElement]
 
 
 // MARK: - Top10Element

@@ -60,7 +60,7 @@ final class MainMovieView: UIView {
   private func registerTableViewCell() {
     tableView.register(MainImageTableCell.self, forCellReuseIdentifier: MainImageTableCell.identifier)
     tableView.register(PreviewTableCell.self, forCellReuseIdentifier: PreviewTableCell.identifier)
-    tableView.register(MainCell.self, forCellReuseIdentifier: MainCell.identifier)
+    tableView.register(SubCell.self, forCellReuseIdentifier: SubCell.identifier)
     
   }
   
@@ -117,7 +117,7 @@ extension MainMovieView: UITableViewDataSource {
         }
       }
       print("count: ", mainImgUrl)
-      let cell = MainCell()
+      let cell = SubCell()
       cell.configure(url: mainImgUrl, title: key)
       return cell
     }
