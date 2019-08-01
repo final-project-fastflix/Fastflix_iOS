@@ -21,6 +21,8 @@ class SeeMoreView: UIView {
   
   // 서브유저 저장을 위한 싱글톤
   let subUserSingle = SubUserSingleton.shared
+
+  
   // 로그인 하면서 싱글톤에 "서브유저 리스트"를 저장함 ==> 뷰 로드시점에 싱글톤에서 numberOfUsers(유저 숫자)불러옴
   var numberOfUsers: Int?
   // 뷰 로드시점에 싱글톤에서 "서브유저 리스트"불러옴
@@ -79,9 +81,16 @@ class SeeMoreView: UIView {
     return view
   }()
   
+
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+   
+  }
+  
   // MARK: - 뷰 생성
   override init(frame: CGRect) {
     super.init(frame: frame)
+    self.backgroundColor = #colorLiteral(red: 0.05203045685, green: 0.05203045685, blue: 0.05203045685, alpha: 1)
     // 생성 시점에 싱글톤에서 서브유저 리스트와 유저 숫자를 불러옴
     subUserList = subUserSingle.subUserList
     numberOfUsers = subUserSingle.subUserList?.count
@@ -168,12 +177,12 @@ class SeeMoreView: UIView {
       $0.height.equalTo(75)
     }
     profileStackView.snp.makeConstraints {
-      $0.top.equalTo(topView.snp.top).offset(60)
+      $0.top.equalTo(topView.snp.top).offset(50)
       $0.height.equalTo(80)
       $0.centerX.equalTo(topView.snp.centerX)
     }
     profileAdminBtn.snp.makeConstraints {
-      $0.top.equalTo(profileStackView.snp.bottom).offset(25)
+      $0.top.equalTo(profileStackView.snp.bottom).offset(23)
       $0.centerX.equalToSuperview()
     }
   }
@@ -258,6 +267,15 @@ class SeeMoreView: UIView {
     print("@@@@profileAdminBtnDidTap")
     delegate?.profileAdminButtonDidTap()
   }
+  
+  @objc func profileViewDidTap(_ sender: Any) {
+
+  }
+  
+  @objc func profileAddDidTap(_ sender: Any) {
+
+  }
+
 }
 
 // MARK: - TableView Extension

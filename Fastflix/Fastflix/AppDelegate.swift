@@ -21,6 +21,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     checkLoginState()
+
+//    APICenter.shared.changeProfileInfo(id: 49, name: nil, kid: false, imgPath: nil) { (result) in
+//      switch result {
+//      case .success(let value):
+//        print("result1: ", value)
+//      case .failure(let err):
+//        print("result1: ", err)
+//    }
+    
     // MARK: - TEST
 //    APICenter.shared.deleteProfileInfo(id: 200) { (result) in
 //      switch result {
@@ -30,6 +39,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 //        print("resultApp: ", err)
 //      }
 //    }
+    
+    
     return true
   }
   

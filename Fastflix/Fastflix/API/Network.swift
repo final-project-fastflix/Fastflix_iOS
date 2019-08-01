@@ -482,7 +482,7 @@ final class APICenter {
           completion(.failure(ErrorType.FailToParsing))
           return
         }
-        let subUserArr = origin.subUserList
+        let subUserArr = origin.subUserList.sorted(by: { $0.id < $1.id })
         print("유저생성 subUser: ", subUserArr)
         
         //서브유저 정보들 넘기기
@@ -512,7 +512,8 @@ final class APICenter {
           completion(.failure(ErrorType.FailToParsing))
           return
         }
-        let subUserArr = origin
+        // 서브유저 리스트를 받되, 정렬해서 넘김 --> 유저 이름 바꾸는 경우 정렬 순서가 바뀌기도 하기때문에
+        let subUserArr = origin.sorted(by: { $0.id < $1.id })
         print("유저생성 subUser: ", subUserArr)
         
         //서브유저 정보들 넘기기

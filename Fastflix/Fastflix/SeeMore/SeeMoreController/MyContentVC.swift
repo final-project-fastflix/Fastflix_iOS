@@ -14,7 +14,7 @@ class MyContentVC: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-     setupNavi()
+    setupNavi()
     
   }
   override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -23,18 +23,19 @@ class MyContentVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
   }
   
   override func loadView() {
     
     self.view = myContentView
-    view.backgroundColor = .clear
+    view.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     myContentView.delegate = self
   }
   
   private func setupNavi() {
-//    navigationController?.navigationBar.addSubview(myContentView.topView)
-    self.navigationController?.navigationBar.barTintColor = .clear
+    title = "내가 찜한 콘텐츠"
+    self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
     navigationController?.navigationBar.shadowImage = UIImage()
     navigationController?.navigationBar.isTranslucent = true
@@ -42,47 +43,41 @@ class MyContentVC: UIViewController {
     navigationItem.backBarButtonItem = UIBarButtonItem(title: "❮", style: .done, target: nil, action: nil)
     navigationController?.navigationBar.tintColor = .white
   }
-
+  
 }
 
 extension MyContentVC: MyContentViewDelegate {
- 
   
-  func backBtnDidTap(backBtn: UIButton) {
-    print("뒤로 가주세여..")
-     navigationController?.popViewController(animated: true)
-
-  }
   func scrollViewDidScroll(scrollView: UIScrollView) {
     
     
-     print("스크롤이 됩니당")
+    print("스크롤이 됩니당")
     
-//    if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0 {
-//
-//      UIView.animate(withDuration: 1.5) {
-//        self.navigationController?.hidesBarsOnSwipe = true
-//        UIView.animate(withDuration: 1.7, animations: {
-//          self.navigationController?.navigationBar.alpha = 0
-//        })
-//
-//                print("내려감")
-//      }
-//
-//    } else {
-//      UIView.animate(withDuration: 1.5) {
-//        print("animate")
-//        self.navigationController?.hidesBarsOnSwipe = false
-//        self.navigationController?.setNavigationBarHidden(false, animated: false)
-//        UIView.animate(withDuration: 1.7, animations: {
-//          self.navigationController?.navigationBar.alpha = 1
-//
-//        })
-//                print("올라감??")
-//      }
-//
-//    }
+    //    if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0 {
+    //
+    //      UIView.animate(withDuration: 1.5) {
+    //        self.navigationController?.hidesBarsOnSwipe = true
+    //        UIView.animate(withDuration: 1.7, animations: {
+    //          self.navigationController?.navigationBar.alpha = 0
+    //        })
+    //
+    //                print("내려감")
+    //      }
+    //
+    //    } else {
+    //      UIView.animate(withDuration: 1.5) {
+    //        print("animate")
+    //        self.navigationController?.hidesBarsOnSwipe = false
+    //        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    //        UIView.animate(withDuration: 1.7, animations: {
+    //          self.navigationController?.navigationBar.alpha = 1
+    //
+    //        })
+    //                print("올라감??")
+    //      }
+    //
+    //    }
   }
-
+  
   
 }

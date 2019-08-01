@@ -7,24 +7,39 @@
 //
 
 import UIKit
+import SnapKit
 
 class IconVC: UIViewController {
+  
+  let label: UILabel = {
+    let label = UILabel()
+    label.text = "계정관리는 Fastflix 웹사이트로 이동해 진행하세요."
+    label.textColor = .white
+    label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+    label.textAlignment = .center
+    label.numberOfLines = 0
+    label.lineBreakMode = NSLineBreakMode.byWordWrapping
+    return label
+  }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+      view.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
+      addSubViews()
+      setupSNP()
+      title = "Fastflix"
+      
     }
+  private func addSubViews() {
+    [label]
+      .forEach { view.addSubview($0) }
+  }
+  
+  private func setupSNP() {
+    label.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(130)
+      $0.leading.trailing.equalToSuperview()
+    }
+  }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
