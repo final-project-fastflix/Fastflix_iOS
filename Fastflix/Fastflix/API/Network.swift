@@ -10,11 +10,12 @@ import Foundation
 import Alamofire
 
 
-final class APICenter {
+class APICenter {
   static let shared = APICenter()
   
-  let group = DispatchGroup()
-  let downloadQueue = DispatchQueue(label: "downloadQueue", attributes: .concurrent)
+//  let group = DispatchGroup()
+//  let downloadQueue = DispatchQueue(label: "downloadQueue", attributes: .concurrent)
+//  let dataQueue = DataCenter.shared.downloadQueue
   
   // MARK: 유저디폴트 객체
   private let path = UserDefaults.standard
@@ -337,6 +338,7 @@ final class APICenter {
     return token
   }
   
+  // getMainImgCellData
   func getMainImgCellData(completion: @escaping (Result<MainImgCellData>) -> ()) {
     let header = getHeader(needSubuser: true)
     
