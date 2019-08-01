@@ -14,35 +14,18 @@ class MainHomeVC: UIViewController {
   
   let downloadPath = APICenter.shared
   
-  var mainImageCellData: MainImgCellData? {
-    willSet {
-      tableView.reloadData()
-    }
-  }
+  let group = DispatchGroup()
+  let downloadQueue = DispatchQueue(label: "downloadQueue", attributes: .concurrent)
   
-  var preViewCellData: PreviewData? {
-    willSet {
-      tableView.reloadData()
-    }
-  }
+  var mainImageCellData: MainImgCellData?
   
-  var brandNewMovieData: BrandNewMovie? {
-    willSet {
-      tableView.reloadData()
-    }
-  }
+  var preViewCellData: PreviewData?
   
-  var forkData: ListOfFork? {
-    willSet {
-      tableView.reloadData()
-    }
-  }
+  var brandNewMovieData: BrandNewMovie?
   
-  var top10Data: Top10? {
-    willSet {
-      tableView.reloadData()
-    }
-  }
+  var forkData: ListOfFork?
+  
+  var top10Data: Top10?
   
   var originValue: CGFloat = 0
   
@@ -103,9 +86,15 @@ class MainHomeVC: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    downloadDatas()
-    setupSNP()
     
+    downloadDatas()
+    group.notify(queue: .main) {
+      DispatchQueue.main.async {
+        self.setupSNP()
+        self.tableView.reloadData()
+        print("group worked")
+      }
+    }
   }
   
   
@@ -368,11 +357,24 @@ extension MainHomeVC: FloatingViewDelegate {
 extension MainHomeVC {
   
   private func downloadDatas() {
-    getMainImgCellData()
-    getPreViewData()
-    getBrandNewData()
-    getForkData()
-    getTop10Data()
+    downloadQueue.async(group: group) {
+      self.getMainImgCellData()
+    }
+    downloadQueue.async(group: group) {
+      self.getMainImgCellData()
+    }
+    downloadQueue.async(group: group) {
+      self.getPreViewData()
+    }
+    downloadQueue.async(group: group) {
+      self.getBrandNewData()
+    }
+    downloadQueue.async(group: group) {
+      self.getForkData()
+    }
+    downloadQueue.async(group: group) {
+      self.getTop10Data()
+    }
   }
   
   private func getMainImgCellData() {
