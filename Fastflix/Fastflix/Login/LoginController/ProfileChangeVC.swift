@@ -133,6 +133,7 @@ class ProfileChangeVC: UIViewController {
     setupSNP()
     kidsStackView.isHidden = false
     subUserNameTextField.becomeFirstResponder()
+    checkDeleteButtonStatus()
   }
 
   private func configure() {
@@ -335,6 +336,15 @@ class ProfileChangeVC: UIViewController {
     saveButton.setTitleColor(.white, for: .normal)
     saveButton.isEnabled = true
   }
+  
+  // MARK: - 삭제버튼이 비활성화의 경우에 대한 상황체크
+  private func checkDeleteButtonStatus() {
+    // 메인(첫번째 유저이거나), 지금현재 선택된 유저이거나, 유저를 만들고 있는 경우엔 삭제버튼 비활성화
+    if subUserSingle.subUserList?[0].id == subUserIDtag || APICenter.shared.getSubUserID() == subUserIDtag || isUserCreating {
+      deleteButton.isHidden = true
+    }
+  }
+  
 }
 
 
