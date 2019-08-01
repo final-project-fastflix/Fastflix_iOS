@@ -12,7 +12,6 @@ import Kingfisher
 
 // 내가 찜한 콘텐츠 뷰 - data 추가
 protocol MyContentViewDelegate {
-  func backBtnDidTap(backBtn: UIButton)
   func scrollViewDidScroll(scrollView: UIScrollView)
 }
 
@@ -26,31 +25,7 @@ class MyContentView: UIView {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     return collectionView
   }()
-  
-  let topView: UIView = {
-    let topView = UIView()
-//    topView.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
-    return topView
-  }()
-  
-  let titleLabel: UILabel = {
-    let label = UILabel()
-    label.text = "내가 찜한 콘텐츠"
-    label.textColor = .white
-    return label
-  }()
-  
-  lazy var backBtn: UIButton = {
-    let buttton = UIButton(type: .system)
-//    buttton.setTitle("뒤루가여", for: .normal)
-    buttton.setImage(UIImage(named: "leftarrow"), for: .normal)
-    buttton.tintColor = .white
-    buttton.addTarget(self, action: #selector(backBtnDidTap(_:)), for: .touchUpInside)
-    buttton.setTitleColor(.white, for: .normal)
-    return buttton
-  }()
-  
-  
+
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     self.backgroundColor = .clear
@@ -62,33 +37,16 @@ class MyContentView: UIView {
   }
   
   private func addSubViews() {
-    [collectionView, titleLabel]
+    [collectionView]
       .forEach { self.addSubview($0) }
-//    [titleLabel, backBtn]
-//      .forEach { topView.addSubview($0) }
+
   }
   
   private func setupSNP() {
     collectionView.snp.makeConstraints {
-//      $0.top.equalTo(topView.snp.bottom)
       $0.top.leading.trailing.bottom.equalToSuperview()
     }
 
-//    topView.snp.makeConstraints {
-//      $0.top.leading.width.trailing.equalToSuperview()
-//      $0.height.equalToSuperview().multipliedBy(0.11)
-//    }
-
-//    backBtn.snp.makeConstraints {
-//      $0.top.equalTo(UIScreen.main.bounds.height * 0.05)
-//      $0.leading.equalToSuperview().inset(30)
-//    }
-
-    titleLabel.snp.makeConstraints {
-      $0.top.equalTo(UIScreen.main.bounds.height * 0.05)
-      $0.centerX.equalToSuperview()
-
-    }
   }
       // MARK: - setupCollectionView
   private func setupCollectionView() {
@@ -106,11 +64,6 @@ class MyContentView: UIView {
     layout.itemSize = CGSize(width: width, height: width * 1.3818)
     
     
-    
-    
-    
-    
-    
     layout.sectionHeadersPinToVisibleBounds = true
     collectionView.showsHorizontalScrollIndicator = false
     
@@ -118,11 +71,6 @@ class MyContentView: UIView {
   // registerCollectionView
   private func registerCollectionViewCell() {
     collectionView.register(MyContentCollectionCell.self, forCellWithReuseIdentifier: MyContentCollectionCell.identifier)
-  }
-  
-  @objc func backBtnDidTap(_ sender: UIButton) {
-    print("뒤로 가주세여.......")
-    delegate?.backBtnDidTap(backBtn: sender)
   }
 
 }
@@ -142,8 +90,7 @@ extension MyContentView: UICollectionViewDataSource {
 extension MyContentView: UICollectionViewDelegate {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//    print("indexPath.row: ", indexPath.row)
-//    delegate?.didSelectItemAt(indexPath: indexPath)
+    
   }
   
   func scrollViewDidScroll(_ scrollView: UIScrollView) {

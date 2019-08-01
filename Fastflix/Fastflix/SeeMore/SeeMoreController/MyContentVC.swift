@@ -23,18 +23,19 @@ class MyContentVC: UIViewController {
   
     override func viewDidLoad() {
         super.viewDidLoad()
+     
     }
   
   override func loadView() {
     
     self.view = myContentView
-    view.backgroundColor = .clear
+    view.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     myContentView.delegate = self
   }
   
   private func setupNavi() {
-//    navigationController?.navigationBar.addSubview(myContentView.topView)
-    self.navigationController?.navigationBar.barTintColor = .clear
+    title = "내가 찜한 콘텐츠"
+    self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
     navigationController?.navigationBar.shadowImage = UIImage()
     navigationController?.navigationBar.isTranslucent = true
@@ -46,13 +47,7 @@ class MyContentVC: UIViewController {
 }
 
 extension MyContentVC: MyContentViewDelegate {
- 
-  
-  func backBtnDidTap(backBtn: UIButton) {
-    print("뒤로 가주세여..")
-     navigationController?.popViewController(animated: true)
 
-  }
   func scrollViewDidScroll(scrollView: UIScrollView) {
     
     

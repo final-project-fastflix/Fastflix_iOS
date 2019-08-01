@@ -17,8 +17,7 @@ import Kingfisher
 class SeeMoreView: UIView {
   
   let subUserSingle = SubUserSingleton.shared
-  
-//  var profileCount = 0
+
   
   var numberOfUsers: Int?
   var subUserList: [SubUser]? {
@@ -26,7 +25,6 @@ class SeeMoreView: UIView {
       numberOfUsers = subUserList?.count
     }
   }
-  
   
   weak var delegate: SeeMoreViewDelegate?
   
@@ -57,20 +55,6 @@ class SeeMoreView: UIView {
     label.textColor = .gray
     return label
   }()
-  
-//  lazy var profileView: ProfileView = {
-//    let view = ProfileView()
-////    view.configure(image: UIImage(named: "profile3"), name: "hea")
-//    return view
-//  }()
-  
-//  lazy var profileAddView: ProfileView = {
-//    let view = ProfileView()
-//    let tap = UITapGestureRecognizer(target: self, action: #selector(profileAddDidTap(_:)))
-//    view.addGestureRecognizer(tap)
-//    view.isUserInteractionEnabled = true
-//    return view
-//  }()
 
   let tableView = UITableView()
   
@@ -116,20 +100,19 @@ class SeeMoreView: UIView {
   lazy var profileStackView: UIStackView = {
     let view = UIStackView()
     view.axis = .horizontal
-//    view.distribution = .fillEqually
     view.spacing = 15
     return view
   }()
+  
 
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
-    
-    
-    
+   
   }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
+    self.backgroundColor = #colorLiteral(red: 0.05203045685, green: 0.05203045685, blue: 0.05203045685, alpha: 1)
     subUserList = subUserSingle.subUserList
     numberOfUsers = subUserSingle.subUserList?.count
     
@@ -174,7 +157,6 @@ class SeeMoreView: UIView {
     }
   }
   
-  
   func setupStackView() {
     viewArray.forEach { profileStackView.addArrangedSubview($0) }
   
@@ -191,7 +173,6 @@ class SeeMoreView: UIView {
   }
   
   private func addSubViews() {
-//    profileView1.isSelected = true
     [topView, tableView].forEach { self.addSubview($0)}
       [profileStackView, profileAdminBtn].forEach {topView.addSubview($0)}
   }
@@ -213,13 +194,13 @@ class SeeMoreView: UIView {
     }
     
     profileStackView.snp.makeConstraints {
-      $0.top.equalTo(topView.snp.top).offset(60)
+      $0.top.equalTo(topView.snp.top).offset(50)
       $0.height.equalTo(80)
       $0.centerX.equalTo(topView.snp.centerX)
     }
     
     profileAdminBtn.snp.makeConstraints {
-      $0.top.equalTo(profileStackView.snp.bottom).offset(25)
+      $0.top.equalTo(profileStackView.snp.bottom).offset(23)
       $0.centerX.equalToSuperview()
     }
   }
@@ -310,28 +291,20 @@ class SeeMoreView: UIView {
   
   
   @objc func profileAdminBtnDidTap(_ sender: UIButton) {
-    print("@@@@profileAdminBtnDidTap")
+
   }
   
   @objc func profileViewDidTap(_ sender: Any) {
-    print("프로필선택")
-    
-    //    let createProfielVC = CreateProfileVC()
-    //    present(createProfielVC, animated: true)
-    
+
   }
   
-  
   @objc func profileAddDidTap(_ sender: Any) {
-    print("프로필추가추가추가추가추가추가")
-    
-    //    let createProfielVC = CreateProfileVC()
-    //    present(createProfielVC, animated: true)
-    
+
   }
 
 }
-// tableView extension
+
+// MARK: - TableView extension
 extension SeeMoreView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     return 3
