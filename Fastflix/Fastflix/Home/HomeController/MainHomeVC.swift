@@ -12,6 +12,21 @@ import AVKit
 
 class MainHomeVC: UIViewController {
   
+  let downloadPath = APICenter.shared
+  
+  let group = DispatchGroup()
+  let downloadQueue = DispatchQueue(label: "downloadQueue", attributes: .concurrent)
+  
+  var mainImageCellData: MainImgCellData?
+  
+  var preViewCellData: PreviewData?
+  
+  var brandNewMovieData: BrandNewMovie?
+  
+  var forkData: ListOfFork?
+  
+  var top10Data: Top10?
+  
   var originValue: CGFloat = 0
   
   var compareArr: [CGFloat] = []
@@ -22,7 +37,6 @@ class MainHomeVC: UIViewController {
     }
     set {
       guard newValue >= -94 || newValue <= 0 else { return }
-//      print("newValue", floatingView.frame)
       floatingView.frame.origin.y = newValue
     }
   }
@@ -72,7 +86,15 @@ class MainHomeVC: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    setupSNP()
+    
+    downloadDatas()
+    group.notify(queue: .main) {
+      DispatchQueue.main.async {
+        self.setupSNP()
+        self.tableView.reloadData()
+        print("group worked")
+      }
+    }
   }
   
   
@@ -97,7 +119,7 @@ class MainHomeVC: UIViewController {
     tableView.register(MainImageTableCell.self, forCellReuseIdentifier: MainImageTableCell.identifier)
     tableView.register(PreviewTableCell.self, forCellReuseIdentifier: PreviewTableCell.identifier)
     tableView.register(OriginalTableCell.self, forCellReuseIdentifier: OriginalTableCell.identifier)
-    tableView.register(MainCell.self, forCellReuseIdentifier: MainCell.identifier)
+    tableView.register(SubCell.self, forCellReuseIdentifier: SubCell.identifier)
     
   }
   
@@ -113,13 +135,24 @@ extension MainHomeVC: UITableViewDataSource {
     switch indexPath.row {
     case 0:
       let cell = tableView.dequeueReusableCell(withIdentifier: MainImageTableCell.identifier, for: indexPath) as! MainImageTableCell
+      let bigImgPath = mainImageCellData?[0].mainMovie.bigImagePath
+      let logoImgPath = mainImageCellData?[0].mainMovie.logoImagePath
       cell.selectionStyle = .none
       cell.movieDetailLabel.text = " 슈퍼히어로 ･ 사이보그 & 로봇 ･ SF ･ 액션 ･ 할리우드 영화 "
-      cell.configure(imageURLString: ImagesData.shared.imagesUrl[2], logoImageURLString: ImagesData.shared.imagesUrl[4])
+      cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
       return cell
       
+      
     case 1:
+      guard let data = preViewCellData else { return UITableViewCell() }
       let cell = tableView.dequeueReusableCell(withIdentifier: PreviewTableCell.identifier, for: indexPath) as! PreviewTableCell
+      var mainURLs: [String] = []
+      var logoURLs: [String] = []
+      for index in data {
+        mainURLs.append(index.name)
+        logoURLs.append(index.logoImagePath)
+      }
+      cell.configure(mainURLs: nil, logoURLs: logoURLs)
       cell.delegate = self
       cell.selectionStyle = .none
       return cell
@@ -135,7 +168,7 @@ extension MainHomeVC: UITableViewDataSource {
       return cell
       
     default:
-      let cell = tableView.dequeueReusableCell(withIdentifier: MainCell.identifier, for: indexPath) as! MainCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
       cell.configure(url: imageUrls, title: "\(indexPath)")
       return cell
     }
@@ -318,4 +351,93 @@ extension MainHomeVC: FloatingViewDelegate {
     mainPokeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
     tabBarController?.viewControllers?[0] = mainPokeVC
   }
+}
+
+
+extension MainHomeVC {
+  
+  private func downloadDatas() {
+    downloadQueue.async(group: group) {
+      self.getMainImgCellData()
+    }
+    downloadQueue.async(group: group) {
+      self.getMainImgCellData()
+    }
+    downloadQueue.async(group: group) {
+      self.getPreViewData()
+    }
+    downloadQueue.async(group: group) {
+      self.getBrandNewData()
+    }
+    downloadQueue.async(group: group) {
+      self.getForkData()
+    }
+    downloadQueue.async(group: group) {
+      self.getTop10Data()
+    }
+  }
+  
+  private func getMainImgCellData() {
+    downloadPath.getMainImgCellData { (result) in
+      switch result {
+      case .success(let value):
+        self.mainImageCellData = value
+      case .failure(let err):
+        dump(err)
+        self.mainImageCellData = nil
+      }
+    }
+  }
+  
+  private func getPreViewData() {
+    downloadPath.getPreviewData { (result) in
+      switch result {
+      case .success(let value):
+        self.preViewCellData = value
+      case .failure(let err):
+        dump(err)
+        self.preViewCellData = nil
+      }
+    }
+  }
+  
+  private func getBrandNewData() {
+    downloadPath.getBrandNewMovie { (result) in
+      switch result {
+      case .success(let value):
+        self.brandNewMovieData = value
+      case .failure(let err):
+        dump(err)
+        self.brandNewMovieData = nil
+      }
+    }
+  }
+  
+  private func getForkData() {
+    downloadPath.getListOfFork { (result) in
+      switch result {
+      case .success(let value):
+        self.forkData = value
+      case .failure(let err):
+        dump(err)
+        self.forkData = nil
+      }
+    }
+  }
+  
+  private func getTop10Data() {
+    downloadPath.getTop10 { (result) in
+      switch result {
+      case .success(let value):
+        self.top10Data = value
+      case .failure(let err):
+        dump(err)
+        self.top10Data = nil
+      }
+    }
+  }
+  
+  
+  
+  
 }

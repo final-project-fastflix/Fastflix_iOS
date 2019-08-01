@@ -22,6 +22,7 @@
 		47FF9DC522DE3C98005C7BAD /* DetailViewBelowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF9DC422DE3C98005C7BAD /* DetailViewBelowCell.swift */; };
 		47FF9DC722DE3CC4005C7BAD /* DetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF9DC622DE3CC4005C7BAD /* DetailCollectionViewCell.swift */; };
 		4D80BA9E4F9865588E244065 /* Pods_Fastflix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E29600FEE1EEB7B6DD9E0171 /* Pods_Fastflix.framework */; };
+		5223F33422F2BA7B004AD3A5 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223F33322F2BA7B004AD3A5 /* DataCenter.swift */; };
 		5295214E22D5D3E800174BC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5295214D22D5D3E800174BC1 /* AppDelegate.swift */; };
 		5295215522D5D3E900174BC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5295215422D5D3E900174BC1 /* Assets.xcassets */; };
 		5295216522D5D57F00174BC1 /* DataOfTass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5295216422D5D57F00174BC1 /* DataOfTass.swift */; };
@@ -33,7 +34,7 @@
 		52BA342A22DDE513005F8489 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA342922DDE513005F8489 /* MainTabBarController.swift */; };
 		52BA342C22DDE7BB005F8489 /* StreamingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA342B22DDE7BB005F8489 /* StreamingCell.swift */; };
 		52BA342E22DDE7D5005F8489 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA342D22DDE7D5005F8489 /* ImageCell.swift */; };
-		52BA343022DDE7EF005F8489 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA342F22DDE7EF005F8489 /* MainCell.swift */; };
+		52BA343022DDE7EF005F8489 /* SubCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BA342F22DDE7EF005F8489 /* SubCell.swift */; };
 		C14355F422DB0B11005189E9 /* PreviewCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14355F322DB0B11005189E9 /* PreviewCollectionCell.swift */; };
 		C14355F622DB0B18005189E9 /* PreviewTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14355F522DB0B18005189E9 /* PreviewTableCell.swift */; };
 		C14355F822DB0E22005189E9 /* MainImageTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14355F722DB0E22005189E9 /* MainImageTableCell.swift */; };
@@ -84,6 +85,7 @@
 		47FF9DC222DE3C51005C7BAD /* DetailViewUpperCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewUpperCell.swift; sourceTree = "<group>"; };
 		47FF9DC422DE3C98005C7BAD /* DetailViewBelowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewBelowCell.swift; sourceTree = "<group>"; };
 		47FF9DC622DE3CC4005C7BAD /* DetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		5223F33322F2BA7B004AD3A5 /* DataCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DataCenter.swift; path = ../../../../../../../../System/Volumes/Data/Users/tass/tass/newForkiOS/Fastflix_iOS/Fastflix/Fastflix/Data/DataCenter.swift; sourceTree = "<group>"; };
 		5295214A22D5D3E800174BC1 /* Fastflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fastflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5295214D22D5D3E800174BC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5295215422D5D3E900174BC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -97,7 +99,7 @@
 		52BA342922DDE513005F8489 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		52BA342B22DDE7BB005F8489 /* StreamingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingCell.swift; sourceTree = "<group>"; };
 		52BA342D22DDE7D5005F8489 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
-		52BA342F22DDE7EF005F8489 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
+		52BA342F22DDE7EF005F8489 /* SubCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCell.swift; sourceTree = "<group>"; };
 		C14355F322DB0B11005189E9 /* PreviewCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewCollectionCell.swift; sourceTree = "<group>"; };
 		C14355F522DB0B18005189E9 /* PreviewTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewTableCell.swift; sourceTree = "<group>"; };
 		C14355F722DB0E22005189E9 /* MainImageTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainImageTableCell.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 				5295216622D5D59100174BC1 /* DataOfDevy.swift */,
 				5295216822D5D59A00174BC1 /* DataOfAllen.swift */,
 				C1CA09C522E17130009B1296 /* DataForAPI.swift */,
+				5223F33322F2BA7B004AD3A5 /* DataCenter.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -304,7 +307,7 @@
 				C143560722DCAA98005189E9 /* OriginalCollectionCell.swift */,
 				52BA342B22DDE7BB005F8489 /* StreamingCell.swift */,
 				52BA342D22DDE7D5005F8489 /* ImageCell.swift */,
-				52BA342F22DDE7EF005F8489 /* MainCell.swift */,
+				52BA342F22DDE7EF005F8489 /* SubCell.swift */,
 				47FF9DC222DE3C51005C7BAD /* DetailViewUpperCell.swift */,
 				47FF9DC422DE3C98005C7BAD /* DetailViewBelowCell.swift */,
 				47FF9DC622DE3CC4005C7BAD /* DetailCollectionViewCell.swift */,
@@ -615,7 +618,7 @@
 				C143560A22DCAAD5005189E9 /* OriginalTableCell.swift in Sources */,
 				47AC179722E2341E00D6AACD /* BeforeLoginVC.swift in Sources */,
 				C14355F422DB0B11005189E9 /* PreviewCollectionCell.swift in Sources */,
-				52BA343022DDE7EF005F8489 /* MainCell.swift in Sources */,
+				52BA343022DDE7EF005F8489 /* SubCell.swift in Sources */,
 				C1FC3EFE22E4899C008E1FE9 /* MainHomeVC.swift in Sources */,
 				C1E21BE622DF1BB400930115 /* LaunchScreenVC.swift in Sources */,
 				47FF9DC722DE3CC4005C7BAD /* DetailCollectionViewCell.swift in Sources */,
@@ -645,6 +648,7 @@
 				47FF9DC522DE3C98005C7BAD /* DetailViewBelowCell.swift in Sources */,
 				478AA3D822EA2D3100A632EF /* CustomerCenterVC.swift in Sources */,
 				5295216F22D5D65400174BC1 /* Network.swift in Sources */,
+				5223F33422F2BA7B004AD3A5 /* DataCenter.swift in Sources */,
 				C1FC3F3622E8AD23008E1FE9 /* MyContentView.swift in Sources */,
 				5295216922D5D59A00174BC1 /* DataOfAllen.swift in Sources */,
 			);
@@ -775,7 +779,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KNHX5B578D;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Fastflix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -795,7 +799,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KNHX5B578D;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Fastflix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
