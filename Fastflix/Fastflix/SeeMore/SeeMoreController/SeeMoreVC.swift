@@ -22,16 +22,25 @@ class SeeMoreVC: UIViewController {
   // MARK: - viewDidLoad()
   override func viewDidLoad() {
     super.viewDidLoad()
-    setupNavi()
-    setupUsers()
+
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    
+    view.backgroundColor = #colorLiteral(red: 0.05203045685, green: 0.05203045685, blue: 0.05203045685, alpha: 1)
+    setupNavi()
+    
+    let seeMoreView = SeeMoreView()
+    self.view = seeMoreView
+    seeMoreView.delegate = self
+    setupNavi()
+
+  }
+  
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
-  }
-
-  func setupUsers() {
-    
   }
   
   // MARK: - 네비게이션바 투명처리
