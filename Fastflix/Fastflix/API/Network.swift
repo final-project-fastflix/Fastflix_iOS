@@ -406,7 +406,7 @@ final class APICenter {
             completion(.failure(ErrorType.NoData))
             return }
           let token = origin.token
-          let subUserArr = origin.subUserList
+          let subUserArr = origin.subUserList.sorted(by: { $0.id < $1.id })
           print("subUser: ", subUserArr)
           
           // 토큰값 유저디폴트에 저장하기
