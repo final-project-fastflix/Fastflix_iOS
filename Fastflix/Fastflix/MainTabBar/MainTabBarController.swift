@@ -11,6 +11,9 @@ import SnapKit
 
 final class MainTabBarController: UITabBarController {
   
+  
+  
+  
   // MARK: - Properties
   private let mainHomeVC = MainHomeVC()
   private let downloadVC = DownloadVC()
@@ -34,6 +37,16 @@ final class MainTabBarController: UITabBarController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupTabBar()
+    
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    let dataCenter = DataCenter.shared
+    dataCenter.downloadDatas()
+    dataCenter.group.notify(queue: dataCenter.downloadQueue) {
+      print("notify done")
+    }
   }
   
   private func setupTabBar() {
