@@ -71,7 +71,7 @@ class MainHomeVC: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    setupSNP()
+    setupSNP() 
 //    downloadDatas()
 //    group.notify(queue: .main) {
 //      DispatchQueue.main.async {
