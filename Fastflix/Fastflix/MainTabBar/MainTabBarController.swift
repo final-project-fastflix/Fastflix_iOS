@@ -42,11 +42,11 @@ final class MainTabBarController: UITabBarController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    let dataCenter = DataCenter.shared
-    dataCenter.downloadDatas()
-    dataCenter.group.notify(queue: dataCenter.downloadQueue) {
-      print("notify done")
-    }
+//    let dataCenter = DataCenter.shared
+//    dataCenter.downloadDatas()
+//    dataCenter.group.notify(queue: dataCenter.downloadQueue) {
+//      print("notify done")
+//    }
   }
   
   private func setupTabBar() {
