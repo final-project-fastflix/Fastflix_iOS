@@ -81,4 +81,6 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 
 19.07.30  docs: tass - remake Repo
 
-19.0731 feat: allen - SeemoreVC's user's isSelected property, and CollectionView's layout.
+19.07.31 feat: allen - SeemoreVC's user's isSelected property, and CollectionView's layout.
+
+19.08.01 feat: allen - Subuser addition, subuser's information change.

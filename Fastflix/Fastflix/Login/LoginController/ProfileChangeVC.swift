@@ -54,6 +54,13 @@ class ProfileChangeVC: UIViewController {
   
   var userView = UserView()
   
+  var subUserIDtag: Int?
+  var kidChecking: Bool = false {
+    didSet {
+      kidsSwitchButton.setOn(kidChecking, animated: true)
+    }
+  }
+  
   let textSurroundingView: UIView = {
     let view = UIView()
     view.layer.borderWidth = 1
@@ -79,6 +86,7 @@ class ProfileChangeVC: UIViewController {
   
   let kidsSwitchButton: UISwitch = {
     let switchButton = UISwitch()
+    switchButton.onTintColor = #colorLiteral(red: 0, green: 0.4823529412, blue: 0.9960784314, alpha: 1)
     return switchButton
   }()
   
@@ -104,7 +112,7 @@ class ProfileChangeVC: UIViewController {
   
   var userImage: UIImage?
   
-  var isUserCreating: Bool?
+  var isUserCreating: Bool = false
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
@@ -113,26 +121,27 @@ class ProfileChangeVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     configure()
     addSubViews()
     navigationBarSetting()
     setFuntions()
-  }
-  
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
+    
     setupSNP()
     kidsStackView.isHidden = false
     subUserNameTextField.becomeFirstResponder()
   }
-  
+
   private func configure() {
 //    view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
     view.backgroundColor = .black
     userView.profileUserName = "변경"
     subUserNameTextField.text = userName ?? ""
     userView.userImageView.image = userImage ?? UIImage(named: "profile1")
-    profileChangeLabel.text = isUserCreating! ? "프로필 만들기" : "프로필 변경"
+    profileChangeLabel.text = isUserCreating ? "프로필 만들기" : "프로필 변경"
     subUserNameTextField.delegate = self
   }
   
@@ -195,6 +204,10 @@ class ProfileChangeVC: UIViewController {
     
   }
   
+//  private func CheckKid() {
+//      kidsSwitchButton.setOn(kidChecking, animated: false)
+//  }
+  
   private func navigationBarSetting() {
     let navCon = navigationController!
     navCon.isNavigationBarHidden = true
@@ -204,48 +217,59 @@ class ProfileChangeVC: UIViewController {
     print("새로바뀐 유저정보 저장관련 메서드 넣어야함")
     saveChangedUserInfo()
     
-//    guard let navi = presentingViewController as? UINavigationController else {return}
-//    guard let vc = navi.viewControllers[0] as? ProfileSelectVC else {return}
-//
-//    vc.numberOfUsers = subUserSingle.subUserList?.count
-//    vc.subUserList = subUserSingle.subUserList
-    
-//    vc.view.layoutIfNeeded()
-//    vc.view.setNeedsLayout()
-//    vc.view.layoutIfNeeded()
-    
-//    vc.viewDidLoad()
-//    vc.viewWillAppear(false)
-//    vc.viewDidAppear(false)
-//    vc.setupSNP()
-//    vc.setUserViews()
-//    vc.setupProfileLayout()
-    
     dismiss(animated: true)
   }
   
   private func saveChangedUserInfo() {
     guard let name = subUserNameTextField.text else { return }
-    let kid = kidsSwitchButton.isOn ? true : false
+    let kid = kidsSwitchButton.isOn
     
-    if isUserCreating! {
+    if isUserCreating {
+      print("유저 새로 만들고 있는데???")
       APICenter.shared.createSubUser(name: name, kid: kid) {
         switch $0 {
         case .success(let subUsers):
           print("User Creating Success!!!")
           print("value: ", subUsers)
-          
           self.subUserSingle.subUserList = subUsers
-          
-          
           
         case .failure(let err):
           print("fail to login, reason: ", err)
         }
       }
+    }else {
+      print("유저 변경하고 있는데???")
+      print("키즈여부:", kid)
+      guard let subUserID = subUserIDtag else { return print("서브유저 아이디가 없다고?? 말이됨?") }
+      APICenter.shared.changeProfileInfo(id: subUserID, name: name, kid: kid, imgPath: nil) { (result) in
+        switch result {
+        case .success(let value):
+          print("result1: ", value)
+          if value == 0 {
+            print("변경 저장 실험해보기 - 그대로")
+          }else {
+            // 변경 성공했으니 유저리스트 다시 받아와서 싱글톤에 저장
+            print("변경 저장 실험해보기 - 유저바꾸기")
+            regetSubUserList()
+          }
+        case .failure(let err):
+          print("result1: ", err)
+        }
+//        self.dismiss(animated: true)
+      }
     }
-    
-    
+    // 유저 변경했으니 전체적인 서브유저 리스트를 다시 받아오는 메서드
+    func regetSubUserList() {
+      APICenter.shared.getSubUserList() {
+        switch $0 {
+        case .success(let subUsers):
+          print("Get SubuserList Success!!!")
+          self.subUserSingle.subUserList = subUsers
+        case .failure(let err):
+          print("fail to login, reason: ", err)
+        }
+      }
+    }
   }
   
   
@@ -259,9 +283,15 @@ class ProfileChangeVC: UIViewController {
     
     alert(title: "프로필 삭제", message: "이 프로필을 삭제하시겠어요?") {
       //프로필 삭제시 - 클로저로 기능 구현 코드 넣어야 함
-  
+//      APICenter.shared.deleteProfileInfo(id: subUserIDtag!) { (result) in
+//        switch result {
+//        case .success(let value):
+//          print("resultApp: ", value)
+//        case .failure(let err):
+//          print("resultApp: ", err)
+//        }
+//      }
     }
-    
   }
   
   // 텍스트필드에 아무것도 없으면 저장 버튼 비활성화

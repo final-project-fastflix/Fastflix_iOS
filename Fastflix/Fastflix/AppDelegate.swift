@@ -21,6 +21,15 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     checkLoginState()
+
+//    APICenter.shared.changeProfileInfo(id: 49, name: nil, kid: false, imgPath: nil) { (result) in
+//      switch result {
+//      case .success(let value):
+//        print("result1: ", value)
+//      case .failure(let err):
+//        print("result1: ", err)
+//    }
+    
     // MARK: - TEST
 //    APICenter.shared.deleteProfileInfo(id: 200) { (result) in
 //      switch result {
@@ -30,6 +39,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 //        print("resultApp: ", err)
 //      }
 //    }
+    
+    
     return true
   }
   
@@ -48,24 +59,24 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // 🔶토큰값이 있을때 바로 로그인할때 서브유저리스트 확인 프로세스 추가🔶
     // 토큰이 있다면 =====> 서브유저리스트를 받아서 싱글톤에 저장 (유저디폴트로 변경 예정)
-//    if token != nil {
-//      APICenter.shared.getSubUserList() {
-//        switch $0 {
-//        case .success(let subUsers):
-//          print("Get SubuserList Success!!!")
-//          print("value: ", subUsers)
-//          self.subUserSingle.subUserList = subUsers
-//
-//          // 그리고 유저디폴트에 저장된 서브유저아이디와 같은 값이 있다면 계속사용, 없다면 첫번째 싱글톤의 첫번째 유저의 아이디를 유저디폴트에 저장해서 사용
-//          if self.subUserSingle.subUserList?.filter({ $0.id == APICenter.shared.getSubUserID() }) == nil {
-//            APICenter.shared.saveSubUserID(id: (self.subUserSingle.subUserList?[0].id)!)
-//          }
-//
-//        case .failure(let err):
-//          print("fail to login, reason: ", err)
-//        }
-//      }
-//    }
+    if token != nil {
+      APICenter.shared.getSubUserList() {
+        switch $0 {
+        case .success(let subUsers):
+          print("Get SubuserList Success!!!")
+          print("value: ", subUsers)
+          self.subUserSingle.subUserList = subUsers
+
+          // 그리고 유저디폴트에 저장된 서브유저아이디와 같은 값이 있다면 계속사용, 없다면 첫번째 싱글톤의 첫번째 유저의 아이디를 유저디폴트에 저장해서 사용
+          if self.subUserSingle.subUserList?.filter({ $0.id == APICenter.shared.getSubUserID() }) == nil {
+            APICenter.shared.saveSubUserID(id: (self.subUserSingle.subUserList?[0].id)!)
+          }
+
+        case .failure(let err):
+          print("fail to login, reason: ", err)
+        }
+      }
+    }
     
     // "token"값 nil일때는 1)안내화면으로 / nil이 아닐때는 2) 홈화면으로
     let rootVC = token == nil ? beforeLoginNavi : tabBar
