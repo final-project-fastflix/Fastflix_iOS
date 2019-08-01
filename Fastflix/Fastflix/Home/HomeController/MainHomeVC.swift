@@ -14,11 +14,35 @@ class MainHomeVC: UIViewController {
   
   let downloadPath = APICenter.shared
   
-  var mainImageCellData: MainImgCellData?
+  var mainImageCellData: MainImgCellData? {
+    willSet {
+      tableView.reloadData()
+    }
+  }
   
-  var preViewCellData: PreviewData?
+  var preViewCellData: PreviewData? {
+    willSet {
+      tableView.reloadData()
+    }
+  }
   
+  var brandNewMovieData: BrandNewMovie? {
+    willSet {
+      tableView.reloadData()
+    }
+  }
   
+  var forkData: ListOfFork? {
+    willSet {
+      tableView.reloadData()
+    }
+  }
+  
+  var top10Data: Top10? {
+    willSet {
+      tableView.reloadData()
+    }
+  }
   
   var originValue: CGFloat = 0
   
@@ -79,7 +103,9 @@ class MainHomeVC: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
+    downloadDatas()
     setupSNP()
+    
   }
   
   
@@ -120,28 +146,24 @@ extension MainHomeVC: UITableViewDataSource {
     switch indexPath.row {
     case 0:
       let cell = tableView.dequeueReusableCell(withIdentifier: MainImageTableCell.identifier, for: indexPath) as! MainImageTableCell
+      let bigImgPath = mainImageCellData?[0].mainMovie.bigImagePath
+      let logoImgPath = mainImageCellData?[0].mainMovie.logoImagePath
       cell.selectionStyle = .none
       cell.movieDetailLabel.text = " 슈퍼히어로 ･ 사이보그 & 로봇 ･ SF ･ 액션 ･ 할리우드 영화 "
-      APICenter.shared.getMainImgCellData { (res) in
-        DispatchQueue.main.async {
-          switch res {
-          case .success(let value):
-            let bigImgStr = value[0].mainMovie.bigImagePath
-            let logoImgStr = value[0].mainMovie.logoImagePath
-            cell.configure(imageURLString: bigImgStr, logoImageURLString: logoImgStr)
-          case .failure(let err):
-            print("MainHomeMainImageCellNoData -> ", err)
-            cell.configure(imageURLString: ImagesData.shared.imagesUrl[2], logoImageURLString: ImagesData.shared.imagesUrl[4])
-          }
-          
-        }
-        
-      }
+      cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
       return cell
       
       
     case 1:
+      guard let data = preViewCellData else { return UITableViewCell() }
       let cell = tableView.dequeueReusableCell(withIdentifier: PreviewTableCell.identifier, for: indexPath) as! PreviewTableCell
+      var mainURLs: [String] = []
+      var logoURLs: [String] = []
+      for index in data {
+        mainURLs.append(index.name)
+        logoURLs.append(index.logoImagePath)
+      }
+      cell.configure(mainURLs: nil, logoURLs: logoURLs)
       cell.delegate = self
       cell.selectionStyle = .none
       return cell
@@ -345,9 +367,15 @@ extension MainHomeVC: FloatingViewDelegate {
 
 extension MainHomeVC {
   
+  private func downloadDatas() {
+    getMainImgCellData()
+    getPreViewData()
+    getBrandNewData()
+    getForkData()
+    getTop10Data()
+  }
   
-  
-  func getMainImgCellData() {
+  private func getMainImgCellData() {
     downloadPath.getMainImgCellData { (result) in
       switch result {
       case .success(let value):
@@ -359,7 +387,7 @@ extension MainHomeVC {
     }
   }
   
-  func getPreViewData() {
+  private func getPreViewData() {
     downloadPath.getPreviewData { (result) in
       switch result {
       case .success(let value):
@@ -371,6 +399,41 @@ extension MainHomeVC {
     }
   }
   
+  private func getBrandNewData() {
+    downloadPath.getBrandNewMovie { (result) in
+      switch result {
+      case .success(let value):
+        self.brandNewMovieData = value
+      case .failure(let err):
+        dump(err)
+        self.brandNewMovieData = nil
+      }
+    }
+  }
+  
+  private func getForkData() {
+    downloadPath.getListOfFork { (result) in
+      switch result {
+      case .success(let value):
+        self.forkData = value
+      case .failure(let err):
+        dump(err)
+        self.forkData = nil
+      }
+    }
+  }
+  
+  private func getTop10Data() {
+    downloadPath.getTop10 { (result) in
+      switch result {
+      case .success(let value):
+        self.top10Data = value
+      case .failure(let err):
+        dump(err)
+        self.top10Data = nil
+      }
+    }
+  }
   
   
   
