@@ -10,11 +10,12 @@ import Foundation
 import Alamofire
 
 
-final class APICenter {
+class APICenter {
   static let shared = APICenter()
   
-  let group = DispatchGroup()
-  let downloadQueue = DispatchQueue(label: "downloadQueue", attributes: .concurrent)
+//  let group = DispatchGroup()
+//  let downloadQueue = DispatchQueue(label: "downloadQueue", attributes: .concurrent)
+  let dataQueue = DataCenter.shared.downloadQueue
   
   // MARK: 유저디폴트 객체
   private let path = UserDefaults.standard
@@ -83,7 +84,7 @@ final class APICenter {
   func getFollowUpList(completion: @escaping (Result<FollowUp>) -> ()) {
     let header = getHeader(needSubuser: true)
     
-    Alamofire.request(RequestString.getFollowUpListURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (res) in
+    Alamofire.request(RequestString.getFollowUpListURL.rawValue, method: .get, headers: header).responseData(queue: dataQueue) { (res) in
       switch res.result {
       case .success(let value):
         guard let result = try? JSONDecoder().decode(FollowUp.self, from: value) else {
@@ -102,7 +103,7 @@ final class APICenter {
     
     let header = getHeader(needSubuser: true)
     
-    Alamofire.request(RequestString.getTop10URL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (res) in
+    Alamofire.request(RequestString.getTop10URL.rawValue, method: .get, headers: header).responseData(queue: dataQueue) { (res) in
       switch res.result {
       case .success(let value):
         guard let result = try? JSONDecoder().decode(Top10.self, from: value) else {
@@ -119,7 +120,7 @@ final class APICenter {
   func getListOfFork(completion: @escaping (Result<ListOfFork>) -> ()) {
     let header = getHeader(needSubuser: true)
     
-    Alamofire.request(RequestString.getListOfForkURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (data) in
+    Alamofire.request(RequestString.getListOfForkURL.rawValue, method: .get, headers: header).responseData(queue: dataQueue) { (data) in
       switch data.result {
       case .success(let data):
         guard let result = try? JSONDecoder().decode(ListOfFork.self, from: data) else {
@@ -138,7 +139,7 @@ final class APICenter {
   func getPreviewData(completion: @escaping (Result<PreviewData>) -> ()) {
     let header = getHeader(needSubuser: true)
     
-    Alamofire.request(RequestString.getPreviewDataURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (data) in
+    Alamofire.request(RequestString.getPreviewDataURL.rawValue, method: .get, headers: header).responseData(queue: dataQueue) { (data) in
       switch data.result {
       case .success(let value):
         guard let result = try? JSONDecoder().decode(PreviewData.self, from: value) else {
@@ -160,7 +161,7 @@ final class APICenter {
     
     let req = Alamofire.request(RequestString.getBrandNewMovieURL.rawValue, method: .get, headers: header)
     
-    req.responseJSON(queue: .global()) { (res) in
+    req.responseJSON(queue: dataQueue) { (res) in
       switch res.result {
       case .success(_):
         guard let data = res.data else {
@@ -337,12 +338,13 @@ final class APICenter {
     return token
   }
   
+  // getMainImgCellData
   func getMainImgCellData(completion: @escaping (Result<MainImgCellData>) -> ()) {
     let header = getHeader(needSubuser: true)
     
     let req = Alamofire.request(RequestString.getMainImgURL.rawValue, method: .get, headers: header)
     
-    req.response(queue: .global()) { (res) in
+    req.response(queue: dataQueue) { (res) in
       guard res.error == nil else {
         completion(.failure(ErrorType.networkError))
         return
