@@ -97,12 +97,12 @@ final class PreviewTableCell: UITableViewCell {
 extension PreviewTableCell: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return mainURLs?.count ?? 0
+    return logoURLs?.count ?? 0
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PreviewCollectionCell.identifier, for: indexPath) as! PreviewCollectionCell
-//    cell.configure(mainURL: mainURLs?[indexPath.row], logoURL: logoURLs?[indexPath.row])
+    cell.configure(mainURL: mainURLs?[indexPath.row], logoURL: logoURLs?[indexPath.row])
     return cell
   }
   
