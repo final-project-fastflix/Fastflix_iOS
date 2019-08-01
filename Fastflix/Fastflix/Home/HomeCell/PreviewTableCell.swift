@@ -102,7 +102,7 @@ extension PreviewTableCell: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PreviewCollectionCell.identifier, for: indexPath) as! PreviewCollectionCell
-    cell.configure(mainURL: mainURLs?[indexPath.row], logoURL: logoURLs?[indexPath.row])
+//    cell.configure(mainURL: mainURLs?[indexPath.row], logoURL: logoURLs?[indexPath.row])
     return cell
   }
   

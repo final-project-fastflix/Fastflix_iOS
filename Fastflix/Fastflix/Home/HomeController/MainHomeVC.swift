@@ -65,14 +65,13 @@ class MainHomeVC: UIViewController {
     addSubViews()
     
     registerTableViewCell()
-    tableView.dataSource = self
 //    view.clipsToBounds = true
     
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    
+    setupSNP()
 //    downloadDatas()
 //    group.notify(queue: .main) {
 //      DispatchQueue.main.async {
