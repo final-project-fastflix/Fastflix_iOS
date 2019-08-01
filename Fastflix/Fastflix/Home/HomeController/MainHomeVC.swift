@@ -12,6 +12,15 @@ import AVKit
 
 class MainHomeVC: UIViewController {
   
+  var finishDownload = false {
+    willSet(new) {
+      DispatchQueue.main.async {
+        new ? self.tableView.reloadData() : ()
+      }
+      self.finishDownload = false
+    }
+  }
+  
   var originValue: CGFloat = 0
   
   var compareArr: [CGFloat] = []
@@ -67,11 +76,13 @@ class MainHomeVC: UIViewController {
     registerTableViewCell()
 //    view.clipsToBounds = true
     
+    DataCenter.shared.downloadDatas()
+    
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    setupSNP() 
+    setupSNP()
 //    downloadDatas()
 //    group.notify(queue: .main) {
 //      DispatchQueue.main.async {
@@ -80,6 +91,11 @@ class MainHomeVC: UIViewController {
 //        print("group worked")
 //      }
 //    }
+    let paht = DataCenter.shared
+    paht.group.notify(queue: paht.downloadQueue) {
+      print("Queue noti finish")
+      self.finishDownload = true
+    }
     
     
   }
@@ -114,41 +130,83 @@ class MainHomeVC: UIViewController {
 
 extension MainHomeVC: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 10
+    return 6
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
+    let path = DataCenter.shared
+    
     switch indexPath.row {
     case 0:
       let cell = tableView.dequeueReusableCell(withIdentifier: MainImageTableCell.identifier, for: indexPath) as! MainImageTableCell
-//      let bigImgPath = mainImageCellData?[0].mainMovie.bigImagePath
-//      let logoImgPath = mainImageCellData?[0].mainMovie.logoImagePath
-//      cell.configure(imageURLString: <#T##String?#>, logoImageURLString: <#T##String?#>)
+      let bigImgPath = path.mainImageCellData?[0].mainMovie.bigImagePath
+      let logoImgPath = path.mainImageCellData?[0].mainMovie.logoImagePath
+      cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
       cell.selectionStyle = .none
       cell.movieDetailLabel.text = " 슈퍼히어로 ･ 사이보그 & 로봇 ･ SF ･ 액션 ･ 할리우드 영화 "
       return cell
       
       
     case 1:
-//      guard let data = preViewCellData else { return UITableViewCell() }
+//      guard let data = path.preViewCellData else { return UITableViewCell() }
       let cell = tableView.dequeueReusableCell(withIdentifier: PreviewTableCell.identifier, for: indexPath) as! PreviewTableCell
       var mainURLs: [String] = []
       var logoURLs: [String] = []
-//      for index in data {
-//        mainURLs.append(index.name)
-//        logoURLs.append(index.logoImagePath)
-//      }
+      if let data = path.preViewCellData {
+        for index in data {
+          mainURLs.append(index.name)
+          logoURLs.append(index.logoImagePath)
+        }
+      }
+      print("check: ", logoURLs)
       cell.configure(mainURLs: nil, logoURLs: logoURLs)
       cell.delegate = self
       cell.selectionStyle = .none
+      cell.layoutIfNeeded()
+      return cell
+      
+    case 2:
+      let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
+      var mainURLs: [String] = []
+      if let data = path.brandNewMovieData {
+        for index in data {
+          mainURLs.append(index.verticalImage)
+        }
+      }
+      
+      cell.configure(url: mainURLs, title: "최신영화")
+      return cell
+      
+    case 3:
+      let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
+      var mainURLs: [String] = []
+      if let data = path.forkData {
+        for index in data {
+          mainURLs.append(index.verticalImage)
+        }
+      }
+      
+      cell.configure(url: mainURLs, title: "찜 리스트")
+      return cell
+      
+    case 4:
+      let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
+      var mainURLs: [String] = []
+      if let data = path.top10Data {
+        for index in data {
+          mainURLs.append(index.verticalImage)
+        }
+      }
+      
+      cell.configure(url: mainURLs, title: "좋아요 TOP 10")
       return cell
       
     case 5:
       let cell = streamingCell
       return cell
       
-    case 7:
+    case 6:
       let cell = tableView.dequeueReusableCell(withIdentifier: OriginalTableCell.identifier, for: indexPath) as! OriginalTableCell
       cell.selectionStyle = .none
       cell.delegate = self
@@ -322,7 +380,9 @@ extension MainHomeVC: FloatingViewDelegate {
         let mainMovieVC = MainMovieVC()
         mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
         mainMovieVC.receiveData = value
-        self.tabBarController?.viewControllers?[0] = mainMovieVC
+        DispatchQueue.main.async {
+          self.tabBarController?.viewControllers?[0] = mainMovieVC
+        }
       case .failure(let err):
         print("ErrorType: ", err)
       }
