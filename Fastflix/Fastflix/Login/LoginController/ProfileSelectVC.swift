@@ -429,6 +429,7 @@ extension ProfileSelectVC: UserViewDelegate {
 // MARK: - 프로필 추가(AddProfileView)에 관한 델리게이트 구현
 extension ProfileSelectVC: AddProfileViewDelegate {
   func addProfileButtonTapped() {
+    print("프로필추가 눌렀음====================동작바람")
     let profileChangeVC = ProfileChangeVC()
     profileChangeVC.userName = ""
     profileChangeVC.isUserCreating = true

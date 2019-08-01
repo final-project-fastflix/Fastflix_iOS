@@ -86,6 +86,7 @@ class ProfileChangeVC: UIViewController {
   
   let kidsSwitchButton: UISwitch = {
     let switchButton = UISwitch()
+    switchButton.onTintColor = #colorLiteral(red: 0, green: 0.4823529412, blue: 0.9960784314, alpha: 1)
     return switchButton
   }()
   
@@ -111,7 +112,7 @@ class ProfileChangeVC: UIViewController {
   
   var userImage: UIImage?
   
-  var isUserCreating: Bool?
+  var isUserCreating: Bool = false
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
@@ -120,10 +121,6 @@ class ProfileChangeVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-//    configure()
-//    addSubViews()
-//    navigationBarSetting()
-//    setFuntions()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -137,21 +134,14 @@ class ProfileChangeVC: UIViewController {
     kidsStackView.isHidden = false
     subUserNameTextField.becomeFirstResponder()
   }
-  
-  override func viewDidAppear(_ animated: Bool) {
-//    super.viewDidAppear(animated)
-//    setupSNP()
-//    kidsStackView.isHidden = false
-//    subUserNameTextField.becomeFirstResponder()
-  }
-  
+
   private func configure() {
 //    view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
     view.backgroundColor = .black
     userView.profileUserName = "변경"
     subUserNameTextField.text = userName ?? ""
     userView.userImageView.image = userImage ?? UIImage(named: "profile1")
-    profileChangeLabel.text = isUserCreating! ? "프로필 만들기" : "프로필 변경"
+    profileChangeLabel.text = isUserCreating ? "프로필 만들기" : "프로필 변경"
     subUserNameTextField.delegate = self
   }
   
@@ -227,32 +217,15 @@ class ProfileChangeVC: UIViewController {
     print("새로바뀐 유저정보 저장관련 메서드 넣어야함")
     saveChangedUserInfo()
     
-//    guard let navi = presentingViewController as? UINavigationController else {return}
-//    guard let vc = navi.viewControllers[0] as? ProfileSelectVC else {return}
-//
-//    vc.numberOfUsers = subUserSingle.subUserList?.count
-//    vc.subUserList = subUserSingle.subUserList
-    
-//    vc.view.layoutIfNeeded()
-//    vc.view.setNeedsLayout()
-//    vc.view.layoutIfNeeded()
-    
-//    vc.viewDidLoad()
-//    vc.viewWillAppear(false)
-//    vc.viewDidAppear(false)
-//    vc.setupSNP()
-//    vc.setUserViews()
-//    vc.setupProfileLayout()
-    
     dismiss(animated: true)
   }
   
   private func saveChangedUserInfo() {
     guard let name = subUserNameTextField.text else { return }
-    let kid = kidsSwitchButton.isOn ? true : false
-    guard let subUserID = subUserIDtag else { return }
+    let kid = kidsSwitchButton.isOn
     
-    if isUserCreating! {
+    if isUserCreating {
+      print("유저 새로 만들고 있는데???")
       APICenter.shared.createSubUser(name: name, kid: kid) {
         switch $0 {
         case .success(let subUsers):
@@ -265,7 +238,9 @@ class ProfileChangeVC: UIViewController {
         }
       }
     }else {
+      print("유저 변경하고 있는데???")
       print("키즈여부:", kid)
+      guard let subUserID = subUserIDtag else { return print("서브유저 아이디가 없다고?? 말이됨?") }
       APICenter.shared.changeProfileInfo(id: subUserID, name: name, kid: kid, imgPath: nil) { (result) in
         switch result {
         case .success(let value):
