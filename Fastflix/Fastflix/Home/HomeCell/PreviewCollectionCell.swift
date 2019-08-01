@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 final class PreviewCollectionCell: UICollectionViewCell {
   
@@ -27,7 +28,7 @@ final class PreviewCollectionCell: UICollectionViewCell {
   
   private let preImageLogo: UIImageView = {
     let logoImage = UIImageView()
-    logoImage.image = UIImage(named: "preViewLogo")
+//    logoImage.image = UIImage(named: "preViewLogo")
     return logoImage
   }()
   
@@ -53,13 +54,15 @@ final class PreviewCollectionCell: UICollectionViewCell {
 //    preImageView.isUserInteractionEnabled = true
 //  }
   
-  func configure(imageName: String) {
-    preImageView.image = UIImage(named: imageName)
+  func configure(mainURL: URL?, logoURL: URL?) {
+    preImageView.kf.setImage(with: mainURL, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 200))), .cacheOriginalImage])
+    
+    preImageLogo.kf.setImage(with: logoURL, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 200))), .cacheOriginalImage])
   }
   
   // addSubViews
   private func addSubViews() {
-    [preImageView,blurImage, preImageLogo].forEach { self.addSubview($0)}
+    [preImageView, blurImage, preImageLogo].forEach { self.addSubview($0)}
     
   }
   

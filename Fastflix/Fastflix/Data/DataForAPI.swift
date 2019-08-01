@@ -8,10 +8,6 @@
 
 import Foundation
 
-protocol CellData {
-  
-}
-
 // MARK: - URLString
 enum RequestString: String {
   case loginURL = "http://52.78.134.79/accounts/login/"

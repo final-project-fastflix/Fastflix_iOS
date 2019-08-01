@@ -45,6 +45,37 @@ final class APICenter {
   }
   
   
+  func deleteProfileInfo(id: Int, completion: @escaping (Result<Int>) -> ()) {
+    let header = [
+      "Authorization": "Token \(token)",
+      "subuserid": "\(id)"
+    ]
+    
+    Alamofire.request(RequestString.deleteProfileInfoURL.rawValue, method: .delete, headers: header)
+      .validate(statusCode: 200...299)
+      .responseData(queue: .global()) { (res) in
+      switch res.result {
+      case .success(_):
+        guard let data = res.data else {
+          completion(.failure(ErrorType.NoData))
+          return }
+        guard let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Int] else {
+          completion(.failure(ErrorType.FailToParsing))
+          return
+        }
+        guard let result = dict["response"] else {
+          completion(.failure(ErrorType.FailToParsing))
+          return }
+        completion(.success(result))
+      case .failure(let err):
+        dump(err)
+        completion(.failure(ErrorType.networkError))
+        
+      }
+    }
+  }
+  
+  
   // 시청중인 목록 가져오기
   func getFollowUpList(completion: @escaping (Result<FollowUp>) -> ()) {
     let header = getHeader(needSubuser: true)
