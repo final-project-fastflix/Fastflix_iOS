@@ -83,7 +83,7 @@ final class APICenter {
   func getFollowUpList(completion: @escaping (Result<FollowUp>) -> ()) {
     let header = getHeader(needSubuser: true)
     
-    Alamofire.request(RequestString.getFollowUpListURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (res) in
+    Alamofire.request(RequestString.getFollowUpListURL.rawValue, method: .get, headers: header).responseData(queue: downloadQueue) { (res) in
       switch res.result {
       case .success(let value):
         guard let result = try? JSONDecoder().decode(FollowUp.self, from: value) else {
