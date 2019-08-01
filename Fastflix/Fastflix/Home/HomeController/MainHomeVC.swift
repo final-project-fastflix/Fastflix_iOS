@@ -12,12 +12,6 @@ import AVKit
 
 class MainHomeVC: UIViewController {
   
-  
-  
-  
-  
-  
-  
   var originValue: CGFloat = 0
   
   var compareArr: [CGFloat] = []
@@ -71,6 +65,7 @@ class MainHomeVC: UIViewController {
     addSubViews()
     
     registerTableViewCell()
+    tableView.dataSource = self
 //    view.clipsToBounds = true
     
   }
@@ -130,6 +125,7 @@ extension MainHomeVC: UITableViewDataSource {
       let cell = tableView.dequeueReusableCell(withIdentifier: MainImageTableCell.identifier, for: indexPath) as! MainImageTableCell
 //      let bigImgPath = mainImageCellData?[0].mainMovie.bigImagePath
 //      let logoImgPath = mainImageCellData?[0].mainMovie.logoImagePath
+//      cell.configure(imageURLString: <#T##String?#>, logoImageURLString: <#T##String?#>)
       cell.selectionStyle = .none
       cell.movieDetailLabel.text = " 슈퍼히어로 ･ 사이보그 & 로봇 ･ SF ･ 액션 ･ 할리우드 영화 "
       return cell
