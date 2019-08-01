@@ -133,6 +133,7 @@ class ProfileChangeVC: UIViewController {
     setupSNP()
     kidsStackView.isHidden = false
     subUserNameTextField.becomeFirstResponder()
+    checkDeleteButtonStatus()
   }
 
   private func configure() {
@@ -215,12 +216,12 @@ class ProfileChangeVC: UIViewController {
   
   @objc private func saveButtonTapped(_ sender: UIButton) {
     print("새로바뀐 유저정보 저장관련 메서드 넣어야함")
-    saveChangedUserInfo()
-    
-    dismiss(animated: true)
+    saveChangedUserInfo() {
+      self.dismiss(animated: true)
+    }
   }
   
-  private func saveChangedUserInfo() {
+  private func saveChangedUserInfo(completion: @escaping () -> ()) {
     guard let name = subUserNameTextField.text else { return }
     let kid = kidsSwitchButton.isOn
     
@@ -232,7 +233,7 @@ class ProfileChangeVC: UIViewController {
           print("User Creating Success!!!")
           print("value: ", subUsers)
           self.subUserSingle.subUserList = subUsers
-          
+          completion()
         case .failure(let err):
           print("fail to login, reason: ", err)
         }
@@ -250,7 +251,9 @@ class ProfileChangeVC: UIViewController {
           }else {
             // 변경 성공했으니 유저리스트 다시 받아와서 싱글톤에 저장
             print("변경 저장 실험해보기 - 유저바꾸기")
-            regetSubUserList()
+            self.regetSubUserList() {
+              self.dismiss(animated: true)
+            }
           }
         case .failure(let err):
           print("result1: ", err)
@@ -258,21 +261,22 @@ class ProfileChangeVC: UIViewController {
 //        self.dismiss(animated: true)
       }
     }
-    // 유저 변경했으니 전체적인 서브유저 리스트를 다시 받아오는 메서드
-    func regetSubUserList() {
-      APICenter.shared.getSubUserList() {
-        switch $0 {
-        case .success(let subUsers):
-          print("Get SubuserList Success!!!")
-          self.subUserSingle.subUserList = subUsers
-        case .failure(let err):
-          print("fail to login, reason: ", err)
-        }
+  }
+  
+  // 유저 변경했으니 전체적인 서브유저 리스트를 다시 받아오는 메서드
+  func regetSubUserList(completion: @escaping () -> ()) {
+    APICenter.shared.getSubUserList() {
+      switch $0 {
+      case .success(let subUsers):
+        print("Get SubuserList Success!!!")
+        self.subUserSingle.subUserList = subUsers
+        completion()
+      case .failure(let err):
+        print("fail to login, reason: ", err)
       }
     }
   }
-  
-  
+
   @objc private func cancelButtonTapped(_ sender: UIButton) {
     print("취소")
     dismiss(animated: true)
@@ -280,19 +284,39 @@ class ProfileChangeVC: UIViewController {
   
   @objc private func deleteButtonTapped(_ sender: UIButton) {
     print("삭제 누름")
-    
-    alert(title: "프로필 삭제", message: "이 프로필을 삭제하시겠어요?") {
-      //프로필 삭제시 - 클로저로 기능 구현 코드 넣어야 함
-//      APICenter.shared.deleteProfileInfo(id: subUserIDtag!) { (result) in
-//        switch result {
-//        case .success(let value):
-//          print("resultApp: ", value)
-//        case .failure(let err):
-//          print("resultApp: ", err)
-//        }
-//      }
+    deleteSubUser {
+      self.dismissingView()
     }
   }
+  
+  private func deleteSubUser(completion: @escaping () -> ()) {
+    alert(title: "프로필 삭제", message: "이 프로필을 삭제하시겠어요?") {
+      //프로필 삭제시 - 클로저로 기능 구현 코드 넣어야 함
+      APICenter.shared.deleteProfileInfo(id: self.subUserIDtag!) { (result) in
+        switch result {
+        case .success(let value):
+          print("resultApp: ", value)
+          self.regetSubUserList() {
+            completion()
+          }
+        case .failure(let err):
+          print("resultApp: ", err)
+        }
+      }
+    }
+  }
+  
+  
+  func dismissingView() {
+    guard let navi = presentingViewController as? UINavigationController else { return }
+    guard let profileSelectVC = navi.viewControllers.last as? ProfileSelectVC else { return }
+    
+    profileSelectVC.viewWillAppear(true)
+    
+    dismiss(animated: true)
+    
+  }
+  
   
   // 텍스트필드에 아무것도 없으면 저장 버튼 비활성화
   @objc private func editingChanged(_ textField: UITextField) {
@@ -312,6 +336,15 @@ class ProfileChangeVC: UIViewController {
     saveButton.setTitleColor(.white, for: .normal)
     saveButton.isEnabled = true
   }
+  
+  // MARK: - 삭제버튼이 비활성화의 경우에 대한 상황체크
+  private func checkDeleteButtonStatus() {
+    // 메인(첫번째 유저이거나), 지금현재 선택된 유저이거나, 유저를 만들고 있는 경우엔 삭제버튼 비활성화
+    if subUserSingle.subUserList?[0].id == subUserIDtag || APICenter.shared.getSubUserID() == subUserIDtag || isUserCreating {
+      deleteButton.isHidden = true
+    }
+  }
+  
 }
 
 

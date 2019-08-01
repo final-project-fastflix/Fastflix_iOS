@@ -92,19 +92,27 @@ class ProfileSelectVC: UIViewController {
     }
   }
   
+  let firstYLine = UIScreen.main.bounds.height * 0.32
+  lazy var secondYLine = firstYLine + 180
+  lazy var thirdYLine = secondYLine + 180
+  
+  
   var isFromSeeMoreView: Bool = false
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    configure()
-    navigationBarSetting()
+    subUserList = subUserSingle.subUserList
+    numberOfUsers = subUserSingle.subUserList?.count
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+
     subUserList = subUserSingle.subUserList
     numberOfUsers = subUserSingle.subUserList?.count
     
+    configure()
+    navigationBarSetting()
     addSubViews()
     setFuntions()
     
@@ -113,52 +121,11 @@ class ProfileSelectVC: UIViewController {
       changeButtonTapped()
     }
     
-    print("싱글톤의 유저리스트 viewDidAppear:", subUserSingle.subUserList)
-    print("서브유저리스트 viewDidAppear:", subUserList)
-    print("numberOfUsers viewDidAppear:", numberOfUsers)
-    
     setupSNP()
     setUserViews()
     setupProfileLayout()
-    self.view.layoutIfNeeded()
-    self.view.setNeedsLayout()
-  
-  }
-  
-//  override func viewWillLayoutSubviews() {
-//    super.viewWillLayoutSubviews()
-//    self.view.translatesAutoresizingMaskIntoConstraints = false
-//  }
-  
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-//    view.setTranslatesAutoresizingMaskIntoConstraints(true)
-  }
-  
-
-  
-  
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-//    subUserList = subUserSingle.subUserList
-//    numberOfUsers = subUserSingle.subUserList?.count
-//
-//    addSubViews()
-//    setFuntions()
-//
-//    // SeeMore뷰에서 직접 넘어왔다면 변경버튼까지 바로 누른 상태로 실행하기 위함(변경버튼 -> 유저 isEditing상태가 됨)
-//    if isFromSeeMoreView {
-//      changeButtonTapped()
-//    }
-//
-//    print("싱글톤의 유저리스트 viewDidAppear:", subUserSingle.subUserList)
-//    print("서브유저리스트 viewDidAppear:", subUserList)
-//    print("numberOfUsers viewDidAppear:", numberOfUsers)
-//
-//    setupSNP()
-//    setUserViews()
-//    setupProfileLayout()
 //    self.view.layoutIfNeeded()
+//    self.view.setNeedsLayout()
   }
   
   private func configure() {
@@ -166,6 +133,8 @@ class ProfileSelectVC: UIViewController {
   }
   
   private func addSubViews() {
+    [navigationView, introlabel, profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.removeFromSuperview() }
+    
     [navigationView, introlabel, profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { view.addSubview($0) }
   }
   
@@ -204,27 +173,27 @@ class ProfileSelectVC: UIViewController {
     profileImageView1.snp.makeConstraints {
       $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
       $0.centerX.equalToSuperview().offset(-70)
-      $0.top.equalTo(introlabel.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+      $0.centerY.equalTo(self.view.snp.top).offset(self.firstYLine)
     }
     profileImageView2.snp.makeConstraints {
       $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
       $0.centerX.equalToSuperview().offset(70)
-      $0.top.equalTo(introlabel.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+      $0.centerY.equalTo(self.view.snp.top).offset(self.firstYLine)
     }
     profileImageView3.snp.makeConstraints {
       $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
       $0.centerX.equalToSuperview().offset(-70)
-      $0.top.equalTo(profileImageView1.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+      $0.centerY.equalTo(self.view.snp.top).offset(self.secondYLine)
     }
     profileImageView4.snp.makeConstraints {
       $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
       $0.centerX.equalToSuperview().offset(70)
-      $0.top.equalTo(profileImageView1.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+      $0.centerY.equalTo(self.view.snp.top).offset(self.secondYLine)
     }
     profileImageView5.snp.makeConstraints {
       $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
       $0.centerX.equalToSuperview()
-      $0.top.equalTo(profileImageView3.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+      $0.centerY.equalTo(self.view.snp.top).offset(self.thirdYLine)
     }
   }
   
@@ -233,14 +202,13 @@ class ProfileSelectVC: UIViewController {
     switch numberOfUsers {
     case 1:
       [profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = true }
-      [profileImageView1].forEach { $0.isHidden = false }
+      [profileImageView1, addProfileView].forEach { $0.isHidden = false }
       // 연필 움직이는 효과 구현
       UIView.animate(withDuration: 0.1) {
         self.addProfileView.snp.makeConstraints {
           $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
           $0.centerX.equalToSuperview().offset(70)
-          $0.top.equalTo(self.introlabel.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
-//          $0.top.equalTo(self.introlabel.snp.bottom).offset(UIScreen.main.bounds.width * 0.32 + 40)
+          $0.centerY.equalTo(self.view.snp.top).offset(self.firstYLine)
         }
       }
       [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
@@ -249,14 +217,13 @@ class ProfileSelectVC: UIViewController {
       
     case 2:
       [profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = true }
-      [profileImageView1, profileImageView2].forEach { $0.isHidden = false }
+      [profileImageView1, profileImageView2, addProfileView].forEach { $0.isHidden = false }
       // 연필 움직이는 효과 구현
       UIView.animate(withDuration: 0.1) {
         self.addProfileView.snp.makeConstraints {
           $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
           $0.centerX.equalToSuperview()
-          $0.top.equalTo(self.introlabel.snp.bottom).offset(UIScreen.main.bounds.width * 0.32 + 78)
-//          $0.top.equalTo(self.profileImageView1.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+          $0.centerY.equalTo(self.view.snp.top).offset(self.secondYLine)
         }
       }
       [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
@@ -265,14 +232,13 @@ class ProfileSelectVC: UIViewController {
       
     case 3:
       [profileImageView4, profileImageView5].forEach { $0.isHidden = true }
-      [profileImageView1, profileImageView2, profileImageView3].forEach { $0.isHidden = false }
+      [profileImageView1, profileImageView2, profileImageView3, addProfileView].forEach { $0.isHidden = false }
       // 연필 움직이는 효과 구현
       UIView.animate(withDuration: 0.1) {
         self.addProfileView.snp.makeConstraints {
           $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
           $0.centerX.equalToSuperview().offset(70)
-//          $0.top.equalTo(self.profileImageView1.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
-          $0.top.equalTo(self.introlabel.snp.bottom).offset(UIScreen.main.bounds.width * 0.32 + 78)
+          $0.centerY.equalTo(self.view.snp.top).offset(self.secondYLine)
         }
       }
       [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
@@ -281,14 +247,13 @@ class ProfileSelectVC: UIViewController {
       
     case 4:
       profileImageView5.isHidden = true
-      [profileImageView1, profileImageView2, profileImageView3, profileImageView4].forEach { $0.isHidden = false }
+      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, addProfileView].forEach { $0.isHidden = false }
       // 연필 움직이는 효과 구현
       UIView.animate(withDuration: 0.1) {
         self.addProfileView.snp.makeConstraints {
           $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
           $0.centerX.equalToSuperview()
-//          $0.top.equalTo(self.profileImageView3.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
-          $0.top.equalTo(self.introlabel.snp.bottom).offset((UIScreen.main.bounds.width * 0.32 + 78)*2)
+          $0.centerY.equalTo(self.view.snp.top).offset(self.thirdYLine)
         }
       }
       [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach {
@@ -303,7 +268,7 @@ class ProfileSelectVC: UIViewController {
         self.addProfileView.snp.makeConstraints {
           $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
           $0.centerX.equalToSuperview()
-          $0.top.equalTo(self.profileImageView3.snp.bottom).offset(UIScreen.main.bounds.height * 0.03)
+          $0.centerY.equalTo(self.view.snp.top).offset(self.thirdYLine)
         }
       }
       addProfileView.isHidden = true
@@ -413,6 +378,7 @@ extension ProfileSelectVC: UserViewDelegate {
   // 2) 편집이 가능한 상태(isEditing)에서 프로필 변경을 위한 특정 유저 선택
   func profileChangeTapped(tag: Int, userName: String, userImage: UIImage) {
     print("프로필 변경을 위한 - 특정 유저 선택 하기 눌렀당")
+    
     let profileChangeVC = ProfileChangeVC()
     profileChangeVC.subUserIDtag = tag
     profileChangeVC.userName = userName
@@ -420,6 +386,7 @@ extension ProfileSelectVC: UserViewDelegate {
     guard let user = subUserList?.filter({ $0.id == tag }) else { return }
     profileChangeVC.kidChecking = user[0].kid
     profileChangeVC.isUserCreating = false
+    
     let navi = UINavigationController(rootViewController: profileChangeVC)
     navigationController?.present(navi, animated: true)
   }
@@ -430,9 +397,11 @@ extension ProfileSelectVC: UserViewDelegate {
 extension ProfileSelectVC: AddProfileViewDelegate {
   func addProfileButtonTapped() {
     print("프로필추가 눌렀음====================동작바람")
+    
     let profileChangeVC = ProfileChangeVC()
     profileChangeVC.userName = ""
     profileChangeVC.isUserCreating = true
+    
     let navi = UINavigationController(rootViewController: profileChangeVC)
     navigationController?.present(navi, animated: true)
   
