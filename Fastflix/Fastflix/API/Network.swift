@@ -13,6 +13,9 @@ import Alamofire
 final class APICenter {
   static let shared = APICenter()
   
+  let group = DispatchGroup()
+  let downloadQueue = DispatchQueue(label: "downloadQueue", attributes: .concurrent)
+  
   // MARK: 유저디폴트 객체
   private let path = UserDefaults.standard
   

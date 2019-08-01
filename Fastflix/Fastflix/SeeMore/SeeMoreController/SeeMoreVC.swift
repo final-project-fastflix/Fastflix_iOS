@@ -34,6 +34,8 @@ class SeeMoreVC: UIViewController {
     let seeMoreView = SeeMoreView()
     self.view = seeMoreView
     seeMoreView.delegate = self
+    setupNavi()
+
   }
   
   
@@ -47,6 +49,13 @@ class SeeMoreVC: UIViewController {
     navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
     navigationController?.navigationBar.shadowImage = UIImage()
     navigationController?.navigationBar.isTranslucent = true
+    
+    // MARK: - navigationItem
+    navigationController?.navigationBar.barStyle = .blackTranslucent
+    navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    navigationController?.navigationBar.tintColor = .white
+    
+  
   }
 }
 
@@ -87,16 +96,24 @@ extension SeeMoreVC: SeeMoreViewDelegate {
     case IndexPath(row: 0, section: 0): break
       
     case IndexPath(row: 0, section: 1):
-      print("내가 찜한 콘텐츠 ")
   
       let mycontentVC = MyContentVC()
       navigationController?.show(mycontentVC, sender: nil)
+    case IndexPath(row: 1, section: 2):
+      
+      let iconVC = IconVC()
+      navigationController?.show(iconVC, sender: nil)
+    case IndexPath(row: 2, section: 2):
+      
+      let iconVC = IconVC()
+      navigationController?.show(iconVC, sender: nil)
+    case IndexPath(row: 3, section: 2):
+      
+      let customerCVC = CustomerCenterVC()
+      navigationController?.show(customerCVC, sender: nil)
       navigationItem.setHidesBackButton(true, animated: true)
       
-    case IndexPath(row: 0, section: 2):
-      print("앱설정")
     case IndexPath(row: 4, section: 2):
-      print("로그아웃")
       self.alert(title: "로그아웃", message: "로그아웃하시겠어요?") {
         let path = UserDefaults.standard
         path.removeObject(forKey: "token")

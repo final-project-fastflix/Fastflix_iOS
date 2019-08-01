@@ -65,6 +65,7 @@
 		C1FC3F7C22F0457F008E1FE9 /* DownloadTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F7B22F0457F008E1FE9 /* DownloadTableCell.swift */; };
 		C1FC3F7E22F045AF008E1FE9 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F7D22F045AF008E1FE9 /* DownloadView.swift */; };
 		C1FC3F8222F04622008E1FE9 /* EmptyDownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F8122F04622008E1FE9 /* EmptyDownloadView.swift */; };
+		C1FC3F8822F2E4F3008E1FE9 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F8722F2E4F3008E1FE9 /* DataCenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -130,6 +131,7 @@
 		C1FC3F7B22F0457F008E1FE9 /* DownloadTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DownloadTableCell.swift; path = Fastflix/Download/DownloadCell/DownloadTableCell.swift; sourceTree = SOURCE_ROOT; };
 		C1FC3F7D22F045AF008E1FE9 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DownloadView.swift; path = Fastflix/Download/DownloadView/DownloadView.swift; sourceTree = SOURCE_ROOT; };
 		C1FC3F8122F04622008E1FE9 /* EmptyDownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDownloadView.swift; sourceTree = "<group>"; };
+		C1FC3F8722F2E4F3008E1FE9 /* DataCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
 		E29600FEE1EEB7B6DD9E0171 /* Pods_Fastflix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fastflix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -200,6 +202,7 @@
 				5295216622D5D59100174BC1 /* DataOfDevy.swift */,
 				5295216822D5D59A00174BC1 /* DataOfAllen.swift */,
 				C1CA09C522E17130009B1296 /* DataForAPI.swift */,
+				C1FC3F8722F2E4F3008E1FE9 /* DataCenter.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -611,6 +614,7 @@
 				478AA3D222E9868900A632EF /* ProfileChangeVC.swift in Sources */,
 				C1FC3F3222E7025D008E1FE9 /* MainMovieView.swift in Sources */,
 				C1FC3F0822E596C6008E1FE9 /* IconVC.swift in Sources */,
+				C1FC3F8822F2E4F3008E1FE9 /* DataCenter.swift in Sources */,
 				C1FC3F6222ECA67A008E1FE9 /* SearchCollectionCell.swift in Sources */,
 				C143560A22DCAAD5005189E9 /* OriginalTableCell.swift in Sources */,
 				47AC179722E2341E00D6AACD /* BeforeLoginVC.swift in Sources */,
@@ -775,7 +779,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = G4MM77V7NH;
 				INFOPLIST_FILE = Fastflix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -795,7 +799,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = G4MM77V7NH;
 				INFOPLIST_FILE = Fastflix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
