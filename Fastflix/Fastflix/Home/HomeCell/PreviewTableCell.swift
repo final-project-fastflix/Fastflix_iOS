@@ -18,6 +18,9 @@ final class PreviewTableCell: UITableViewCell {
   
   static let identifier = "PreviewTableCell"
   
+  private var mainURLs: [URL?]?
+  private var logoURLs: [URL?]?
+  
   private let layout = UICollectionViewFlowLayout()
   
   private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -42,6 +45,14 @@ final class PreviewTableCell: UITableViewCell {
     addSubViews()
     setupSNP()
     setupCollectionView()
+  }
+  
+  func configure(mainURLs: [String]?, logoURLs: [String]?) {
+    let mainArr = mainURLs ?? imageUrls
+    let logoArr = logoURLs ?? imageUrls
+    
+    self.mainURLs = mainArr.map { URL(string: $0) }
+    self.logoURLs = logoArr.map { URL(string: $0) }
   }
   
   // MARK: - addSubViews
@@ -86,12 +97,12 @@ final class PreviewTableCell: UITableViewCell {
 extension PreviewTableCell: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return ImagesData.shared.originalImages.count
+    return mainURLs?.count ?? 0
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PreviewCollectionCell.identifier, for: indexPath) as! PreviewCollectionCell
-    cell.configure(imageName: "preViewFace2")
+    cell.configure(mainURL: mainURLs?[indexPath.row], logoURL: logoURLs?[indexPath.row])
     return cell
   }
   

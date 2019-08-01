@@ -48,7 +48,8 @@ class MyContentView: UIView {
     }
 
   }
-      // MARK: - setupCollectionView
+  
+  // MARK: - setupCollectionView
   private func setupCollectionView() {
     collectionView.dataSource = self
     collectionView.delegate = self
@@ -56,13 +57,18 @@ class MyContentView: UIView {
     collectionView.backgroundColor = .black
     self.collectionView.collectionViewLayout = layout
     
-    
+    // MARK: - 컬렉션뷰 레이아웃 설정
+    // 컬렉션뷰의 전체적으로 떨어진 간격 설정(inset)
     layout.sectionInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+    // 다음줄(아랫줄)과의 간격설정 - 12
     layout.minimumLineSpacing = 12
+    // 옆줄과의 간격설정 - 14
     layout.minimumInteritemSpacing = 14
+    // 전체 뷰에서 왼쪽 8, 오른쪽 8, 사이 14 * 2 (전체 44)를 빼고난 나머지 공간을 3줄로 나누기
     let width = (UIScreen.main.bounds.width - 44)/3
-    layout.itemSize = CGSize(width: width, height: width * 1.3818)
-    
+    let height = width * 1.4
+    // 컬렉션뷰의 각 한개의 아이템 사이즈 설정
+    layout.itemSize = CGSize(width: width, height: height)
     
     layout.sectionHeadersPinToVisibleBounds = true
     collectionView.showsHorizontalScrollIndicator = false

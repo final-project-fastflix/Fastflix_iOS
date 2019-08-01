@@ -21,14 +21,26 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     checkLoginState()
-    APICenter.shared.getTop10() { (result) in
-      switch result {
-      case .success(let value):
-        print("result1: ", value)
-      case .failure(let err):
-        print("result1: ", err)
-      }
-    }
+
+//    APICenter.shared.changeProfileInfo(id: 49, name: nil, kid: false, imgPath: nil) { (result) in
+//      switch result {
+//      case .success(let value):
+//        print("result1: ", value)
+//      case .failure(let err):
+//        print("result1: ", err)
+//    }
+    
+    // MARK: - TEST
+//    APICenter.shared.deleteProfileInfo(id: 200) { (result) in
+//      switch result {
+//      case .success(let value):
+//        print("resultApp: ", value)
+//      case .failure(let err):
+//        print("resultApp: ", err)
+//      }
+//    }
+    
+    
     return true
   }
   
@@ -54,12 +66,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
           print("Get SubuserList Success!!!")
           print("value: ", subUsers)
           self.subUserSingle.subUserList = subUsers
-          
+
           // 그리고 유저디폴트에 저장된 서브유저아이디와 같은 값이 있다면 계속사용, 없다면 첫번째 싱글톤의 첫번째 유저의 아이디를 유저디폴트에 저장해서 사용
           if self.subUserSingle.subUserList?.filter({ $0.id == APICenter.shared.getSubUserID() }) == nil {
             APICenter.shared.saveSubUserID(id: (self.subUserSingle.subUserList?[0].id)!)
           }
-          
+
         case .failure(let err):
           print("fail to login, reason: ", err)
         }
