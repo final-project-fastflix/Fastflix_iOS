@@ -107,6 +107,11 @@ extension SeeMoreVC: SeeMoreViewDelegate {
       
       let iconVC = IconVC()
       navigationController?.show(iconVC, sender: nil)
+//
+//      let loadingVC = LoadingVC()
+//      navigationController?.show(loadingVC, sender: nil)
+
+
     case IndexPath(row: 3, section: 2):
       
       let customerCVC = CustomerCenterVC()
