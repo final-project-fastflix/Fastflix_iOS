@@ -15,7 +15,7 @@ class LaunchView: UIView {
   let imageView: UIImageView = {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "launchlogo3")
-    imageView.contentMode = .scaleAspectFill
+    imageView.contentMode = .scaleAspectFit
     imageView.alpha = 0
     return imageView
   }()
@@ -32,7 +32,9 @@ class LaunchView: UIView {
   
   private func setupSNP() {
     imageView.snp.makeConstraints {
-      $0.top.leading.trailing.bottom.equalToSuperview()
+      $0.top.bottom.equalToSuperview()
+      $0.leading.equalToSuperview().offset(50)
+      $0.trailing.equalToSuperview().offset(-50)
     }
   }
   
