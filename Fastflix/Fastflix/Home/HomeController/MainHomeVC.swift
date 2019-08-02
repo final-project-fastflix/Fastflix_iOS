@@ -142,9 +142,16 @@ extension MainHomeVC: UITableViewDataSource {
       let cell = tableView.dequeueReusableCell(withIdentifier: MainImageTableCell.identifier, for: indexPath) as! MainImageTableCell
       let bigImgPath = path.mainImageCellData?[0].mainMovie.bigImagePath
       let logoImgPath = path.mainImageCellData?[0].mainMovie.logoImagePath
+      var text = ""
+      
       cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
+      if let data = path.mainImageCellData?[0].mainMovie.genre {
+        for idx in data {
+          text += (idx.name + " * ")
+        }
+      }
       cell.selectionStyle = .none
-      cell.movieDetailLabel.text = " 슈퍼히어로 ･ 사이보그 & 로봇 ･ SF ･ 액션 ･ 할리우드 영화 "
+      cell.movieDetailLabel.text = text
       return cell
       
       
