@@ -27,6 +27,31 @@ enum RequestString: String {
   case getFollowUpListURL = "http://52.78.134.79/movies/followup/"
   case changeProfileInfoURL = "http://52.78.134.79/accounts/change_sub_user/"
   case deleteProfileInfoURL = "http://52.78.134.79/accounts/delete_sub_user/"
+  case getGoldenMovieURL = "http://52.78.134.79/movies/big_size_video/"
+}
+
+
+// MARK: - GoldenMovie
+struct GoldenMovie: Codable {
+  let id: Int
+  let name: String
+  let videoFile: String
+  let horizontalImagePath: String
+  let logoImagePath: String
+  let synopsis: String
+  let bigImagePath: String
+  let degree: Degree
+  let marked: Bool
+  
+  enum CodingKeys: String, CodingKey {
+    case id, name
+    case videoFile = "video_file"
+    case horizontalImagePath = "horizontal_image_path"
+    case logoImagePath = "logo_image_path"
+    case synopsis
+    case bigImagePath = "big_image_path"
+    case degree, marked
+  }
 }
 
 

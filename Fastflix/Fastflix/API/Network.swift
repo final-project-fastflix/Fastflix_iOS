@@ -48,7 +48,29 @@ class APICenter {
     }
   }
   
+  func getGoldenMovieData(completion: @escaping (Result<GoldenMovie>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    
+    Alamofire.request(RequestString.getGoldenMovieURL.rawValue, method: .get, headers: header)
+      .validate(statusCode: 200...299)
+      .responseData(queue: .global()) { (res) in
+        switch res.result {
+        case .success(let value):
+          guard let dict = try? JSONDecoder().decode(GoldenMovie.self, from: value) else {
+            completion(.failure(ErrorType.FailToParsing))
+            return
+          }
+          
+          completion(.success(dict))
+        case .failure(let err):
+          dump(err)
+          completion(.failure(ErrorType.networkError))
+        }
+    }
+  }
   
+  
+  // 프로필 삭제
   func deleteProfileInfo(id: Int, completion: @escaping (Result<Int>) -> ()) {
     let header = [
       "Authorization": "Token \(token)",

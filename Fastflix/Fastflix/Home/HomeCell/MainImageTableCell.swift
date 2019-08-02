@@ -5,13 +5,6 @@
 //  Created by Jeon-heaji on 11/07/2019.
 //  Copyright © 2019 hyeoktae kwon. All rights reserved.
 //
-//
-//  MainImageCell.swift
-//  Fastflix
-//
-//  Created by Jeon-heaji on 11/07/2019.
-//  Copyright © 2019 hyeoktae kwon. All rights reserved.
-//
 
 import UIKit
 import SnapKit
@@ -102,9 +95,15 @@ final class MainImageTableCell: UITableViewCell {
     let logoImageURL = URL(string: logoImageURLString ?? "ImagesData.shared.imagesUrl[6]")
     
     self.mainImage.kf.setImage(with: imageURL, options: [.processor(CroppingImageProcessor(size: CGSize(width: 414, height: 600))), .scaleFactor(UIScreen.main.scale)])
-    self.logoImage.kf.setImage(with: logoImageURL, options: [.processor(CroppingImageProcessor(size: CGSize(width: 200, height: 200))), .scaleFactor(UIScreen.main.scale)]) { _ in
-      self.logoImage.image = self.logoImage.image?.cropAlpha()
-      self.logoImage.contentMode = .scaleAspectFit
+    self.logoImage.kf.setImage(with: logoImageURL, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 400, height: 200))), .cacheOriginalImage]) { img in
+      switch img {
+      case .success(let data):
+        self.logoImage.image = data.image.cropAlpha()
+        self.logoImage.contentMode = .scaleAspectFit
+      case .failure(let err):
+        dump(err)
+      }
+      
     }
   }
   

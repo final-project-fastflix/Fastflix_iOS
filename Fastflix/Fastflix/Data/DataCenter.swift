@@ -22,6 +22,8 @@ class DataCenter {
   var forkData: ListOfFork?
 
   var top10Data: Top10?
+  
+  var goldenMovie: GoldenMovie?
 
   let group = DispatchGroup()
   
@@ -36,8 +38,24 @@ class DataCenter {
       self.getBrandNewData()
       self.getForkData()
       self.getTop10Data()
+      self.getGoldenMovieData()
     
-    
+  }
+  
+  private func getGoldenMovieData() {
+    group.enter()
+    downloadPath.getGoldenMovieData { (result) in
+      switch result {
+      case .success(let value):
+        self.goldenMovie = value
+        print("Queue getGoldenMovieData")
+        self.group.leave()
+      case .failure(let err):
+        dump(err)
+        self.mainImageCellData = nil
+        self.group.leave()
+      }
+    }
   }
 
   private func getMainImgCellData() {
