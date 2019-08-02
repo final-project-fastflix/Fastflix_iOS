@@ -144,16 +144,19 @@ class BeforeLoginVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    scrollViewSetting()
-    configure()
-    addSubViews()
+    downloadUserList()
     navigationBarSetting()
+    scrollViewSetting()
+//    configure()
+    addSubViews()
+    
+    
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     setupSNP()
+    
   }
   
   private func configure() {
@@ -284,6 +287,27 @@ class BeforeLoginVC: UIViewController {
     present(customerCenterVC, animated: true)
   }
   
+  func downloadUserList() {
+    let subUserSingle = SubUserSingleton.shared
+    APICenter.shared.getSubUserList() {
+      print("check after getSubUserList1")
+      switch $0 {
+      case .success(let subUsers):
+        subUserSingle.subUserList = subUsers
+        print("check after getSubUserList2")
+        // 그리고 유저디폴트에 저장된 서브유저아이디와 같은 값이 있다면 계속사용, 없다면 첫번째 싱글톤의 첫번째 유저의 아이디를 유저디폴트에 저장해서 사용
+        if subUserSingle.subUserList?.filter({ $0.id == APICenter.shared.getSubUserID() }) == nil {
+          print("check after getSubUserList3")
+          APICenter.shared.saveSubUserID(id: (subUserSingle.subUserList?[0].id)!)
+        }
+        
+        
+      case .failure(let err):
+        print("fail to login, reason: ", err)
+        print("check after getSubUserList4")
+      }
+    }
+  }
 }
 
 extension BeforeLoginVC: UIScrollViewDelegate {
