@@ -11,21 +11,22 @@ import Kingfisher
 
 protocol UserViewDelegate: class {
   func didSelectUser(tag: Int)
-  func profileChangeTapped(tag: Int, userName: String, userImage: UIImage)
+  func profileChangeTapped(tag: Int, userName: String, userImage: UIImage, imageURL: String)
+  func toUserIconSelectVC()
 }
 
 class UserView: UIView {
-
-  let userImageView: UIImageView = {
-    let imageView = UIImageView()
-    return imageView
-  }()
   
   var isEditing: Bool = false {
     didSet {
       editImageView.isHidden = !isEditing
     }
   }
+  
+  let userImageView: UIImageView = {
+    let imageView = UIImageView()
+    return imageView
+  }()
   
   var profileImage: UIImage? {
     didSet {
@@ -38,6 +39,12 @@ class UserView: UIView {
       profileButton.setTitle(profileUserName, for: .normal)
     }
   }
+  
+  // 이미지경로 전달을 위한 속성
+  var imagePath: String?
+  
+  var isForImageSelecting = false
+  
   
   var editImageView: UIImageView = {
     let imageView = UIImageView()
@@ -118,16 +125,21 @@ class UserView: UIView {
   }
   
   func configureImage(imageURLString: String?) {
+    imagePath = imageURLString
     let imageURL = URL(string: imageURLString ?? "ImagesData.shared.imagesUrl[5]")
-    self.userImageView.kf.setImage(with: imageURL, options: [.processor(CroppingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])
+    self.userImageView.kf.setImage(with: imageURL, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])
   }
   
   @objc private func buttonTapped() {
     if isEditing {
-      delegate?.profileChangeTapped(tag: tag, userName: profileUserName!, userImage: userImageView.image!)
+        delegate?.profileChangeTapped(tag: tag, userName: profileUserName!, userImage: userImageView.image!, imageURL: imagePath!)
     } else {
-//      APICenter.shared.saveSubUserID(id: tag)
-      delegate?.didSelectUser(tag: tag)
+      if isForImageSelecting {
+        delegate?.toUserIconSelectVC()
+        print("넘어가는뷰")
+      }else {
+        delegate?.didSelectUser(tag: tag)
+      }
     }
   }
   
