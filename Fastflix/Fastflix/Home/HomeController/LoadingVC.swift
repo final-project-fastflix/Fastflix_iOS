@@ -13,15 +13,20 @@ class LoadingVC: UIViewController {
   
   
   override func loadView() {
+    DataCenter.shared.downloadDatas()
     let loadingView = LoadingView()
     self.view = loadingView
   }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-      
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+      let appDelegate =  AppDelegate.instance
+      appDelegate.checkLoginState()
     }
     
-
+  }
+  
+  
 }

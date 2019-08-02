@@ -287,7 +287,7 @@ class BeforeLoginVC: UIViewController {
     present(customerCenterVC, animated: true)
   }
   
-  private func downloadUserList() {
+  func downloadUserList() {
     let subUserSingle = SubUserSingleton.shared
     APICenter.shared.getSubUserList() {
       print("check after getSubUserList1")

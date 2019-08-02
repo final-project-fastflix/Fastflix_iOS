@@ -359,6 +359,7 @@ extension SeeMoreView: UITableViewDelegate {
 extension SeeMoreView: ProfileViewDelegate {
   // ProfileView에서 선택하면 델리게이트로 SeeMoreView로 전달
   func didSelectUser(tag: Int) {
+    print("didSelectUser")
     // 선택된 서브유저 아이디 유저디폴트에 저장
     APICenter.shared.saveSubUserID(id: tag)
     // 선택하면 누가 선택되었는지 확인 및 레이아웃 다시 잡기

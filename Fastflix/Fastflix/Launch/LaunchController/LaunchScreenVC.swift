@@ -17,23 +17,23 @@ final class LaunchScreenVC: UIViewController {
     DataCenter.shared.downloadDatas()
     self.view = launchView
   }
-
-
+  
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
     
-    UIView.animate(withDuration: 3) { [weak imageView = launchView.imageView] in
+    UIView.animate(withDuration: 2) { [weak imageView = launchView.imageView] in
       imageView?.alpha = 1
     }
     
     // 3초 뒤에 뷰 컨트롤러를 띄우는거
-    Timer.scheduledTimer(withTimeInterval: 3.5, repeats: false) { _ in
+    Timer.scheduledTimer(withTimeInterval: 2.3, repeats: false) { _ in
       let appDelegate =  AppDelegate.instance
       appDelegate.checkLoginState()
     }
   }
-
-
+  
+  
 }
 
