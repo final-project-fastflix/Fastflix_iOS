@@ -66,6 +66,8 @@
 		C1FC3F7E22F045AF008E1FE9 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F7D22F045AF008E1FE9 /* DownloadView.swift */; };
 		C1FC3F8222F04622008E1FE9 /* EmptyDownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F8122F04622008E1FE9 /* EmptyDownloadView.swift */; };
 		C1FC3F8822F2E4F3008E1FE9 /* DataCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F8722F2E4F3008E1FE9 /* DataCenter.swift */; };
+		C1FC3F8C22F2FC83008E1FE9 /* WatchingMoviesCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F8B22F2FC83008E1FE9 /* WatchingMoviesCollectionCell.swift */; };
+		C1FC3F8E22F2FD0C008E1FE9 /* WatchingMoviesTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F8D22F2FD0C008E1FE9 /* WatchingMoviesTableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -132,6 +134,8 @@
 		C1FC3F7D22F045AF008E1FE9 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DownloadView.swift; path = Fastflix/Download/DownloadView/DownloadView.swift; sourceTree = SOURCE_ROOT; };
 		C1FC3F8122F04622008E1FE9 /* EmptyDownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDownloadView.swift; sourceTree = "<group>"; };
 		C1FC3F8722F2E4F3008E1FE9 /* DataCenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCenter.swift; sourceTree = "<group>"; };
+		C1FC3F8B22F2FC83008E1FE9 /* WatchingMoviesCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchingMoviesCollectionCell.swift; sourceTree = "<group>"; };
+		C1FC3F8D22F2FD0C008E1FE9 /* WatchingMoviesTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchingMoviesTableCell.swift; sourceTree = "<group>"; };
 		E29600FEE1EEB7B6DD9E0171 /* Pods_Fastflix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fastflix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -311,6 +315,8 @@
 				47FF9DC222DE3C51005C7BAD /* DetailViewUpperCell.swift */,
 				47FF9DC422DE3C98005C7BAD /* DetailViewBelowCell.swift */,
 				47FF9DC622DE3CC4005C7BAD /* DetailCollectionViewCell.swift */,
+				C1FC3F8D22F2FD0C008E1FE9 /* WatchingMoviesTableCell.swift */,
+				C1FC3F8B22F2FC83008E1FE9 /* WatchingMoviesCollectionCell.swift */,
 			);
 			path = HomeCell;
 			sourceTree = "<group>";
@@ -622,6 +628,7 @@
 				52BA343022DDE7EF005F8489 /* SubCell.swift in Sources */,
 				C1FC3EFE22E4899C008E1FE9 /* MainHomeVC.swift in Sources */,
 				C1E21BE622DF1BB400930115 /* LaunchScreenVC.swift in Sources */,
+				C1FC3F8E22F2FD0C008E1FE9 /* WatchingMoviesTableCell.swift in Sources */,
 				47FF9DC722DE3CC4005C7BAD /* DetailCollectionViewCell.swift in Sources */,
 				47E35BDB22F0C57A002D5319 /* AddView.swift in Sources */,
 				C1FC3F3422E8ACFC008E1FE9 /* MyContentVC.swift in Sources */,
@@ -651,6 +658,7 @@
 				5295216F22D5D65400174BC1 /* Network.swift in Sources */,
 				C1FC3F3622E8AD23008E1FE9 /* MyContentView.swift in Sources */,
 				5295216922D5D59A00174BC1 /* DataOfAllen.swift in Sources */,
+				C1FC3F8C22F2FC83008E1FE9 /* WatchingMoviesCollectionCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
