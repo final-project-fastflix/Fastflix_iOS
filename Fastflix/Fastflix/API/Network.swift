@@ -355,7 +355,7 @@ class APICenter {
   private func getToken() -> String {
     guard let token = path.string(forKey: "token") else {
       print("ERROR!!!, No Token")
-      AppDelegate.instance.checkLoginState()
+//      AppDelegate.instance.checkLoginState()
       return ""}
     return token
   }

@@ -95,8 +95,6 @@ class SeeMoreView: UIView {
     subUserList = subUserSingle.subUserList
     numberOfUsers = subUserSingle.subUserList?.count
     
-    print("씨모어의 뷰의 유저리스트: ",  subUserList)
-    print("씨모어뷰의 싱글톤의 유저리스트: ", SubUserSingleton.shared.subUserList)
     setupDelegate()
     addSubViews()
     setupSNP()
@@ -364,8 +362,9 @@ extension SeeMoreView: ProfileViewDelegate {
     // 선택된 서브유저 아이디 유저디폴트에 저장
     APICenter.shared.saveSubUserID(id: tag)
     // 선택하면 누가 선택되었는지 확인 및 레이아웃 다시 잡기
-    checkingSelectedSubUser()
-    setupProfileLayout()
+    AppDelegate.instance.reloadRootView()
+//    checkingSelectedSubUser()
+//    setupProfileLayout()
   }
 }
 

@@ -367,9 +367,8 @@ extension ProfileSelectVC: UserViewDelegate {
     print("유저 선택하기 눌렸당, 서브유저아이디 Tag:", tag)
     
     APICenter.shared.saveSubUserID(id: tag)
-    DispatchQueue.main.async {
-      AppDelegate.instance.checkLoginState()
-    }
+    AppDelegate.instance.reloadRootView()
+    
     
     //    let tabBar = MainTabBarController()
     //    present(tabBar, animated: false)
