@@ -40,9 +40,11 @@ class UserView: UIView {
     }
   }
   
+  // 이미지경로 전달을 위한 속성
   var imagePath: String?
   
   var isForImageSelecting = false
+  
   
   var editImageView: UIImageView = {
     let imageView = UIImageView()

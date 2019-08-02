@@ -61,6 +61,7 @@ class ProfileChangeVC: UIViewController {
   var userImage: UIImage?
   var profileImagePath: String?
   
+  
   var kidChecking: Bool = false {
     didSet {
       kidsSwitchButton.setOn(kidChecking, animated: true)
@@ -214,6 +215,7 @@ class ProfileChangeVC: UIViewController {
   
   private func navigationBarSetting() {
     let navCon = navigationController!
+    navCon.navigationBar.barTintColor = .black
     navCon.isNavigationBarHidden = true
   }
   
@@ -245,6 +247,7 @@ class ProfileChangeVC: UIViewController {
       print("유저 변경하고 있는데???")
       print("키즈여부:", kid)
       guard let subUserID = subUserIDtag else { return print("서브유저 아이디가 없다고?? 말이됨?") }
+      
       APICenter.shared.changeProfileInfo(id: subUserID, name: name, kid: kid, imgPath: profileImagePath) { (result) in
         switch result {
         case .success(let value):
@@ -361,8 +364,6 @@ extension ProfileChangeVC: UserViewDelegate {
   func toUserIconSelectVC() {
     print("유저아이콘 선택화면으로 이동하는 메서드 구현")
     
-    
-    
     APICenter.shared.changeProfileImage { (result) in
       switch result {
       case .success(let profileImage):
@@ -379,7 +380,10 @@ extension ProfileChangeVC: UserViewDelegate {
   }
   
   func profileChangeTapped(tag: Int, userName: String, userImage: UIImage, imageURL: String) {
-    //델리게이트로 구현되어있지만, 이 VC에서는 이 메서드 실행될 일 없음(-->옵셔널로)
+    
+    print("유저변경 사항 저장 구현???")
+    
+    
   }
   
   func didSelectUser(tag: Int) {

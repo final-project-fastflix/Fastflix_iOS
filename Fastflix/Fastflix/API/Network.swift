@@ -304,7 +304,7 @@ class APICenter {
   
   
   
-  // MARK: - 프로필사진들 가져오기
+  // MARK: - 유저 이미지 변경을 위한 "전체 프로필사진들" 가져오기
   func changeProfileImage(completion: @escaping (Result<ProfileImage>) -> ()) {
     let header = getHeader(needSubuser: false)
     

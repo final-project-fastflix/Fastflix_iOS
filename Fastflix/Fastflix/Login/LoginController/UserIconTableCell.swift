@@ -8,23 +8,37 @@
 
 import UIKit
 
-protocol UserIconCollectionCellDelegate:class {
-  func collectionView(collectioncell: UserIconCollectionViewCell?, imageURL: String, didTappedInTableview TableCell: UserIconTableCell)
+protocol UserIconCollectionCellDelegate: class {
+  func collectionViewCellDidTap(collectioncell: UserIconCollectionViewCell?, imageURL: String, didTappedInTableview TableCell: UserIconTableCell)
 }
 
 
 class UserIconTableCell: UITableViewCell {
   
+  let headerLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .white
+    label.backgroundColor = #colorLiteral(red: 0.09803921569, green: 0.09803921569, blue: 0.09803921569, alpha: 1)
+    label.font = UIFont.systemFont(ofSize: 18)
+    return label
+  }()
+  
   weak var cellDelegate: UserIconCollectionCellDelegate?
   
   lazy var collectionView: UICollectionView = {
-    let collectionView = UICollectionView(frame: .zero)
+    let flowLayout = UICollectionViewFlowLayout()
+    flowLayout.scrollDirection = .horizontal
+    flowLayout.itemSize = CGSize(width: 100, height: 100)
+    flowLayout.minimumLineSpacing = 10
+    flowLayout.minimumInteritemSpacing = 0
+    flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 4, bottom: 5, right: 0)
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
     collectionView.dataSource = self
     collectionView.delegate = self
+    collectionView.showsHorizontalScrollIndicator = false
+    collectionView.backgroundColor = #colorLiteral(red: 0.09803921569, green: 0.09803921569, blue: 0.09803921569, alpha: 1)
     return collectionView
   }()
-  
-  let flowLayout = UICollectionViewFlowLayout()
   
   var aCategory: String?
   
@@ -35,7 +49,7 @@ class UserIconTableCell: UITableViewCell {
     
     addSubViews()
     setupSNP()
-    setupCollectionViewFlowLayout()
+    setupCollectionView()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -48,25 +62,26 @@ class UserIconTableCell: UITableViewCell {
     self.collectionView.reloadData()
   }
   
-  private func setupCollectionViewFlowLayout() {
-    flowLayout.scrollDirection = .horizontal
-    flowLayout.itemSize = CGSize(width: 100, height: 100)
-    flowLayout.minimumLineSpacing = 10
-    flowLayout.minimumInteritemSpacing = 10
-    flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 4, bottom: 10, right: 4)
-    self.collectionView.collectionViewLayout = flowLayout
-    self.collectionView.showsHorizontalScrollIndicator = false
-    
+  private func setupCollectionView() {
+  
     collectionView.register(UserIconCollectionViewCell.self, forCellWithReuseIdentifier: "UserIconCollectionViewCell")
   }
 
   private func addSubViews() {
+    contentView.addSubview(headerLabel)
     contentView.addSubview(collectionView)
   }
   
   private func setupSNP() {
+    headerLabel.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
+      $0.height.equalTo(40)
+    }
+    
     collectionView.snp.makeConstraints {
-      $0.top.leading.trailing.bottom.equalToSuperview()
+      $0.top.equalToSuperview().offset(40)
+      $0.leading.trailing.bottom.equalToSuperview()
+      $0.height.equalTo(120)
     }
   }
 }
@@ -76,9 +91,9 @@ extension UserIconTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UserIconCollectionViewCell", for: indexPath) as? UserIconCollectionViewCell
     
-    let name = itemsByCategory?[indexPath.item].name
+    // 컬렉션뷰의 각 셀에는 이미지 경로만 전달
     if let imagePath = itemsByCategory?[indexPath.item].imagePath {
-      cell?.configureImage(name: name, imageURLString: imagePath)
+      cell?.configureImage(imageURLString: imagePath)
     }
     return cell!
   }
@@ -103,10 +118,10 @@ extension UserIconTableCell: UICollectionViewDataSource {
 // MARK: - 델리게이트 구현(테이블뷰안의 컬렉션뷰 셀을 한개 선택했을때의 동작)
 extension UserIconTableCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    
+    print("클릭됨??????")
     let cell = collectionView.cellForItem(at: indexPath) as? UserIconCollectionViewCell
     guard let url = cell?.imageURL else { return }
-    self.cellDelegate?.collectionView(collectioncell: cell, imageURL: url, didTappedInTableview: self)
+    self.cellDelegate?.collectionViewCellDidTap(collectioncell: cell, imageURL: url, didTappedInTableview: self)
   }
   
 }

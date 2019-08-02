@@ -9,7 +9,12 @@
 import UIKit
 
 class UserIconHeaderView: UITableViewHeaderFooterView {
-
+  
+  class var customView : UserIconHeaderView {
+    let cell = UserIconHeaderView()
+    return cell 
+  }
+  
   let headerLabel: UILabel = {
     let label = UILabel()
     label.backgroundColor = .clear
@@ -31,16 +36,20 @@ class UserIconHeaderView: UITableViewHeaderFooterView {
   }
   
   func configure() {
-    self.contentView.backgroundColor = #colorLiteral(red: 0.09803921569, green: 0.09803921569, blue: 0.09803921569, alpha: 1)
+    self.backgroundColor = .red
   }
   
   func addSubview() {
-    contentView.addSubview(headerLabel)
+    self.addSubview(headerLabel)
   }
   
   func setupSNP() {
+    self.snp.makeConstraints {
+      $0.height.equalTo(40)
+    }
+    
     headerLabel.snp.makeConstraints {
-      $0.top.leading.trailing.bottom.equalToSuperview()
+      $0.top.leading.trailing.bottom.equalTo(contentView)
       $0.height.equalTo(40)
     }
   }

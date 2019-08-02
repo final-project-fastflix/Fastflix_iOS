@@ -9,7 +9,6 @@
 import UIKit
 import Kingfisher
 
-
 class UserIconCollectionViewCell: UICollectionViewCell {
   
   let mainImageView: UIImageView = {
@@ -17,9 +16,7 @@ class UserIconCollectionViewCell: UICollectionViewCell {
     return imageView
   }()
   
-  var cellImageName:String?
   var imageURL: String?
-  
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -34,7 +31,7 @@ class UserIconCollectionViewCell: UICollectionViewCell {
   }
   
   private func configure() {
-    self.backgroundColor = UIColor.red
+    self.backgroundColor = #colorLiteral(red: 0.09803921569, green: 0.09803921569, blue: 0.09803921569, alpha: 1)
   }
   
   private func addSubViews() {
@@ -44,11 +41,11 @@ class UserIconCollectionViewCell: UICollectionViewCell {
   private func setupSNP(){
     mainImageView.snp.makeConstraints {
       $0.top.leading.trailing.bottom.equalToSuperview()
+      $0.width.height.equalTo(100)
     }
   }
   
-  func configureImage(name:String?, imageURLString: String?) {
-    self.cellImageName = name ?? "일단"
+  func configureImage(imageURLString: String?) {
     self.imageURL = imageURLString
     let imageURL = URL(string: imageURLString ?? "ImagesData.shared.imagesUrl[5]")
     self.mainImageView.kf.setImage(with: imageURL, options: [.processor(CroppingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])
