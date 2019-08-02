@@ -9,6 +9,8 @@
 import UIKit
 
 class ProfileChangeVC: UIViewController {
+  
+  let userIconSelectVC = UserIconSelectVC()
 
   let subUserSingle = SubUserSingleton.shared
   
@@ -25,7 +27,6 @@ class ProfileChangeVC: UIViewController {
   // 프로필관리 레이블(edit할때 나타나는 label)
   let profileChangeLabel: UILabel = {
     let label = UILabel()
-//    label.text = "프로필 변경"
     label.textAlignment = .center
     label.textColor = .white
     label.font = UIFont.systemFont(ofSize: 17)
@@ -54,12 +55,20 @@ class ProfileChangeVC: UIViewController {
   
   var userView = UserView()
   
+  // MARK: - 유저에 관한 정보 저장 속성
   var subUserIDtag: Int?
+  var userName: String?
+  var userImage: UIImage?
+  var profileImagePath: String?
+  
   var kidChecking: Bool = false {
     didSet {
       kidsSwitchButton.setOn(kidChecking, animated: true)
     }
   }
+  
+  // MARK: - 유저 생성중인지 여부 확인
+  var isUserCreating: Bool = false
   
   let textSurroundingView: UIView = {
     let view = UIView()
@@ -107,12 +116,6 @@ class ProfileChangeVC: UIViewController {
     button.addTarget(self, action: #selector(deleteButtonTapped(_:)), for: .touchUpInside)
     return button
   }()
-  
-  var userName: String?
-  
-  var userImage: UIImage?
-  
-  var isUserCreating: Bool = false
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
@@ -242,7 +245,7 @@ class ProfileChangeVC: UIViewController {
       print("유저 변경하고 있는데???")
       print("키즈여부:", kid)
       guard let subUserID = subUserIDtag else { return print("서브유저 아이디가 없다고?? 말이됨?") }
-      APICenter.shared.changeProfileInfo(id: subUserID, name: name, kid: kid, imgPath: nil) { (result) in
+      APICenter.shared.changeProfileInfo(id: subUserID, name: name, kid: kid, imgPath: profileImagePath) { (result) in
         switch result {
         case .success(let value):
           print("result1: ", value)
@@ -295,12 +298,12 @@ class ProfileChangeVC: UIViewController {
       APICenter.shared.deleteProfileInfo(id: self.subUserIDtag!) { (result) in
         switch result {
         case .success(let value):
-          print("resultApp: ", value)
+          print("지우기 결과 성공 result: ", value)
           self.regetSubUserList() {
             completion()
           }
         case .failure(let err):
-          print("resultApp: ", err)
+          print("지우기 결과 실패 result: ", err)
         }
       }
     }
@@ -347,22 +350,44 @@ class ProfileChangeVC: UIViewController {
   
 }
 
-
+// MARK: - 변경(UserView)을 선택했을 때 유저아이콘들 선택하는(UserIconSelectVC)뷰컨트롤러로 넘어가기 위한 델리게이트 구현
 extension ProfileChangeVC: UserViewDelegate {
-  func profileChangeTapped(tag: Int, userName: String, userImage: UIImage) {
-  }
   
   private func setFuntions() {
     userView.delegate = self
   }
   
+  // 유저뷰(UserView)를 눌렀을때 이미지변경을 위한 이미지를 다 받은 다음 UserIconSelectVC로 넘어가기
+  func toUserIconSelectVC() {
+    print("유저아이콘 선택화면으로 이동하는 메서드 구현")
+    
+    
+    
+    APICenter.shared.changeProfileImage { (result) in
+      switch result {
+      case .success(let profileImage):
+        print("이미지변경 버튼 성공 Images 받기: ", profileImage)
+        self.userIconSelectVC.profileImages = profileImage
+        self.userIconSelectVC.categories = profileImage.keys.sorted()
+        DispatchQueue.main.async {
+          self.navigationController?.pushViewController(self.userIconSelectVC, animated: true)
+        }
+      case .failure(let err):
+        print("넘어가기 실패 result: ", err)
+      }
+    }
+  }
+  
+  func profileChangeTapped(tag: Int, userName: String, userImage: UIImage, imageURL: String) {
+    //델리게이트로 구현되어있지만, 이 VC에서는 이 메서드 실행될 일 없음(-->옵셔널로)
+  }
+  
   func didSelectUser(tag: Int) {
-    
-    print("여러가지 프로필 선택 화면으로 이동--->")
-    
+    //델리게이트로 구현되어있지만, 이 VC에서는 이 메서드 실행될 일 없음(-->옵셔널로)
   }
 }
 
+// MARK: - 버튼 비활성화를 위한 텍스트필드 델리게이트 구현
 extension ProfileChangeVC: UITextFieldDelegate {
   
   //프로필 추가시에는 시작부터 텍스트 없기 때문에 버튼 비활성화 시키키 위해 텍스트필드 메서드 이용

@@ -308,7 +308,7 @@ class APICenter {
   func changeProfileImage(completion: @escaping (Result<ProfileImage>) -> ()) {
     let header = getHeader(needSubuser: false)
     
-    let req = Alamofire.request(RequestString.changeProfileListURL.rawValue, method: .get, headers: header)
+    let req = Alamofire.request(RequestString.changeProfileImageURL.rawValue, method: .get, headers: header)
     
     req.response(queue: .global()) { (res) in
       guard res.error == nil else {

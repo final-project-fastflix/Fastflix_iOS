@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		4743D1B322F35AB100B26067 /* UserIconSelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743D1B222F35AB100B26067 /* UserIconSelectVC.swift */; };
+		4743D1B522F35D2500B26067 /* UserIconTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743D1B422F35D2500B26067 /* UserIconTableCell.swift */; };
+		4743D1B722F36AAE00B26067 /* UserIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743D1B622F36AAE00B26067 /* UserIconCollectionViewCell.swift */; };
+		4743D1B922F4153300B26067 /* UserIconHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743D1B822F4153300B26067 /* UserIconHeaderView.swift */; };
 		477F4F6722E76257003268F9 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F4F6622E76257003268F9 /* UserView.swift */; };
 		477F4F6922E76297003268F9 /* AddProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F4F6822E76297003268F9 /* AddProfileView.swift */; };
 		477F4F6B22E7630E003268F9 /* ProfileSelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F4F6A22E7630E003268F9 /* ProfileSelectVC.swift */; };
@@ -73,6 +76,9 @@
 		10C6909ABE5E5DC87C1917A1 /* Pods-Fastflix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fastflix.release.xcconfig"; path = "Target Support Files/Pods-Fastflix/Pods-Fastflix.release.xcconfig"; sourceTree = "<group>"; };
 		3EB1C6A592B8954DDA0CD4B0 /* Pods-Fastflix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fastflix.debug.xcconfig"; path = "Target Support Files/Pods-Fastflix/Pods-Fastflix.debug.xcconfig"; sourceTree = "<group>"; };
 		4743D1B222F35AB100B26067 /* UserIconSelectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIconSelectVC.swift; sourceTree = "<group>"; };
+		4743D1B422F35D2500B26067 /* UserIconTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserIconTableCell.swift; path = Fastflix/Login/LoginController/UserIconTableCell.swift; sourceTree = SOURCE_ROOT; };
+		4743D1B622F36AAE00B26067 /* UserIconCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserIconCollectionViewCell.swift; path = Fastflix/Login/LoginController/UserIconCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
+		4743D1B822F4153300B26067 /* UserIconHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserIconHeaderView.swift; path = Fastflix/Login/LoginCell/UserIconHeaderView.swift; sourceTree = SOURCE_ROOT; };
 		477F4F6622E76257003268F9 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		477F4F6822E76297003268F9 /* AddProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProfileView.swift; sourceTree = "<group>"; };
 		477F4F6A22E7630E003268F9 /* ProfileSelectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSelectVC.swift; sourceTree = "<group>"; };
@@ -392,6 +398,9 @@
 		C1FC3F5622EC7D98008E1FE9 /* LoginCell */ = {
 			isa = PBXGroup;
 			children = (
+				4743D1B422F35D2500B26067 /* UserIconTableCell.swift */,
+				4743D1B622F36AAE00B26067 /* UserIconCollectionViewCell.swift */,
+				4743D1B822F4153300B26067 /* UserIconHeaderView.swift */,
 			);
 			path = LoginCell;
 			sourceTree = "<group>";
@@ -598,6 +607,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5295214E22D5D3E800174BC1 /* AppDelegate.swift in Sources */,
+				4743D1B522F35D2500B26067 /* UserIconTableCell.swift in Sources */,
 				C1FC3F3C22E97548008E1FE9 /* SeeMoreView.swift in Sources */,
 				C14355F822DB0E22005189E9 /* MainImageTableCell.swift in Sources */,
 				47AC179922E2343800D6AACD /* LoginVC.swift in Sources */,
@@ -620,7 +630,9 @@
 				C1FC3F8822F2E4F3008E1FE9 /* DataCenter.swift in Sources */,
 				C1FC3F6222ECA67A008E1FE9 /* SearchCollectionCell.swift in Sources */,
 				C143560A22DCAAD5005189E9 /* OriginalTableCell.swift in Sources */,
+				4743D1B722F36AAE00B26067 /* UserIconCollectionViewCell.swift in Sources */,
 				47AC179722E2341E00D6AACD /* BeforeLoginVC.swift in Sources */,
+				4743D1B922F4153300B26067 /* UserIconHeaderView.swift in Sources */,
 				C14355F422DB0B11005189E9 /* PreviewCollectionCell.swift in Sources */,
 				52BA343022DDE7EF005F8489 /* SubCell.swift in Sources */,
 				C1FC3EFE22E4899C008E1FE9 /* MainHomeVC.swift in Sources */,
