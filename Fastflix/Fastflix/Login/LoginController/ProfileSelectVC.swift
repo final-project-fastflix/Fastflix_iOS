@@ -138,7 +138,7 @@ class ProfileSelectVC: UIViewController {
     [navigationView, introlabel, profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { view.addSubview($0) }
   }
   
-  func setupSNP() {
+  private func setupSNP() {
     
     navigationView.snp.makeConstraints {
       $0.top.equalTo(view.snp.top)
@@ -375,20 +375,27 @@ extension ProfileSelectVC: UserViewDelegate {
   }
   
   // 2) 편집이 가능한 상태(isEditing)에서 프로필 변경을 위한 특정 유저 선택
-  func profileChangeTapped(tag: Int, userName: String, userImage: UIImage) {
+  func profileChangeTapped(tag: Int, userName: String, userImage: UIImage, imageURL: String) {
     print("프로필 변경을 위한 - 특정 유저 선택 하기 눌렀당")
     
     let profileChangeVC = ProfileChangeVC()
     profileChangeVC.subUserIDtag = tag
     profileChangeVC.userName = userName
     profileChangeVC.userImage = userImage
+    profileChangeVC.profileImagePath = imageURL
+    
+    // 왜 만들었었지???ㅠㅠㅠㅠ
     guard let user = subUserList?.filter({ $0.id == tag }) else { return }
     profileChangeVC.kidChecking = user[0].kid
     profileChangeVC.isUserCreating = false
+    profileChangeVC.userView.isForImageSelecting = true
+  
     
     let navi = UINavigationController(rootViewController: profileChangeVC)
     navigationController?.present(navi, animated: true)
   }
+  
+  func toUserIconSelectVC() {}
 
 }
 

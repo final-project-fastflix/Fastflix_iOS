@@ -326,11 +326,11 @@ class APICenter {
   
   
   
-  // MARK: - 프로필사진들 가져오기
+  // MARK: - 유저 이미지 변경을 위한 "전체 프로필사진들" 가져오기
   func changeProfileImage(completion: @escaping (Result<ProfileImage>) -> ()) {
     let header = getHeader(needSubuser: false)
     
-    let req = Alamofire.request(RequestString.changeProfileListURL.rawValue, method: .get, headers: header)
+    let req = Alamofire.request(RequestString.changeProfileImageURL.rawValue, method: .get, headers: header)
     
     req.response(queue: .global()) { (res) in
       guard res.error == nil else {
