@@ -47,8 +47,8 @@ class UserIconCollectionViewCell: UICollectionViewCell {
     }
   }
   
-  func configureImage(name:String, imageURLString: String?) {
-    self.cellImageName = name
+  func configureImage(name:String?, imageURLString: String?) {
+    self.cellImageName = name ?? "일단"
     self.imageURL = imageURLString
     let imageURL = URL(string: imageURLString ?? "ImagesData.shared.imagesUrl[5]")
     self.mainImageView.kf.setImage(with: imageURL, options: [.processor(CroppingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])

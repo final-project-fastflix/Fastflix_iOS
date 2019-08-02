@@ -27,6 +27,7 @@ class UserIconTableCell: UITableViewCell {
   let flowLayout = UICollectionViewFlowLayout()
   
   var aCategory: String?
+  
   var itemsByCategory: [ProfileImageElement]?
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -52,12 +53,11 @@ class UserIconTableCell: UITableViewCell {
     flowLayout.itemSize = CGSize(width: 100, height: 100)
     flowLayout.minimumLineSpacing = 10
     flowLayout.minimumInteritemSpacing = 10
-    flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+    flowLayout.sectionInset = UIEdgeInsets(top: 10, left: 4, bottom: 10, right: 4)
     self.collectionView.collectionViewLayout = flowLayout
     self.collectionView.showsHorizontalScrollIndicator = false
     
     collectionView.register(UserIconCollectionViewCell.self, forCellWithReuseIdentifier: "UserIconCollectionViewCell")
-    collectionView.register(UserIconHeaderView.self, forSupplementaryViewOfKind: "UserIconHeaderView", withReuseIdentifier: "UserIconHeaderView")
   }
 
   private func addSubViews() {
@@ -73,7 +73,17 @@ class UserIconTableCell: UITableViewCell {
 
 // MARK: - 컬렉션뷰의 데이터 소스
 extension UserIconTableCell: UICollectionViewDataSource {
-
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UserIconCollectionViewCell", for: indexPath) as? UserIconCollectionViewCell
+    
+    let name = itemsByCategory?[indexPath.item].name
+    if let imagePath = itemsByCategory?[indexPath.item].imagePath {
+      cell?.configureImage(name: name, imageURLString: imagePath)
+    }
+    return cell!
+  }
+  
+  
   // 각 테이블뷰안의 컬렉션뷰는 섹션이 1개로 고정
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     return 1
@@ -81,33 +91,12 @@ extension UserIconTableCell: UICollectionViewDataSource {
   
   // 각 테이블셀의 컬렉션뷰의 아이템 갯수
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    if let iconImagesByCategory = itemsByCategory {
-      return iconImagesByCategory.count
+    if let items = itemsByCategory {
+      return items.count
     } else {
       return 0
     }
   }
-  
-  // MARK: - 컬렉션뷰 셀의 설정
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UserIconCollectionViewCell", for: indexPath) as? UserIconCollectionViewCell
-    
-    if let item = self.itemsByCategory?[indexPath.item] {
-      let name = item.name ?? "일단"
-      cell?.configureImage(name: name, imageURLString: item.imagePath)
-    }
-    return cell!
-  }
-  
-//  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//
-//      let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "UserIconHeaderView", for: indexPath) as? UserIconHeaderView
-//
-//      headerView?.headerLabel.text = aCategory
-//      return headerView!
-//
-//  }
 }
 
 

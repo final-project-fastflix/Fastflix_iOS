@@ -37,6 +37,7 @@ class UserIconSelectVC: UIViewController {
     tableView.dataSource = self
 //    tableView.rowHeight = 160
     tableView.register(UserIconTableCell.self, forCellReuseIdentifier: "UserIconTableCell")
+    tableView.register(UserIconHeaderView.self, forHeaderFooterViewReuseIdentifier: "UserIconSelectVC")
   }
   
   private func addSubViews() {
