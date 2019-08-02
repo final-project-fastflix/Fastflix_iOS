@@ -37,13 +37,7 @@ class WatchingMoviesTableCell: UITableViewCell {
     return button
   }()
   
-  private let playBtn: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "watchingPlay"), for: .normal)
-    button.addTarget(self, action: #selector(playBtnDidTap(_:)), for: .touchUpInside)
-    return button
-  }()
-  
+
   private let playTimeLabel: UILabel = {
     let label = UILabel()
     label.text = "2시간 5분"
@@ -67,9 +61,23 @@ class WatchingMoviesTableCell: UITableViewCell {
     
   }
   
+  func configure(url: [String]?, title: String?, time: String?) {
+    let urlArr = url ?? imageUrls
+    let title = title ?? "title"
+    let time = time ?? "time"
+    
+    
+    self.titleLabel.text = title
+    self.playTimeLabel.text = time
+    self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
+  }
+  
   private func addSubViews() {
-    [titleLabel, collectionView, bottomView, infoBtn, playBtn, playTimeLabel, playSlider]
+    [titleLabel, collectionView, bottomView, playSlider]
       .forEach { self.addSubview($0) }
+    [playTimeLabel, infoBtn, ].forEach {
+      self.addSubview($0)
+    }
     
   }
   
@@ -80,8 +88,29 @@ class WatchingMoviesTableCell: UITableViewCell {
     }
     collectionView.snp.makeConstraints {
       $0.top.equalTo(titleLabel.snp.bottom).offset(15)
-      
+      $0.leading.trailing.equalToSuperview()
     }
+    playSlider.snp.makeConstraints {
+      $0.top.equalTo(collectionView.snp.bottom)
+      $0.leading.trailing.equalToSuperview()
+    }
+    
+    bottomView.snp.makeConstraints {
+      $0.top.equalTo(playSlider.snp.bottom)
+      $0.leading.trailing.bottom.equalToSuperview()
+    }
+    
+    playTimeLabel.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(10)
+      $0.leading.equalToSuperview().inset(15)
+    }
+    
+    infoBtn.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(10)
+      $0.trailing.equalToSuperview().inset(15)
+    }
+    
+    
   }
   
   private func setupCollectionView() {
@@ -92,9 +121,7 @@ class WatchingMoviesTableCell: UITableViewCell {
     
   }
   
-  @objc func playBtnDidTap(_ sender: UIButton) {
-    
-  }
+  
   
   
   
