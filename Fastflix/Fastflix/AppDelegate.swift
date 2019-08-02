@@ -20,6 +20,9 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    
+    
+    
     checkLoginState()
 
 //    APICenter.shared.changeProfileInfo(id: 49, name: nil, kid: false, imgPath: nil) { (result) in

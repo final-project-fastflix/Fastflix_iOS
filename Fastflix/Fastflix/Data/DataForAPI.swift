@@ -107,7 +107,7 @@ struct PreviewDatas: Codable {
   let name: String
   let circleImage: JSONNull?
   let logoImagePath: String
-  let videoFile: String
+  let videoFile: String?
   let verticalSampleVideoFile: JSONNull?
   
   enum CodingKeys: String, CodingKey {

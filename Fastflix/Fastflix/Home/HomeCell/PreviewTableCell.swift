@@ -97,7 +97,7 @@ final class PreviewTableCell: UITableViewCell {
 extension PreviewTableCell: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return mainURLs?.count ?? 0
+    return logoURLs?.count ?? 0
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
