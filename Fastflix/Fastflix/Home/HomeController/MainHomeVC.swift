@@ -54,7 +54,6 @@ class MainHomeVC: UIViewController {
   
   private let streamingCell: StreamingCell = {
     let cell = StreamingCell()
-    cell.configure(url: streamingUrl)
     return cell
   }()
   
@@ -76,7 +75,7 @@ class MainHomeVC: UIViewController {
     registerTableViewCell()
 //    view.clipsToBounds = true
     
-    DataCenter.shared.downloadDatas()
+//    DataCenter.shared.downloadDatas()
     
   }
   
@@ -94,7 +93,7 @@ class MainHomeVC: UIViewController {
     let paht = DataCenter.shared
     paht.group.notify(queue: paht.downloadQueue) {
       print("Queue noti finish")
-      self.finishDownload = true
+//      self.finishDownload = true
     }
     
     
@@ -147,7 +146,7 @@ extension MainHomeVC: UITableViewDataSource {
       cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
       if let data = path.mainImageCellData?[0].mainMovie.genre {
         for idx in data {
-          text += (idx.name + " * ")
+          text += (idx.name + "･")
         }
       }
       cell.selectionStyle = .none
@@ -211,6 +210,9 @@ extension MainHomeVC: UITableViewDataSource {
       
     case 5:
       let cell = streamingCell
+      if let video = path.goldenMovie?.videoFile {
+        cell.configure(url: video)
+      }
       return cell
       
     case 6:
@@ -318,57 +320,7 @@ extension MainHomeVC: UITableViewDelegate {
         return
       }
     }
-    
-    
-    
-    
-    //    print("transition: ", transition)
-    //    print("originValue: ", originValue)
-    // hide
-    
-    
-    //    if transition < 0, transition >= -940 {
-    //      guard originY >= -94 || originY <= 0 else { return }
-    //      floatValue += transition/10
-    //      originY = floatValue
-    //    }else if transition > 0, transition <= 94 {
-    //      // show
-    //
-    //      guard originY >= -940 || originY <= 0 else { return }
-    //      floatValue += transition/10
-    //      originY = floatValue
-    //    }
-    //
-    //
-    //
-    
-    
-    
-    //    if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0 {
-    //
-    //      UIView.animate(withDuration: 1.5) {
-    //        self.navigationController?.hidesBarsOnSwipe = true
-    //        UIView.animate(withDuration: 1.7, animations: {
-    //          self.navigationController?.navigationBar.alpha = 0
-    //        })
-    //
-    ////        print("내려감")
-    //      }
-    //
-    //    } else {
-    //      UIView.animate(withDuration: 1.5) {
-    //        self.navigationController?.hidesBarsOnSwipe = false
-    //        self.navigationController?.setNavigationBarHidden(false, animated: false)
-    //        UIView.animate(withDuration: 1.7, animations: {
-    //          self.navigationController?.navigationBar.alpha = 1
-    //
-    //        })
-    ////        print("올라감??")
-    //      }
-    //
-    //    }
-    
-    
+  
   }
 }
 
@@ -384,10 +336,11 @@ extension MainHomeVC: FloatingViewDelegate {
     APICenter.shared.getMovieData {
       switch $0 {
       case .success(let value):
-        let mainMovieVC = MainMovieVC()
-        mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
-        mainMovieVC.receiveData = value
+        
         DispatchQueue.main.async {
+          let mainMovieVC = MainMovieVC()
+          mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
+          mainMovieVC.receiveData = value
           self.tabBarController?.viewControllers?[0] = mainMovieVC
         }
       case .failure(let err):
