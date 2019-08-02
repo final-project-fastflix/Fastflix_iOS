@@ -15,6 +15,7 @@ enum RequestString: String {
   case requestSubUserListURL = "http://52.78.134.79/accounts/sub_user_list/"
   case createSubUserURL = "http://52.78.134.79/accounts/create_sub_user/"
   case changeProfileListURL = "http://52.78.134.79/accounts/change_profile/"
+  case changeProfileImageURL = "http://52.78.134.79//accounts/change_profile_image/"
   case getMainImgURL = "http://52.78.134.79/movies/"
   case toggleForkMovieURL = "http://52.78.134.79/movies/add_delete_my_list/"
   case getBrandNewMovieURL = "http://52.78.134.79/movies/brand_new/"
@@ -171,7 +172,7 @@ typealias BrandNewMovie = [BrandNewMovieElement]
 
 // MARK: - ProfileImageElement
 struct ProfileImageElement: Codable {
-  let name: String
+  let name: String?
   let imagePath: String
   
   enum CodingKeys: String, CodingKey {
