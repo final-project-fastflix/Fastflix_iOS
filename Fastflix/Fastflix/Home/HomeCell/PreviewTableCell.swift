@@ -29,7 +29,7 @@ final class PreviewTableCell: UITableViewCell {
     let label = UILabel()
     label.textColor = .white
     label.text = "미리보기"
-    label.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+    label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
     return label
   }()
   
