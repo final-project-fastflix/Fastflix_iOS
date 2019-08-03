@@ -9,7 +9,25 @@
 import UIKit
 import SnapKit
 
+protocol SearchViewDelegate: class {
+  func searchMovies(key: String, completion: @escaping (Result<SearchMovie, ErrorType>) -> ())
+}
+
 class SearchView: UIView {
+  
+  weak var delegate: SearchViewDelegate?
+  
+  var searchMovies: SearchMovie? {
+    didSet(new) {
+      guard let data = new else { return }
+      data.firstMovie.forEach { self.imgPaths.append($0.verticalImage ?? "") }
+      data.otherMovie.forEach { self.imgPaths.append($0.verticalImage ?? "") }
+      collectionView.reloadData()
+    }
+  }
+  
+  lazy var imgPaths: [String] = []
+  
   
   private let layout = UICollectionViewFlowLayout()
   
@@ -25,7 +43,7 @@ class SearchView: UIView {
   lazy var offset = UIOffset(horizontal: (searchBar.frame.width - 100) / 2, vertical: 0)
   let noOffset = UIOffset(horizontal: 0, vertical: 0)
   
-
+  
   
   override func didMoveToSuperview() {
     addSubViews()
@@ -84,13 +102,13 @@ class SearchView: UIView {
 
 extension SearchView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return ImagesData.shared.myContentImages.count
+    return imgPaths.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionCell.identifier, for: indexPath) as! SearchCollectionCell
-    //        cell.configure(imageUrlString: ImagesData.shared.myContentImages[indexPath.row])
     cell.delegate = self
+    cell.configure(imageUrlString: imgPaths[indexPath.row])
     return cell
   }
   
@@ -114,6 +132,20 @@ extension SearchView: UISearchBarDelegate {
     return true
   }
   
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    print("서치중")
+    delegate?.searchMovies(key: searchText) { res in
+      switch res {
+      case .success(let value):
+        self.searchMovies = value
+      case .failure(let err):
+        dump(err)
+      }
+    }
+    
+    
+  }
+  
 }
 
 
@@ -121,4 +153,6 @@ extension SearchView: SearchCollectionCellDelegate {
   func resignKeyboard() {
     self.searchBar.resignFirstResponder()
   }
+  
+  
 }
