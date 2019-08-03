@@ -8,121 +8,97 @@
 
 import UIKit
 
+protocol WatchingMoviesTableCelllDelegate: class {
+  func WatchingMovielDidSelectItemAt(indexPath: IndexPath)
+}
+
 class WatchingMoviesTableCell: UITableViewCell {
+  
+  static let identifier = "WatchingMoviesTableCell"
+  
+  var delegate: WatchingMoviesTableCelllDelegate?
   
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.text = "hea 님이 시청중인 콘텐츠"
     label.textColor = .white
+    label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
     return label
   }()
   
   private let layout = UICollectionViewFlowLayout()
+  private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
   
-  lazy private var collectionView: UICollectionView = {
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    return collectionView
-  }()
-  
-  private let bottomView: UIView = {
-    let view = UIView()
-    view.backgroundColor = .black
-    return view
-  }()
-  
-  private let infoBtn: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "info"), for: .normal)
-    button.addTarget(self, action: #selector(infoBtnDidTap(_:)), for: .touchUpInside)
-    return button
-  }()
-  
-
-  private let playTimeLabel: UILabel = {
-    let label = UILabel()
-    label.text = "2시간 5분"
-    label.textColor = .gray
-    return label
-  }()
-  
-  private var progressBar: UISlider = {
-    let slider = UISlider()
-    slider.tintColor = .red
-    slider.thumbTintColor = .red
-    return slider
-  }()
-  
-  
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    
     addSubViews()
     setupSNP()
-    setupCollectionView()
     registerCollectionViewCell()
-    
+    setupCollectionView()
     
   }
+
   
-  func configure(url: [String]?, title: String?, time: String?, progress: UISlider?) {
+  func configure(url: [String]?, title: String?) {
     let urlArr = url ?? imageUrls
     let title = title ?? "title"
-    let time = time ?? "time"
-    var progress = progress ?? UISlider()
     
-    
+//    self.urls = urlArr.map { URL(string: $0) }
     self.titleLabel.text = title
-    self.playTimeLabel.text = time
-    self.progressBar = progress
     self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
   }
   
+
   private func addSubViews() {
-    [titleLabel, collectionView, bottomView, progressBar]
+    [titleLabel, collectionView]
       .forEach { self.addSubview($0) }
-    [playTimeLabel, infoBtn, ].forEach {
-      self.addSubview($0)
-    }
-    
+
   }
   
   private func setupSNP() {
+    
+    contentView.snp.makeConstraints {
+      $0.width.equalTo((UIScreen.main.bounds.width - 44)/3)
+//      $0.height.equalTo(UIScreen.main.bounds.height * 0.42)
+      $0.height.equalTo((UIScreen.main.bounds.width - 44)/3 * 2.45)
+    }
     titleLabel.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalTo(UIScreen.main.bounds.height * 0.11)
+      $0.leading.equalToSuperview().offset(10)
+      $0.top.equalToSuperview().offset(10)
     }
+    
     collectionView.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(15)
       $0.leading.trailing.equalToSuperview()
+      $0.top.equalTo(titleLabel.snp.bottom).offset(5)
+      $0.bottom.equalToSuperview().offset(-10)
     }
-    progressBar.snp.makeConstraints {
-      $0.top.equalTo(collectionView.snp.bottom)
-      $0.leading.trailing.equalToSuperview()
-    }
-    
-    bottomView.snp.makeConstraints {
-      $0.top.equalTo(progressBar.snp.bottom)
-      $0.leading.trailing.bottom.equalToSuperview()
-    }
-    
-    playTimeLabel.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(10)
-      $0.leading.equalToSuperview().inset(15)
-    }
-    
-    infoBtn.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(10)
-      $0.trailing.equalToSuperview().inset(15)
-    }
-    
-    
+   
   }
+  
+  // registerCollectionView
+  private func registerCollectionViewCell() {
+    collectionView.register(WatchingMoviesCollectionCell.self, forCellWithReuseIdentifier: WatchingMoviesCollectionCell.identifier)
+  }
+ 
   
   // MARK: - setupCollectionView
   private func setupCollectionView() {
+    
+//    layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 20, right: 10)
+//    layout.minimumLineSpacing = 15
+//    layout.minimumInteritemSpacing = 15
+//    layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3, height: UIScreen.main.bounds.height / 4)
+//    layout.scrollDirection = .horizontal
+//
+//    collectionView.showsHorizontalScrollIndicator = false
+//    collectionView.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
+//    collectionView.dataSource = self
+    
     collectionView.dataSource = self
     collectionView.delegate = self
-    layout.scrollDirection = .vertical
-    collectionView.backgroundColor = .black
+    layout.scrollDirection = .horizontal
+    collectionView.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     self.collectionView.collectionViewLayout = layout
     
     // MARK: - 컬렉션뷰 레이아웃 설정
@@ -143,26 +119,14 @@ class WatchingMoviesTableCell: UITableViewCell {
     
   }
   
-  // registerCollectionView
-  private func registerCollectionViewCell() {
-    collectionView.register(WatchingMoviesCollectionCell.self, forCellWithReuseIdentifier: WatchingMoviesCollectionCell.identifier)
-  }
+
   
-  
-  
-  
-  @objc func infoBtnDidTap(_ sender: UIButton) {
+  override func setSelected(_ selected: Bool, animated: Bool) {
+    super.setSelected(selected, animated: animated)
     
+    // Configure the view for the selected state
   }
   
-  
-  
-  
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
- 
 }
 
 extension WatchingMoviesTableCell: UICollectionViewDataSource {
@@ -173,6 +137,7 @@ extension WatchingMoviesTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WatchingMoviesCollectionCell.identifier, for: indexPath) as! WatchingMoviesCollectionCell
     cell.configure(imageUrlString: ImagesData.shared.myContentImages[indexPath.row])
+    
     return cell
   }
   
@@ -180,5 +145,9 @@ extension WatchingMoviesTableCell: UICollectionViewDataSource {
 }
 
 extension WatchingMoviesTableCell: UICollectionViewDelegate {
-  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    //    print("indexPath.row: ", indexPath.row)
+    delegate?.WatchingMovielDidSelectItemAt(indexPath: indexPath)
+    
+  }
 }

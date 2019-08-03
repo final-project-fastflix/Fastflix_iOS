@@ -54,6 +54,7 @@ final class MainImageTableCell: UITableViewCell {
   private let infoButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "info"), for: .normal)
+    button.tintColor = .white
     return button
   }()
   

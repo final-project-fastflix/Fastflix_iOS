@@ -122,6 +122,7 @@ class MainHomeVC: UIViewController {
     tableView.register(PreviewTableCell.self, forCellReuseIdentifier: PreviewTableCell.identifier)
     tableView.register(OriginalTableCell.self, forCellReuseIdentifier: OriginalTableCell.identifier)
     tableView.register(SubCell.self, forCellReuseIdentifier: SubCell.identifier)
+    tableView.register(WatchingMoviesTableCell.self, forCellReuseIdentifier: WatchingMoviesTableCell.identifier)
     
   }
   
@@ -129,7 +130,7 @@ class MainHomeVC: UIViewController {
 
 extension MainHomeVC: UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 6
+    return 8
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -221,14 +222,20 @@ extension MainHomeVC: UITableViewDataSource {
       cell.delegate = self
       return cell
       
+    case 7:
+      let cell = tableView.dequeueReusableCell(withIdentifier: WatchingMoviesTableCell.identifier, for: indexPath) as! WatchingMoviesTableCell
+//      cell.configure(url: nil, title: "hea님이 시청중인 영화", time: "2시간 5분", progress: nil)
+      cell.configure(url: ImagesData.shared.myContentImages, title: "\(title)님이 시청중인 영화")
+      cell.selectionStyle = .none
+      cell.delegate = self
+      return cell
+      
     default:
       let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
       cell.configure(url: imageUrls, title: "\(indexPath)")
       return cell
     }
   }
-  
-  
   
 }
 
@@ -256,6 +263,13 @@ extension MainHomeVC: OriginalTableCellDelegate {
     print("present DetailVC")
     present(detailVC, animated: true)
   }
+  
+}
+extension MainHomeVC: WatchingMoviesTableCelllDelegate {
+  func WatchingMovielDidSelectItemAt(indexPath: IndexPath) {
+    print("MainHomeVC : WatchingMovielDidSelectItemAt")
+  }
+  
   
 }
 
