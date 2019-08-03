@@ -48,6 +48,32 @@ class APICenter {
     }
   }
   
+  // search Movie with key!
+  func searchMovie(searchKey: String, completion: @escaping (Result<SearchMovie>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    let url = RequestString.searchMovieURL.rawValue
+    let param = [
+      "search_key": searchKey
+    ]
+    
+    Alamofire.request(url, method: .get, parameters: param, headers: header).responseData(queue: .global()) { (res) in
+      switch res.result {
+      case .success(let value):
+        guard let result = try? JSONDecoder().decode(SearchMovie.self, from: value) else {
+        completion(.failure(ErrorType.FailToParsing))
+          return }
+        
+        completion(.success(result))
+      case .failure(let err):
+        dump(err)
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+  }
+  
+  
+  
+  // get golden movie data
   func getGoldenMovieData(completion: @escaping (Result<GoldenMovie>) -> ()) {
     let header = getHeader(needSubuser: true)
     
