@@ -109,13 +109,29 @@ class ProfileChangeVC: UIViewController {
     return sv
   }()
   
-  let deleteButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setTitle("삭제", for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+  let trashButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(named: "trash"), for: .normal)
     button.setTitleColor(.white, for: .normal)
     button.addTarget(self, action: #selector(deleteButtonTapped(_:)), for: .touchUpInside)
     return button
+  }()
+  
+  let deleteButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.setTitle("삭제", for: .normal)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+    button.setTitleColor(.white, for: .normal)
+    button.addTarget(self, action: #selector(deleteButtonTapped(_:)), for: .touchUpInside)
+    return button
+  }()
+  
+  lazy var deleteButtonStackView: UIStackView = {
+    let sview = UIStackView(arrangedSubviews: [trashButton, deleteButton])
+    sview.spacing = 5
+    sview.axis = .horizontal
+    sview.distribution = .fill
+    return sview
   }()
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -151,7 +167,7 @@ class ProfileChangeVC: UIViewController {
   }
   
   private func addSubViews() {
-    [navigationView, userView, textSurroundingView, subUserNameTextField, kidsStackView, deleteButton].forEach { view.addSubview($0) }
+    [navigationView, userView, textSurroundingView, subUserNameTextField, kidsStackView, deleteButtonStackView].forEach { view.addSubview($0) }
   }
   
   private func setupSNP() {
@@ -202,7 +218,12 @@ class ProfileChangeVC: UIViewController {
       $0.centerX.equalTo(textSurroundingView.snp.centerX)
     }
     
-    deleteButton.snp.makeConstraints {
+    trashButton.snp.makeConstraints {
+      $0.width.equalTo(12)
+      $0.height.equalTo(16)
+    }
+    
+    deleteButtonStackView.snp.makeConstraints {
       $0.top.equalTo(kidsStackView.snp.bottom).offset(30)
       $0.centerX.equalTo(textSurroundingView.snp.centerX)
     }
@@ -226,6 +247,7 @@ class ProfileChangeVC: UIViewController {
     }
   }
   
+  // 실제 유저의 정보를 저장하는 메서드
   private func saveChangedUserInfo(completion: @escaping () -> ()) {
     guard let name = subUserNameTextField.text else { return }
     let kid = kidsSwitchButton.isOn
@@ -243,30 +265,31 @@ class ProfileChangeVC: UIViewController {
           print("fail to login, reason: ", err)
         }
       }
-    }else {
-      print("유저 변경하고 있는데???")
-      print("키즈여부:", kid)
-      guard let subUserID = subUserIDtag else { return print("서브유저 아이디가 없다고?? 말이됨?") }
+    }
+//    else {
+    print("유저 변경하고 있는데???")
+    print("키즈여부:", kid)
+    guard let subUserID = subUserIDtag else { return print("서브유저 아이디가 없다고?? 말이됨?") }
       
-      APICenter.shared.changeProfileInfo(id: subUserID, name: name, kid: kid, imgPath: profileImagePath) { (result) in
-        switch result {
-        case .success(let value):
-          print("result1: ", value)
-          if value == 0 {
-            print("변경 저장 실험해보기 - 그대로")
-          }else {
-            // 변경 성공했으니 유저리스트 다시 받아와서 싱글톤에 저장
-            print("변경 저장 실험해보기 - 유저바꾸기")
-            self.regetSubUserList() {
-              self.dismiss(animated: true)
-            }
+    APICenter.shared.changeProfileInfo(id: subUserID, name: name, kid: kid, imgPath: profileImagePath) { (result) in
+      switch result {
+      case .success(let value):
+        print("result1: ", value)
+        if value == 0 {
+          print("변경 저장 실험해보기 - 그대로")
+        }else {
+          // 변경 성공했으니 유저리스트 다시 받아와서 싱글톤에 저장
+          print("변경 저장 실험해보기 - 유저바꾸기")
+          self.regetSubUserList() {
+            self.dismiss(animated: true)
           }
+        }
         case .failure(let err):
           print("result1: ", err)
         }
 //        self.dismiss(animated: true)
       }
-    }
+//    }
   }
   
   // 유저 변경했으니 전체적인 서브유저 리스트를 다시 받아오는 메서드
@@ -348,6 +371,7 @@ class ProfileChangeVC: UIViewController {
     // 메인(첫번째 유저이거나), 지금현재 선택된 유저이거나, 유저를 만들고 있는 경우엔 삭제버튼 비활성화
     if subUserSingle.subUserList?[0].id == subUserIDtag || APICenter.shared.getSubUserID() == subUserIDtag || isUserCreating {
       deleteButton.isHidden = true
+      trashButton.isHidden = true
     }
   }
   
@@ -364,12 +388,15 @@ extension ProfileChangeVC: UserViewDelegate {
   func toUserIconSelectVC() {
     print("유저아이콘 선택화면으로 이동하는 메서드 구현")
     
+    
+    
     APICenter.shared.changeProfileImage { (result) in
       switch result {
       case .success(let profileImage):
         print("이미지변경 버튼 성공 Images 받기: ", profileImage)
         self.userIconSelectVC.profileImages = profileImage
-        self.userIconSelectVC.categories = profileImage.keys.sorted()
+        let imageinfo = profileImage.keys.filter { $0 != "logo"}
+        self.userIconSelectVC.categories = imageinfo.sorted()
         DispatchQueue.main.async {
           self.navigationController?.pushViewController(self.userIconSelectVC, animated: true)
         }

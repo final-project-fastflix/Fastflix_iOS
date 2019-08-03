@@ -49,11 +49,12 @@ class UserIconSelectVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-  
+    
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    
     configure()
     addSubViews()
     navigationBarSetting()
@@ -144,24 +145,28 @@ extension UserIconSelectVC: UITableViewDataSource {
 extension UserIconSelectVC: UserIconCollectionCellDelegate {
   func collectionViewCellDidTap(collectioncell: UserIconCollectionViewCell?, imageURL: String, didTappedInTableview TableCell: UserIconTableCell) {
     
-    print("클릭은 전달됨?????")
     //셀 선택 후 이미지 전달해야함
     if let cell = collectioncell {
-      print("안으로 들어감?")
+
       let image = cell.mainImageView.image
       
       // 이미지 주소값 던져야함
       let imagePath = cell.imageURL
       
-      guard let navi = presentingViewController as? UINavigationController else { return print("네비리턴")}
-      guard let profileChangeVC = navi.viewControllers.first as? ProfileChangeVC else { return print("뷰컨없음") }
+      guard let navi = presentingViewController as? UINavigationController else { return }
+
+      print(navi.viewControllers)
+      guard let profileSelectVC = navi.viewControllers.last as? ProfileSelectVC else { return }
+      profileSelectVC.profileChangeVC.viewWillAppear(true)
+      profileSelectVC.profileChangeVC.profileImagePath = imagePath
       
-      print("????")
+      // 유저뷰에 디스플레이 되는 이미지도 변경
+      DispatchQueue.main.async {
+        profileSelectVC.profileChangeVC.userView.configureImage(imageURLString: imagePath)
+      }
       
-      profileChangeVC.profileImagePath = imagePath
-      profileChangeVC.userView.userImageView.image = image ?? UIImage(named: "profile1")
+      self.navigationController?.popViewController(animated: true)
       
-      dismiss(animated: true)
     }
   }
 }

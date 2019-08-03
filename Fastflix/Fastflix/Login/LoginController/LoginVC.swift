@@ -119,7 +119,7 @@ class LoginVC: UIViewController {
     return button
   }()
   
-  let viewHeight: CGFloat = 48
+  let textViewHeight: CGFloat = 48
   
   // 스태터스바 글씨 하얗게 설정
   override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -152,15 +152,20 @@ class LoginVC: UIViewController {
   private func setupSNP() {
     
     emailTextField.snp.makeConstraints {
-      $0.height.equalTo(viewHeight)
+      $0.top.equalTo(stackView.snp.top)
+      $0.height.equalTo(textViewHeight)
     }
     passwordField.snp.makeConstraints {
-      $0.height.equalTo(viewHeight)
+      $0.top.equalTo(emailTextField.snp.bottom).offset(18)
+      $0.height.equalTo(textViewHeight)
     }
     loginButton.snp.makeConstraints {
-      $0.height.equalTo(viewHeight)
+      $0.top.equalTo(passwordField.snp.bottom).offset(18)
+      $0.height.equalTo(textViewHeight)
+      $0.bottom.equalTo(stackView.snp.bottom)
     }
     stackView.snp.makeConstraints {
+//      $0.height.equalTo(textViewHeight*3 + 18*2)
       $0.centerX.centerY.equalToSuperview()
       $0.leading.equalTo(view.snp.leading).offset(30)
       $0.trailing.equalTo(view.snp.trailing).offset(-30)
@@ -169,7 +174,7 @@ class LoginVC: UIViewController {
       $0.top.equalTo(stackView.snp.bottom).offset(10)
       $0.leading.equalTo(view.snp.leading).offset(30)
       $0.trailing.equalTo(view.snp.trailing).offset(-30)
-      $0.height.equalTo(viewHeight)
+      $0.height.equalTo(textViewHeight)
     }
     navigationView.snp.makeConstraints {
       $0.top.equalTo(view.snp.top)
