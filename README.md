@@ -86,3 +86,5 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 19.08.01  feat: allen - Subuser addition, subuser's information change.
 
 19.08.02  feat: tass - bind Data to HomeView
+
+19.08.03  feat: tass - Search func
