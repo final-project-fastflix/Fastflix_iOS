@@ -160,7 +160,7 @@ typealias ListOfFork = [ListOfForkElement]
 struct PreviewDatas: Codable {
   let id: Int
   let name: String
-  let circleImage: JSONNull?
+  let circleImage: String
   let logoImagePath: String
   let videoFile: String?
   let verticalSampleVideoFile: JSONNull?
@@ -273,34 +273,34 @@ struct RequestMovieElement: Codable {
   }
 }
 
-typealias MainImgCellData = [MainImgCellElement]
+//typealias MainImgCellData = [MainImgCellElement]
 
 // MARK: - MainCellElement
 struct MainImgCellElement: Codable {
-  let mainMovie: MainMovie
+  let mainMovie: MainMovie?
   
   enum CodingKeys: String, CodingKey {
     case mainMovie = "메인 영화"
   }
 }
 
-
 struct MainMovie: Codable {
-  let id: Int
-  let name, videoFile: String
+  let id: Int?
+  let name: String?
+  let videoFile: String?
   let sampleVideoFile, verticalSampleVideoFile: JSONNull?
-  let productionDate, uploadedDate, synopsis, runningTime: String
-  let viewCount, likeCount: Int
-  let logoImagePath: String
-  let horizontalImagePath: String
-  let verticalImage: String
-  let circleImage: JSONNull?
-  let bigImagePath: String
-  let created: String
-  let degree: Degree
-  let directors, actors, feature: [Actor]
-  let author: [JSONAny]
-  let genre: [Actor]
+  let productionDate, uploadedDate, synopsis, runningTime: String?
+  let realRunningTime, viewCount, likeCount: Int?
+  let logoImagePath: String?
+  let horizontalImagePath: String?
+  let verticalImage: String?
+  let circleImage, bigImagePath: String?
+  let iosMainImage: String?
+  let created: String?
+  let degree: Degree?
+  let directors, actors, feature, author: [Actor]?
+  let genre: [Actor]?
+  let marked: Bool?
   
   enum CodingKeys: String, CodingKey {
     case id, name
@@ -311,6 +311,7 @@ struct MainMovie: Codable {
     case uploadedDate = "uploaded_date"
     case synopsis
     case runningTime = "running_time"
+    case realRunningTime = "real_running_time"
     case viewCount = "view_count"
     case likeCount = "like_count"
     case logoImagePath = "logo_image_path"
@@ -318,21 +319,22 @@ struct MainMovie: Codable {
     case verticalImage = "vertical_image"
     case circleImage = "circle_image"
     case bigImagePath = "big_image_path"
-    case created, degree, directors, actors, feature, author, genre
+    case iosMainImage = "ios_main_image"
+    case created, degree, directors, actors, feature, author, genre, marked
   }
 }
 
 // MARK: - Actor
 struct Actor: Codable {
-  let id: Int
-  let name: String
+  let id: Int?
+  let name: String?
 }
 
 // MARK: - Degree
 struct Degree: Codable {
-  let id: Int
-  let name: String
-  let degreeImagePath: String
+  let id: Int?
+  let name: String?
+  let degreeImagePath: String?
   
   enum CodingKeys: String, CodingKey {
     case id, name

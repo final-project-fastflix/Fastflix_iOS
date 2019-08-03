@@ -140,20 +140,19 @@ extension MainHomeVC: UITableViewDataSource {
     switch indexPath.row {
     case 0:
       let cell = tableView.dequeueReusableCell(withIdentifier: MainImageTableCell.identifier, for: indexPath) as! MainImageTableCell
-      let bigImgPath = path.mainImageCellData?[0].mainMovie.bigImagePath
-      let logoImgPath = path.mainImageCellData?[0].mainMovie.logoImagePath
+      let bigImgPath = path.mainImageCellData?.mainMovie?.iosMainImage
+      let logoImgPath = path.mainImageCellData?.mainMovie?.logoImagePath
       var text = ""
       
       cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
-      if let data = path.mainImageCellData?[0].mainMovie.genre {
+      if let data = path.mainImageCellData?.mainMovie?.genre {
         for idx in data {
-          text += (idx.name + "･")
+          text += (idx.name ?? "Error" + "･")
         }
       }
       cell.selectionStyle = .none
       cell.movieDetailLabel.text = text
       return cell
-      
       
     case 1:
 //      guard let data = path.preViewCellData else { return UITableViewCell() }
@@ -162,12 +161,12 @@ extension MainHomeVC: UITableViewDataSource {
       var logoURLs: [String] = []
       if let data = path.preViewCellData {
         for index in data {
-          mainURLs.append(index.name)
+          mainURLs.append(index.circleImage)
           logoURLs.append(index.logoImagePath)
         }
       }
       print("check: ", logoURLs)
-      cell.configure(mainURLs: nil, logoURLs: logoURLs)
+      cell.configure(mainURLs: mainURLs, logoURLs: logoURLs)
       cell.delegate = self
       cell.selectionStyle = .none
       cell.layoutIfNeeded()
@@ -372,14 +371,4 @@ extension MainHomeVC: FloatingViewDelegate {
     mainPokeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
     tabBarController?.viewControllers?[0] = mainPokeVC
   }
-}
-
-
-extension MainHomeVC {
-  
-  
-  
-  
-  
-  
 }
