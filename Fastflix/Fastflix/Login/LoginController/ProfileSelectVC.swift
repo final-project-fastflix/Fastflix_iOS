@@ -12,6 +12,8 @@ class ProfileSelectVC: UIViewController {
 
   let subUserSingle = SubUserSingleton.shared
   
+  let profileChangeVC = ProfileChangeVC()
+  
   // 네이게이션뷰
   lazy var navigationView: UIView = {
     let view = UIView()
@@ -378,7 +380,7 @@ extension ProfileSelectVC: UserViewDelegate {
   func profileChangeTapped(tag: Int, userName: String, userImage: UIImage, imageURL: String) {
     print("프로필 변경을 위한 - 특정 유저 선택 하기 눌렀당")
     
-    let profileChangeVC = ProfileChangeVC()
+    
     profileChangeVC.subUserIDtag = tag
     profileChangeVC.userName = userName
     profileChangeVC.userImage = userImage
@@ -392,7 +394,8 @@ extension ProfileSelectVC: UserViewDelegate {
   
     
     let navi = UINavigationController(rootViewController: profileChangeVC)
-    navigationController?.present(navi, animated: true)
+//    navigationController?.present(navi, animated: true)
+    present(navi, animated: true)
   }
   
   func toUserIconSelectVC() {}
