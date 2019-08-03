@@ -29,7 +29,36 @@ enum RequestString: String {
   case changeProfileInfoURL = "http://52.78.134.79/accounts/change_sub_user/"
   case deleteProfileInfoURL = "http://52.78.134.79/accounts/delete_sub_user/"
   case getGoldenMovieURL = "http://52.78.134.79/movies/big_size_video/"
+  case searchMovieURL = "http://52.78.134.79//movies/search/?search_key="
 }
+
+
+// MARK: - SearchMovie
+struct SearchMovie: Codable {
+  let contents: [String]
+  let firstMovie, otherMovie: [Search]
+  
+  enum CodingKeys: String, CodingKey {
+    case contents
+    case firstMovie = "first_movie"
+    case otherMovie = "other_movie"
+  }
+}
+
+// MARK: - Movie
+struct Search: Codable {
+  let id: Int
+  let name: String
+  let horizontalImagePath: String
+  let verticalImage: String?
+  
+  enum CodingKeys: String, CodingKey {
+    case id, name
+    case horizontalImagePath = "horizontal_image_path"
+    case verticalImage = "vertical_image"
+  }
+}
+
 
 
 // MARK: - GoldenMovie
