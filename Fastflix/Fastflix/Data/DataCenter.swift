@@ -13,7 +13,7 @@ class DataCenter {
 
   let downloadPath = APICenter.shared
 
-  var mainImageCellData: MainImgCellData?
+  var mainImageCellData: MainImgCellElement?
 
   var preViewCellData: PreviewData?
 
@@ -68,6 +68,7 @@ class DataCenter {
         self.group.leave()
       case .failure(let err):
         dump(err)
+        print("Queue getMainImgCellData Fail")
         self.mainImageCellData = nil
         self.group.leave()
       }

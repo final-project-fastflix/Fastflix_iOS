@@ -387,7 +387,7 @@ class APICenter {
   }
   
   // getMainImgCellData
-  func getMainImgCellData(completion: @escaping (Result<MainImgCellData>) -> ()) {
+  func getMainImgCellData(completion: @escaping (Result<MainImgCellElement>) -> ()) {
     let header = getHeader(needSubuser: true)
     
     let req = Alamofire.request(RequestString.getMainImgURL.rawValue, method: .get, headers: header)
@@ -397,17 +397,19 @@ class APICenter {
         completion(.failure(ErrorType.networkError))
         return
       }
-      
+      print("Queue checkNetwork")
       guard let data = res.data else {
         completion(.failure(ErrorType.NoData))
         return
       }
-      
-      guard let result = try? JSONDecoder().decode(MainImgCellData.self, from: data) else {
+      print("Queue noData")
+      let test = try? JSONSerialization.jsonObject(with: data)
+      print("Queue Test", test as? [String: [String: Any]])
+      guard let result = try? JSONDecoder().decode(MainImgCellElement.self, from: data) else {
         completion(.failure(ErrorType.FailToParsing))
         return
       }
-      
+      print("Queue failToParsing")
       completion(.success(result))
     }
   }

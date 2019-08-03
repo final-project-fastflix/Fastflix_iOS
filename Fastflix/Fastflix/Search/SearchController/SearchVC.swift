@@ -12,7 +12,6 @@ import SnapKit
 
 class SearchVC: UIViewController {
   
-  
   lazy var searchView = SearchView()
   
   override func loadView() {
