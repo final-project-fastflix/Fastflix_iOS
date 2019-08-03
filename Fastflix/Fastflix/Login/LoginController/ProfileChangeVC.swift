@@ -265,30 +265,31 @@ class ProfileChangeVC: UIViewController {
           print("fail to login, reason: ", err)
         }
       }
-    }else {
-      print("유저 변경하고 있는데???")
-      print("키즈여부:", kid)
-      guard let subUserID = subUserIDtag else { return print("서브유저 아이디가 없다고?? 말이됨?") }
+    }
+//    else {
+    print("유저 변경하고 있는데???")
+    print("키즈여부:", kid)
+    guard let subUserID = subUserIDtag else { return print("서브유저 아이디가 없다고?? 말이됨?") }
       
-      APICenter.shared.changeProfileInfo(id: subUserID, name: name, kid: kid, imgPath: profileImagePath) { (result) in
-        switch result {
-        case .success(let value):
-          print("result1: ", value)
-          if value == 0 {
-            print("변경 저장 실험해보기 - 그대로")
-          }else {
-            // 변경 성공했으니 유저리스트 다시 받아와서 싱글톤에 저장
-            print("변경 저장 실험해보기 - 유저바꾸기")
-            self.regetSubUserList() {
-              self.dismiss(animated: true)
-            }
+    APICenter.shared.changeProfileInfo(id: subUserID, name: name, kid: kid, imgPath: profileImagePath) { (result) in
+      switch result {
+      case .success(let value):
+        print("result1: ", value)
+        if value == 0 {
+          print("변경 저장 실험해보기 - 그대로")
+        }else {
+          // 변경 성공했으니 유저리스트 다시 받아와서 싱글톤에 저장
+          print("변경 저장 실험해보기 - 유저바꾸기")
+          self.regetSubUserList() {
+            self.dismiss(animated: true)
           }
+        }
         case .failure(let err):
           print("result1: ", err)
         }
 //        self.dismiss(animated: true)
       }
-    }
+//    }
   }
   
   // 유저 변경했으니 전체적인 서브유저 리스트를 다시 받아오는 메서드
