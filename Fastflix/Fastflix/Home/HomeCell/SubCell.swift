@@ -10,9 +10,9 @@ import UIKit
 
 class SubCell: UITableViewCell {
   
-  static let identifier = "MainCell"
+  static let identifier = "SubCell"
   
-  private var urls: [URL?]?
+  private var urls: [URL?] = []
   
   private let layout = UICollectionViewFlowLayout()
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -84,13 +84,16 @@ class SubCell: UITableViewCell {
 extension SubCell: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return urls?.count ?? 0
+    
+    return urls.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as! ImageCell
-    
-    cell.configure(url: urls?[indexPath.row])
+//    let cell = ImageCell()
+    print("index: ", indexPath.row, " ", urls.count)
+
+    cell.configure(url: urls[indexPath.row])
     
     return cell
   }

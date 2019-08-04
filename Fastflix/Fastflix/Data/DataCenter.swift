@@ -68,7 +68,7 @@ class DataCenter {
         self.group.leave()
       case .failure(let err):
         dump(err)
-        print("Queue getMainImgCellData Fail")
+        print("Queue getMainImgCellData Fail", err)
         self.mainImageCellData = nil
         self.group.leave()
       }
