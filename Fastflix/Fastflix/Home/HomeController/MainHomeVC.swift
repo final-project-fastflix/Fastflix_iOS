@@ -223,12 +223,11 @@ extension MainHomeVC: UITableViewDataSource {
       
     case 7:
       let cell = tableView.dequeueReusableCell(withIdentifier: WatchingMoviesTableCell.identifier, for: indexPath) as! WatchingMoviesTableCell
-      
       if let data = path.followUpMovie {
-        
+        cell.configure(data: data, title: "시청중인 영화")
       }
 //      cell.configure(url: nil, title: "hea님이 시청중인 영화", time: "2시간 5분", progress: nil)
-      cell.configure(url: ImagesData.shared.myContentImages, title: " 시청중인 영화")
+//      cell.configure(url: ImagesData.shared.myContentImages, title: "시청중인 영화")
       cell.selectionStyle = .none
       cell.delegate = self
       return cell

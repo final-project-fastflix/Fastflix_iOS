@@ -18,6 +18,8 @@ class WatchingMoviesTableCell: UITableViewCell {
   
   var delegate: WatchingMoviesTableCelllDelegate?
   
+  var baseData: FollowUp?
+  
   private let titleLabel: UILabel = {
     let label = UILabel()
     label.text = "hea 님이 시청중인 콘텐츠"
@@ -40,8 +42,8 @@ class WatchingMoviesTableCell: UITableViewCell {
   }
 
   
-  func configure(url: [String]?, title: String?) {
-    let urlArr = url ?? imageUrls
+  func configure(data: FollowUp, title: String?) {
+    self.baseData = data
     let title = title ?? "title"
     
     
@@ -130,13 +132,15 @@ class WatchingMoviesTableCell: UITableViewCell {
 
 extension WatchingMoviesTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return ImagesData.shared.myContentImages.count
+    return baseData?.count ?? 0
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WatchingMoviesCollectionCell.identifier, for: indexPath) as! WatchingMoviesCollectionCell
-    cell.configure(imageUrlString: ImagesData.shared.myContentImages[indexPath.row])
     
+    if let data = baseData?[indexPath.row] {
+      cell.configure(imageUrl: data.movie.verticalImage, id: data.movie.id, video: data.movie.videoFile ?? "", runningTime: data.movie.realRunningTime, progress: data.progressBar, toBe: data.toBeContinue)
+    }
     return cell
   }
   
