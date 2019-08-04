@@ -173,7 +173,7 @@ extension MainHomeVC: UITableViewDataSource {
       return cell
       
     case 2:
-      let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
+      let cell = SubCell()
       var mainURLs: [String] = []
       if let data = path.brandNewMovieData {
         for index in data {
@@ -185,7 +185,7 @@ extension MainHomeVC: UITableViewDataSource {
       return cell
       
     case 3:
-      let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
+      let cell = SubCell()
       var mainURLs: [String] = []
       if let data = path.forkData {
         for index in data {
@@ -197,7 +197,7 @@ extension MainHomeVC: UITableViewDataSource {
       return cell
       
     case 4:
-      let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
+      let cell = SubCell()
       var mainURLs: [String] = []
       if let data = path.top10Data {
         for index in data {
@@ -233,6 +233,7 @@ extension MainHomeVC: UITableViewDataSource {
       let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
       cell.configure(url: imageUrls, title: "\(indexPath)")
       return cell
+//      return UITableViewCell()
     }
   }
   

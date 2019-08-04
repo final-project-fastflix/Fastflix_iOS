@@ -101,7 +101,7 @@ struct FollowUpElement: Codable {
 struct Movie: Codable {
   let id: Int
   let name: String
-  let videoFile: JSONNull?
+  let videoFile: String?
   let logoImagePath: String
   let horizontalImagePath: String
   let verticalImage: String
@@ -124,7 +124,7 @@ typealias FollowUp = [FollowUpElement]
 struct Top10Element: Codable {
   let id: Int
   let name: String
-  let sampleVideoFile: JSONNull?
+  let sampleVideoFile: String?
   let logoImagePath: String
   let horizontalImagePath: String
   let verticalImage: String
@@ -163,7 +163,7 @@ struct PreviewDatas: Codable {
   let circleImage: String
   let logoImagePath: String
   let videoFile: String?
-  let verticalSampleVideoFile: JSONNull?
+  let verticalSampleVideoFile: String?
   
   enum CodingKeys: String, CodingKey {
     case id, name
@@ -180,7 +180,7 @@ typealias PreviewData = [PreviewDatas]
 struct BrandNewMovieElement: Codable {
   let id: Int
   let name: String
-  let sampleVideoFile: JSONNull?
+  let sampleVideoFile: String?
   let logoImagePath: String
   let horizontalImagePath: String
   let verticalImage: String
@@ -288,7 +288,7 @@ struct MainMovie: Codable {
   let id: Int?
   let name: String?
   let videoFile: String?
-  let sampleVideoFile, verticalSampleVideoFile: JSONNull?
+  let sampleVideoFile, verticalSampleVideoFile: String?
   let productionDate, uploadedDate, synopsis, runningTime: String?
   let realRunningTime, viewCount, likeCount: Int?
   let logoImagePath: String?

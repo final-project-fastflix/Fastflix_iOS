@@ -103,7 +103,7 @@ extension MainMovieView: UITableViewDataSource {
     case 1:
       let cell = tableView.dequeueReusableCell(withIdentifier: PreviewTableCell.identifier, for: indexPath) as! PreviewTableCell
       return cell
-    default:
+    default:1
       
       let keys = mainData!.listOfGenre
       let key = keys[indexPath.row - 2]
