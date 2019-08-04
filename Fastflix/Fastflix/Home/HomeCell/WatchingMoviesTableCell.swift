@@ -44,6 +44,7 @@ class WatchingMoviesTableCell: UITableViewCell {
     let urlArr = url ?? imageUrls
     let title = title ?? "title"
     
+    
 //    self.urls = urlArr.map { URL(string: $0) }
     self.titleLabel.text = title
     self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
@@ -59,9 +60,6 @@ class WatchingMoviesTableCell: UITableViewCell {
   private func setupSNP() {
     
     contentView.snp.makeConstraints {
-//      $0.width.equalTo((UIScreen.main.bounds.width - 44)/3)
-//      $0.height.equalTo(UIScreen.main.bounds.height * 0.42)
-//      $0.height.equalTo((UIScreen.main.bounds.width - 44)/3 * 2.45)
       $0.height.equalTo(270)
     }
     titleLabel.snp.makeConstraints {

@@ -24,7 +24,6 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
   }()
   
   
-  
   private let playBtn: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "blurplayBtn"), for: .normal)
@@ -75,6 +74,7 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
   }
   
   func configure(imageUrlString: String) {
+    
     imageView.kf.setImage(with: URL(string: imageUrlString), options: [.processor(CroppingImageProcessor(size: CGSize(width: 170, height: 300))), .scaleFactor(UIScreen.main.scale)])
   }
   
@@ -126,7 +126,5 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
   @objc func infoBtnDidTap(_ sender: UIButton) {
     print("infoButton Did Tap")
   }
-  
- 
   
 }
