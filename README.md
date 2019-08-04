@@ -90,3 +90,7 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 19.08.03  feat: tass - Search func
 
 19.08.04  fix: tass - mainImgCell & PreviewCell Parsing FIX
+
+19.08.04  feat: tass - MovieVC -> PreViewCell
+
+19.08.04  feat: tass - FollowUpMovie Download
