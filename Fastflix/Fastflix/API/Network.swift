@@ -404,7 +404,7 @@ class APICenter {
       }
       print("Queue noData")
       let test = try? JSONSerialization.jsonObject(with: data)
-      print("Queue Test", test as? [String: [String: Any]])
+//      print("Queue Test", test as? [String: [String: Any]])
       guard let result = try? JSONDecoder().decode(MainImgCellElement.self, from: data) else {
         completion(.failure(ErrorType.FailToParsing))
         return
