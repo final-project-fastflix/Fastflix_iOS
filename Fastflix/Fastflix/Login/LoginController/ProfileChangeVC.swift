@@ -60,8 +60,7 @@ class ProfileChangeVC: UIViewController {
   var userName: String?
   var userImage: UIImage?
   var profileImagePath: String?
-  
-  
+
   var kidChecking: Bool = false {
     didSet {
       kidsSwitchButton.setOn(kidChecking, animated: true)
@@ -161,7 +160,7 @@ class ProfileChangeVC: UIViewController {
     view.backgroundColor = .black
     userView.profileUserName = "변경"
     subUserNameTextField.text = userName ?? ""
-    userView.userImageView.image = userImage ?? UIImage(named: "profile1")
+    userView.userImageView.image = userImage ?? UIImage(named: "profile2")
     profileChangeLabel.text = isUserCreating ? "프로필 만들기" : "프로필 변경"
     subUserNameTextField.delegate = self
   }
@@ -242,8 +241,10 @@ class ProfileChangeVC: UIViewController {
   
   @objc private func saveButtonTapped(_ sender: UIButton) {
     print("새로바뀐 유저정보 저장관련 메서드 넣어야함")
-    saveChangedUserInfo() {
-      self.dismiss(animated: true)
+    whenCreatingUser() {
+      self.saveChangedUserInfo() {
+        self.dismiss(animated: true)
+      }
     }
   }
   
@@ -252,25 +253,13 @@ class ProfileChangeVC: UIViewController {
     guard let name = subUserNameTextField.text else { return }
     let kid = kidsSwitchButton.isOn
     
-    if isUserCreating {
-      print("유저 새로 만들고 있는데???")
-      APICenter.shared.createSubUser(name: name, kid: kid) {
-        switch $0 {
-        case .success(let subUsers):
-          print("User Creating Success!!!")
-          print("value: ", subUsers)
-          self.subUserSingle.subUserList = subUsers
-          completion()
-        case .failure(let err):
-          print("fail to login, reason: ", err)
-        }
-      }
-    }
-//    else {
     print("유저 변경하고 있는데???")
     print("키즈여부:", kid)
+    
     guard let subUserID = subUserIDtag else { return print("서브유저 아이디가 없다고?? 말이됨?") }
-      
+    
+    print("\(subUserID) \(name), \(kid), \(profileImagePath)")
+    
     APICenter.shared.changeProfileInfo(id: subUserID, name: name, kid: kid, imgPath: profileImagePath) { (result) in
       switch result {
       case .success(let value):
@@ -291,6 +280,29 @@ class ProfileChangeVC: UIViewController {
       }
 //    }
   }
+  
+  private func whenCreatingUser(completion: @escaping () -> ()) {
+    guard let name = subUserNameTextField.text else { return }
+    let kid = kidsSwitchButton.isOn
+    if isUserCreating {
+      print("유저 새로 만들고 있는데???")
+      APICenter.shared.createSubUser(name: name, kid: kid) {
+        switch $0 {
+        case .success(let subUsers):
+          print("User Creating Success!!!")
+          print("value: ", subUsers)
+          self.subUserSingle.subUserList = subUsers
+          self.subUserIDtag = subUsers.last?.id
+          print("새로 생성하고 저장한 서브유저아이디 태그1111:", self.subUserIDtag)
+          completion()
+        case .failure(let err):
+          print("fail to login, reason: ", err)
+        }
+      }
+    }
+    completion()
+  }
+  
   
   // 유저 변경했으니 전체적인 서브유저 리스트를 다시 받아오는 메서드
   func regetSubUserList(completion: @escaping () -> ()) {
@@ -387,9 +399,7 @@ extension ProfileChangeVC: UserViewDelegate {
   // 유저뷰(UserView)를 눌렀을때 이미지변경을 위한 이미지를 다 받은 다음 UserIconSelectVC로 넘어가기
   func toUserIconSelectVC() {
     print("유저아이콘 선택화면으로 이동하는 메서드 구현")
-    
-    
-    
+    userName = subUserNameTextField.text
     APICenter.shared.changeProfileImage { (result) in
       switch result {
       case .success(let profileImage):

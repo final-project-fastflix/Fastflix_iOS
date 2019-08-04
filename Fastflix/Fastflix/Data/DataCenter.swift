@@ -148,7 +148,7 @@ class DataCenter {
       switch result {
       case .success(let value):
         self.followUpMovie = value
-        print("Queue followUpData")
+        print("Queue followUpData", value)
         self.group.leave()
       case .failure(let err):
         dump(err)

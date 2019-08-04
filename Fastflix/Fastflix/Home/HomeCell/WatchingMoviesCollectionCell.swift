@@ -15,6 +15,13 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
  
   static let identifier = "WatchingMoviesCollectionCell"
   
+  var movieID: Int? = nil
+  var progressBarPoint: CGFloat? = nil
+  var toBeContinue: Int? = nil
+  var videoPath: String? = nil
+  var runningTime: Int? = nil
+  
+  
   private let imageView: UIImageView = {
     let img = UIImageView()
     img.contentMode = .scaleAspectFill
@@ -74,9 +81,15 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
     
   }
   
-  func configure(imageUrlString: String) {
-    
-    imageView.kf.setImage(with: URL(string: imageUrlString), options: [.processor(CroppingImageProcessor(size: CGSize(width: 170, height: 300))), .scaleFactor(UIScreen.main.scale)])
+  func configure(imageUrl: String, id: Int, video: String, runningTime: Int, progress: Int, toBe: Int) {
+    imageView.kf.setImage(with: URL(string: imageUrl), options: [.processor(CroppingImageProcessor(size: CGSize(width: 170, height: 300))), .scaleFactor(UIScreen.main.scale)])
+    self.movieID = id
+    self.videoPath = video
+    self.progressBar.value = Float(progress) * 0.01
+    self.toBeContinue = toBe
+    let hour = runningTime/3600
+    let min = (runningTime - hour)/60
+    self.playTimeLabel.text = "\(hour)시간 \(min)분"
   }
   
   private func addSubViews() {
