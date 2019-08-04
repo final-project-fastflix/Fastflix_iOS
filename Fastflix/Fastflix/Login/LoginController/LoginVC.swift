@@ -55,6 +55,7 @@ class LoginVC: UIViewController {
   // 로그인 - 이메일 입력 필드
   lazy var emailTextField: UITextField = {
     var tf = UITextField()
+    tf.frame.size.height = 48
     tf.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
     tf.layer.cornerRadius = 5
     tf.attributedPlaceholder
@@ -89,7 +90,7 @@ class LoginVC: UIViewController {
   
   // 로그인버튼
   let loginButton: UIButton = {
-    let button = UIButton()
+    let button = UIButton(type: .custom)
     button.backgroundColor = .clear
     button.layer.cornerRadius = 5
     button.layer.borderWidth = 1
@@ -106,7 +107,7 @@ class LoginVC: UIViewController {
     let sview = UIStackView(arrangedSubviews: [emailTextField, passwordField, loginButton])
     sview.spacing = 18
     sview.axis = .vertical
-    sview.distribution = .fill
+    sview.distribution = .equalSpacing
     sview.alignment = .fill
     return sview
   }()
@@ -133,6 +134,7 @@ class LoginVC: UIViewController {
     configure()
     navigationBarSetting()
     addSubViews()
+    makeObserverForKeyboard()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -152,26 +154,28 @@ class LoginVC: UIViewController {
   
   private func setupSNP() {
     
-    emailTextField.snp.makeConstraints {
-//      $0.top.equalTo(stackView.snp.top)
-      $0.height.equalTo(40)
-    }
-    passwordField.snp.makeConstraints {
-//      $0.top.equalTo(emailTextField.snp.bottom).offset(18)
-//      $0.height.equalTo(textViewHeight)
-      $0.height.equalTo(40)
-    }
-    loginButton.snp.makeConstraints {
-//      $0.top.equalTo(passwordField.snp.bottom).offset(18)
-//      $0.height.equalTo(textViewHeight)
-      $0.height.equalTo(48)
-      $0.bottom.equalTo(stackView.snp.bottom)
-    }
+//    emailTextField.snp.makeConstraints {
+//      $0.height.equalTo(48)
+//    }
+//    passwordField.snp.makeConstraints {
+//      $0.height.equalTo(48)
+//    }
+//    loginButton.snp.makeConstraints {
+//      $0.height.equalTo(48)
+//    }
     
     stackView.snp.makeConstraints {
       $0.centerX.centerY.equalToSuperview()
       $0.leading.trailing.equalToSuperview().inset(30)
+      $0.height.equalTo(textViewHeight*3 + 36)
     }
+    
+    stackView.arrangedSubviews.forEach {
+      $0.snp.makeConstraints {
+        $0.height.equalTo(48)
+      }
+    }
+    
     passwordButton.snp.makeConstraints {
       $0.top.equalTo(stackView.snp.bottom).offset(10)
       $0.leading.equalTo(view.snp.leading).offset(30)
@@ -205,6 +209,53 @@ class LoginVC: UIViewController {
     navCon.isNavigationBarHidden = true
   }
   
+  private func makeObserverForKeyboard() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(didReceiveKeyboardNotification(_:)),
+      // 키보드가 보이기전의 노티
+      name: UIResponder.keyboardWillShowNotification,
+      object: nil
+    )
+    
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(didReceiveKeyboardNotification(_:)),
+      // 키보드가 사라지기전의 노티
+      name: UIResponder.keyboardWillHideNotification,
+      object: nil
+    )
+  }
+  
+  @objc private func didReceiveKeyboardNotification(_ noti: Notification) {
+    guard let userInfo = noti.userInfo,
+      let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+      let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
+      else { return }
+    
+    // 키보드의 x좌표, y좌표, width, height값 가져오기(키보드가 올라왔을때, 내려왔을 때)
+    print(keyboardFrame)
+    // 키보드가 올라오고 내려가는 속도
+    print(duration)
+    
+    // 키보드 이동시킬 높이 계산 ---> 키보드가 올라와서 스택뷰(+10)와 겹치는 영역만큼
+    let moveheight = (textViewHeight*3 + 36 + 10)/2 - (self.view.frame.height/2 - keyboardFrame.height)
+    
+    UIView.animate(withDuration: duration*2){
+      if keyboardFrame.minY >= self.view.frame.maxY {
+        self.stackView.snp.makeConstraints {
+          $0.centerY.equalToSuperview()
+        }
+      }else {
+        self.stackView.snp.makeConstraints {
+          $0.centerY.equalToSuperview().offset(-moveheight)
+        }
+      }
+    }
+
+  }
+  
+  
   // 로그인버튼 눌렀을 때
   @objc private func didTapLoginBtn(_ sender: UIButton) {
     guard let id = emailTextField.text, let pw = passwordField.text else { return }
@@ -223,6 +274,12 @@ class LoginVC: UIViewController {
         
       case .failure(let err):
         print("fail to login, reason: ", err)
+        let message = """
+        죄송합니다. 이 이메일주소를 사용하는 계정을
+        찾을 수 없거나 비밀번호를 틀리셨습니다.
+        다시 입력하세요.
+        """
+        self.oneAlert(title: "로그인", message: message, okButton: "다시 입력하기")
       }
     }
   }
@@ -257,6 +314,11 @@ class LoginVC: UIViewController {
     loginButton.backgroundColor = .red
     loginButton.isEnabled = true
   }
+  
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+  
 }
 
 // MARK: - 텍스트필드 델리게이트 구현
