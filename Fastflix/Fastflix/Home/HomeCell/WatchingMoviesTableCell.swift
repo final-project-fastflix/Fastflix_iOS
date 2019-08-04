@@ -59,9 +59,10 @@ class WatchingMoviesTableCell: UITableViewCell {
   private func setupSNP() {
     
     contentView.snp.makeConstraints {
-      $0.width.equalTo((UIScreen.main.bounds.width - 44)/3)
+//      $0.width.equalTo((UIScreen.main.bounds.width - 44)/3)
 //      $0.height.equalTo(UIScreen.main.bounds.height * 0.42)
-      $0.height.equalTo((UIScreen.main.bounds.width - 44)/3 * 2.45)
+//      $0.height.equalTo((UIScreen.main.bounds.width - 44)/3 * 2.45)
+      $0.height.equalTo(270)
     }
     titleLabel.snp.makeConstraints {
       $0.leading.equalToSuperview().offset(10)
