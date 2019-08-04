@@ -102,6 +102,20 @@ extension MainMovieView: UITableViewDataSource {
       return cell
     case 1:
       let cell = tableView.dequeueReusableCell(withIdentifier: PreviewTableCell.identifier, for: indexPath) as! PreviewTableCell
+      let path = DataCenter.shared
+      var mainURLs: [String] = []
+      var logoURLs: [String] = []
+      if let data = path.preViewCellData {
+        for index in data {
+          mainURLs.append(index.circleImage)
+          logoURLs.append(index.logoImagePath)
+        }
+      }
+      print("check: ", logoURLs)
+      cell.configure(mainURLs: mainURLs, logoURLs: logoURLs)
+      cell.delegate = self
+      cell.selectionStyle = .none
+      cell.layoutIfNeeded()
       return cell
     default:1
       
@@ -234,4 +248,13 @@ extension MainMovieView: UITableViewDelegate {
     
     
   }
+}
+
+
+extension MainMovieView: PreviewTableCellDelegate {
+  func didSelectItemAt(indexPath: IndexPath) {
+    print("didSelectItemAt")
+  }
+  
+  
 }
