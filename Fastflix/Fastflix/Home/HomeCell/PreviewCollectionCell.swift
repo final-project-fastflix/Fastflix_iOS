@@ -82,9 +82,10 @@ final class PreviewCollectionCell: UICollectionViewCell {
   
   private func setupSNP() {
     preImageView.snp.makeConstraints {
-      $0.top.equalToSuperview()
-      $0.bottom.equalToSuperview()
-      $0.width.height.equalTo(110)
+//      $0.top.equalToSuperview()
+//      $0.bottom.equalToSuperview()
+//      $0.width.height.equalTo(110)
+      $0.top.leading.trailing.bottom.equalToSuperview()
     }
     preImageLogo.snp.makeConstraints {
       $0.top.equalTo(preImageView.snp.bottom).inset(25)

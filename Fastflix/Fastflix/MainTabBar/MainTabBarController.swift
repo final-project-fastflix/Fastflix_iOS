@@ -64,8 +64,8 @@ final class MainTabBarController: UITabBarController {
     let downloadVCItem = UITabBarItem(title: "저장한 콘텐츠 목록", image: UIImage(named: "tabBarDownLoad1"), tag: 2)
     let seeMoreVCItem = UITabBarItem(title: "더 보기", image: UIImage(named: "tabBarSeeMore1"), tag: 3)
     
-    downloadVCItem.badgeValue = "☁︎"
-    downloadVCItem.badgeColor = .blue
+//    downloadVCItem.badgeValue = "☁︎"
+//    downloadVCItem.badgeColor = .blue
     
     mainHomeVC.tabBarItem = homeVCItem
     searchVC.tabBarItem = searchVCItem

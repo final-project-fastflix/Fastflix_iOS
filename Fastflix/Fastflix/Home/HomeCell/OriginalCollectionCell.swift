@@ -33,9 +33,8 @@ final class OriginalCollectionCell: UICollectionViewCell {
   
   private func setupSNP() {
     originalImageView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(-25)
-      $0.width.equalTo(170)
-      $0.height.bottom.equalToSuperview()
+      $0.top.leading.trailing.bottom.equalToSuperview()
+
     }
   }
   

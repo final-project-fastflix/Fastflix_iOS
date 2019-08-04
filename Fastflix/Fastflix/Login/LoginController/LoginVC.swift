@@ -107,6 +107,7 @@ class LoginVC: UIViewController {
     sview.spacing = 18
     sview.axis = .vertical
     sview.distribution = .fill
+    sview.alignment = .fill
     return sview
   }()
   
@@ -152,23 +153,24 @@ class LoginVC: UIViewController {
   private func setupSNP() {
     
     emailTextField.snp.makeConstraints {
-      $0.top.equalTo(stackView.snp.top)
-      $0.height.equalTo(textViewHeight)
+//      $0.top.equalTo(stackView.snp.top)
+      $0.height.equalTo(40)
     }
     passwordField.snp.makeConstraints {
-      $0.top.equalTo(emailTextField.snp.bottom).offset(18)
-      $0.height.equalTo(textViewHeight)
+//      $0.top.equalTo(emailTextField.snp.bottom).offset(18)
+//      $0.height.equalTo(textViewHeight)
+      $0.height.equalTo(40)
     }
     loginButton.snp.makeConstraints {
-      $0.top.equalTo(passwordField.snp.bottom).offset(18)
-      $0.height.equalTo(textViewHeight)
+//      $0.top.equalTo(passwordField.snp.bottom).offset(18)
+//      $0.height.equalTo(textViewHeight)
+      $0.height.equalTo(48)
       $0.bottom.equalTo(stackView.snp.bottom)
     }
+    
     stackView.snp.makeConstraints {
-//      $0.height.equalTo(textViewHeight*3 + 18*2)
       $0.centerX.centerY.equalToSuperview()
-      $0.leading.equalTo(view.snp.leading).offset(30)
-      $0.trailing.equalTo(view.snp.trailing).offset(-30)
+      $0.leading.trailing.equalToSuperview().inset(30)
     }
     passwordButton.snp.makeConstraints {
       $0.top.equalTo(stackView.snp.bottom).offset(10)
@@ -177,19 +179,17 @@ class LoginVC: UIViewController {
       $0.height.equalTo(textViewHeight)
     }
     navigationView.snp.makeConstraints {
-      $0.top.equalTo(view.snp.top)
-      $0.leading.equalTo(view.snp.leading)
-      $0.trailing.equalTo(view.snp.trailing)
+      $0.top.leading.trailing.equalToSuperview()
       $0.height.equalTo(UIScreen.main.bounds.height * 0.11)
     }
     logoView.snp.makeConstraints {
       $0.bottom.equalTo(navigationView.snp.bottom).offset(8)
-      $0.centerX.equalTo(navigationView.snp.centerX)
+      $0.centerX.equalToSuperview()
       $0.width.equalToSuperview().multipliedBy(0.25)
       $0.height.equalTo(logoView.snp.width).multipliedBy(0.70)
     }
     customerCenterButton.snp.makeConstraints {
-      $0.centerY.equalTo(logoView.snp.centerY)
+      $0.centerY.equalToSuperview()
       $0.trailing.equalTo(view.snp.trailing).offset(-15)
     }
     backButton.snp.makeConstraints {
