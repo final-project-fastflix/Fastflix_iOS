@@ -276,7 +276,7 @@ struct RequestMovieElement: Codable {
 //typealias MainImgCellData = [MainImgCellElement]
 
 // MARK: - MainCellElement
-struct MainImgCellElement: Codable {
+struct MainImgCellElement: Codable { 
   let mainMovie: MainMovie?
   
   enum CodingKeys: String, CodingKey {
