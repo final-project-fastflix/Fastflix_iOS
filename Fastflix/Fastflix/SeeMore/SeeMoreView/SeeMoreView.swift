@@ -164,7 +164,7 @@ class SeeMoreView: UIView {
   private func setupSNP() {
     topView.snp.makeConstraints {
       $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalToSuperview().multipliedBy(0.3)
+      $0.height.equalToSuperview().multipliedBy(0.30)
     }
     tableView.snp.makeConstraints {
       $0.top.equalTo(topView.snp.bottom)
@@ -175,13 +175,14 @@ class SeeMoreView: UIView {
       $0.height.equalTo(75)
     }
     profileStackView.snp.makeConstraints {
-      $0.top.equalTo(topView.snp.top).offset(50)
       $0.height.equalTo(80)
       $0.centerX.equalTo(topView.snp.centerX)
+      $0.centerY.equalTo(profileAdminBtn.snp.centerY).offset(-72)
     }
     profileAdminBtn.snp.makeConstraints {
-      $0.top.equalTo(profileStackView.snp.bottom).offset(23)
       $0.centerX.equalToSuperview()
+      $0.centerY.equalTo(topView.snp.bottom).offset(-38)
+      
     }
   }
   

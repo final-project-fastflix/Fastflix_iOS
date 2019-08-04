@@ -364,38 +364,35 @@ class ProfileSelectVC: UIViewController {
 // MARK: - UserView에 관한 델리게이트 구현
 extension ProfileSelectVC: UserViewDelegate {
   
-  // 1) 편집이 가능하지 않은 상태(!isEditing) 로그인 하기 위해서 특정 유저를 선택
+  // 1) 편집이 가능하지 않은 상태(!isEditing) 로그인 하기 위해서 특정 유저를 선택 ====> 홈화면으로
   func didSelectUser(tag: Int) {
     print("유저 선택하기 눌렸당, 서브유저아이디 Tag:", tag)
-    
     APICenter.shared.saveSubUserID(id: tag)
     AppDelegate.instance.reloadRootView()
-    
-    
-    //    let tabBar = MainTabBarController()
-    //    present(tabBar, animated: false)
   }
   
   // 2) 편집이 가능한 상태(isEditing)에서 프로필 변경을 위한 특정 유저 선택
   func profileChangeTapped(tag: Int, userName: String, userImage: UIImage, imageURL: String) {
     print("프로필 변경을 위한 - 특정 유저 선택 하기 눌렀당")
     
-    
+    // 유저에 대한 정보는 UserView에서 받아와서 profileChangeVC를 띄움
     profileChangeVC.subUserIDtag = tag
+    
+    // 받아온 서브유저 태그(아이디)와 일치하는 서브유저 뽑아내서 정보넘김
+    guard let user = subUserList?.filter({ $0.id == tag }) else { return }
+    
     profileChangeVC.userName = userName
     profileChangeVC.userImage = userImage
     profileChangeVC.profileImagePath = imageURL
-    
-    // 왜 만들었었지???ㅠㅠㅠㅠ
-    guard let user = subUserList?.filter({ $0.id == tag }) else { return }
     profileChangeVC.kidChecking = user[0].kid
+    
     profileChangeVC.isUserCreating = false
     profileChangeVC.userView.isForImageSelecting = true
   
     
     let navi = UINavigationController(rootViewController: profileChangeVC)
-//    navigationController?.present(navi, animated: true)
-    present(navi, animated: true)
+    navigationController?.present(navi, animated: true)
+//    present(navi, animated: true)
   }
   
   func toUserIconSelectVC() {}
@@ -407,9 +404,12 @@ extension ProfileSelectVC: AddProfileViewDelegate {
   func addProfileButtonTapped() {
     print("프로필추가 눌렀음====================동작바람")
     
-    let profileChangeVC = ProfileChangeVC()
-    profileChangeVC.userName = ""
+    // 유저 생성중
     profileChangeVC.isUserCreating = true
+    profileChangeVC.userName = ""
+    profileChangeVC.userView.userImageView.image = nil
+    profileChangeVC.userView.isForImageSelecting = true
+    
     
     let navi = UINavigationController(rootViewController: profileChangeVC)
     navigationController?.present(navi, animated: true)

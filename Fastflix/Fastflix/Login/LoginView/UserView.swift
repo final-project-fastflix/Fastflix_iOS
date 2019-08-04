@@ -124,18 +124,11 @@ class UserView: UIView {
     profileUserName = userName
   }
   
-//  var imageDidTapped: (() -> ())?
-  
   func configureImage(imageURLString: String?) {
     imagePath = imageURLString
     let imageURL = URL(string: imageURLString ?? "ImagesData.shared.imagesUrl[5]")
     self.userImageView.kf.setImage(with: imageURL, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])
-    
-//    self.userImageView.kf.setImage(with: imageURL, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)], progressBlock: nil) { (result) in
-//      print("haha")
-//      guard let imageDidTapped = self.imageDidTapped else { return print("Callback error")}
-//      imageDidTapped()
-//    }
+  
   }
   
   @objc private func buttonTapped() {

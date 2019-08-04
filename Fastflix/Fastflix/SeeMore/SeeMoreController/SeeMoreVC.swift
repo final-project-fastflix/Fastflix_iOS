@@ -45,7 +45,7 @@ class SeeMoreVC: UIViewController {
   
   // MARK: - 네비게이션바 투명처리
   private func setupNavi() {
-    navigationController?.setNavigationBarHidden(false, animated: true)
+    navigationController?.setNavigationBarHidden(true, animated: true)
     navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
     navigationController?.navigationBar.shadowImage = UIImage()
     navigationController?.navigationBar.isTranslucent = true
@@ -55,7 +55,6 @@ class SeeMoreVC: UIViewController {
     navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     navigationController?.navigationBar.tintColor = .white
     
-  
   }
 }
 
