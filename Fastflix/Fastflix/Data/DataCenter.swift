@@ -24,6 +24,8 @@ class DataCenter {
   var top10Data: Top10?
   
   var goldenMovie: GoldenMovie?
+  
+  var followUpMovie: FollowUp?
 
   let group = DispatchGroup()
   
@@ -39,6 +41,7 @@ class DataCenter {
       self.getForkData()
       self.getTop10Data()
       self.getGoldenMovieData()
+      self.getFollowUpData()
     
   }
   
@@ -138,4 +141,21 @@ class DataCenter {
       }
     }
   }
+  
+  private func getFollowUpData() {
+    group.enter()
+    downloadPath.getFollowUpList { (result) in
+      switch result {
+      case .success(let value):
+        self.followUpMovie = value
+        print("Queue followUpData")
+        self.group.leave()
+      case .failure(let err):
+        dump(err)
+        self.followUpMovie = nil
+        self.group.leave()
+      }
+    }
+  }
+  
 }
