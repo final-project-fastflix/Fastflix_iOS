@@ -52,15 +52,34 @@ class LoginVC: UIViewController {
     return button
   }()
   
+  //이메일 입력하는 텍스트 뷰 (뷰 위에 텍스트 필드 및 안내문구 올라가 있음)
+  lazy var emailTextFieldView: UIView = {
+    let view = UIView()
+    view.frame.size.height = 48
+    view.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+    view.layer.cornerRadius = 5
+    view.clipsToBounds = true
+    view.layer.cornerRadius = 5
+    view.addSubview(emailTextField)
+    view.addSubview(emailLabel)
+    return view
+  }()
+  
+  var emailLabel: UILabel = {
+    let label = UILabel()
+    label.text = "이메일주소 또는 전화번호"
+    label.font = UIFont.systemFont(ofSize: 18)
+    label.textColor = #colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1)
+    return label
+  }()
+  
   // 로그인 - 이메일 입력 필드
   lazy var emailTextField: UITextField = {
     var tf = UITextField()
     tf.frame.size.height = 48
-    tf.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-    tf.layer.cornerRadius = 5
-    tf.attributedPlaceholder
-      = NSAttributedString(string: "  이메일 주소 또는 전화번호",attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)])
+    tf.backgroundColor = .clear
     tf.textColor = .white
+    tf.tintColor = .white
     tf.autocapitalizationType = .none
     tf.autocorrectionType = .no
     tf.spellCheckingType = .no
@@ -70,14 +89,36 @@ class LoginVC: UIViewController {
     return tf
   }()
   
+  //비밀번호 입력하는 텍스트 뷰 (뷰 위에 텍스트 필드 및 안내문구 올라가 있음)
+  lazy var passwordTextFieldView: UIView = {
+    let view = UIView()
+    view.frame.size.height = 48
+    view.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+    view.layer.cornerRadius = 5
+    view.clipsToBounds = true
+    view.layer.cornerRadius = 5
+    view.addSubview(passwordTextField)
+    view.addSubview(passwordLabel)
+    view.addSubview(passwordSecureButton)
+    return view
+  }()
+  
+  var passwordLabel: UILabel = {
+    let label = UILabel()
+    label.text = "비밀번호"
+    label.font = UIFont.systemFont(ofSize: 18)
+    label.textColor = #colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1)
+    return label
+  }()
+  
   // 로그인 - 비밀번호 입력 필드
-  let passwordField: UITextField = {
+  let passwordTextField: UITextField = {
     let tf = UITextField()
     tf.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-    tf.attributedPlaceholder
-      = NSAttributedString(string: "  비밀번호",attributes: [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)])
-    tf.layer.cornerRadius = 5
+    tf.frame.size.height = 48
+    tf.backgroundColor = .clear
     tf.textColor = .white
+    tf.tintColor = .white
     tf.autocapitalizationType = .none
     tf.autocorrectionType = .no
     tf.spellCheckingType = .no
@@ -87,6 +128,16 @@ class LoginVC: UIViewController {
     tf.keyboardAppearance = .dark
     return tf
   }()
+  
+  let passwordSecureButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setTitle("표시", for: .normal)
+    button.setTitleColor(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1), for: .normal)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .light)
+    button.addTarget(self, action: #selector(passwordSecureModeSetting), for: .touchUpInside)
+    return button
+  }()
+  
   
   // 로그인버튼
   let loginButton: UIButton = {
@@ -104,7 +155,7 @@ class LoginVC: UIViewController {
   
   // 이메일텍스트필드, 패스워드, 로그인버튼 스택뷰에 배치
   lazy var stackView: UIStackView = {
-    let sview = UIStackView(arrangedSubviews: [emailTextField, passwordField, loginButton])
+    let sview = UIStackView(arrangedSubviews: [emailTextFieldView, passwordTextFieldView, loginButton])
     sview.spacing = 18
     sview.axis = .vertical
     sview.distribution = .equalSpacing
@@ -145,7 +196,7 @@ class LoginVC: UIViewController {
   private func configure() {
     view.backgroundColor = #colorLiteral(red: 0.07450980392, green: 0.07450980392, blue: 0.07450980392, alpha: 1)
     emailTextField.delegate = self
-    passwordField.delegate = self
+    passwordTextField.delegate = self
   }
   
   private func addSubViews() {
@@ -153,7 +204,32 @@ class LoginVC: UIViewController {
   }
   
   private func setupSNP() {
+    emailLabel.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview().inset(8)
+      $0.centerY.equalToSuperview()
+    }
     
+    emailTextField.snp.makeConstraints {
+      $0.top.equalToSuperview().inset(15)
+      $0.bottom.equalToSuperview().inset(2)
+      $0.leading.trailing.equalToSuperview().inset(8)
+    }
+    
+    passwordLabel.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview().inset(8)
+      $0.centerY.equalToSuperview()
+    }
+    
+    passwordTextField.snp.makeConstraints {
+      $0.top.equalToSuperview().inset(15)
+      $0.bottom.equalToSuperview().inset(2)
+      $0.leading.trailing.equalToSuperview().inset(8)
+    }
+    
+    passwordSecureButton.snp.makeConstraints {
+      $0.top.bottom.equalToSuperview().inset(15)
+      $0.trailing.equalToSuperview().inset(8)
+    }
     
     stackView.snp.makeConstraints {
       $0.centerX.centerY.equalToSuperview()
@@ -166,7 +242,6 @@ class LoginVC: UIViewController {
         $0.height.equalTo(48)
       }
     }
-    
     passwordButton.snp.makeConstraints {
       $0.top.equalTo(stackView.snp.bottom).offset(10)
       $0.leading.equalTo(view.snp.leading).offset(30)
@@ -184,7 +259,7 @@ class LoginVC: UIViewController {
       $0.height.equalTo(logoView.snp.width).multipliedBy(0.70)
     }
     customerCenterButton.snp.makeConstraints {
-      $0.centerY.equalToSuperview()
+      $0.centerY.equalTo(logoView.snp.centerY)
       $0.trailing.equalTo(view.snp.trailing).offset(-15)
     }
     backButton.snp.makeConstraints {
@@ -243,13 +318,15 @@ class LoginVC: UIViewController {
         }
       }
     }
-
   }
   
+  @objc private func passwordSecureModeSetting() {
+    passwordTextField.isSecureTextEntry.toggle()
+  }
   
   // 로그인버튼 눌렀을 때
   @objc private func didTapLoginBtn(_ sender: UIButton) {
-    guard let id = emailTextField.text, let pw = passwordField.text else { return }
+    guard let id = emailTextField.text, let pw = passwordTextField.text else { return }
     APICenter.shared.login(id: id, pw: pw) {
       switch $0 {
       case .success(let subUsers):
@@ -296,7 +373,7 @@ class LoginVC: UIViewController {
     }
     guard
       let email = emailTextField.text, !email.isEmpty,
-      let password = passwordField.text, !password.isEmpty
+      let password = passwordTextField.text, !password.isEmpty
       else {
         loginButton.backgroundColor = .clear
         loginButton.isEnabled = false
@@ -314,14 +391,49 @@ class LoginVC: UIViewController {
 
 // MARK: - 텍스트필드 델리게이트 구현
 extension LoginVC: UITextFieldDelegate {
-  // 텍스트필드 편집 시작하면 백그라운드 색 변경
+  // 텍스트필드 편집 시작할때의 설정 - 문구가 위로올라가면서 크기 작아지고, 오토레이아웃 업데이트
   func textFieldDidBeginEditing(_ textField: UITextField) {
-    textField.backgroundColor = #colorLiteral(red: 0.2972877622, green: 0.2973434925, blue: 0.297280401, alpha: 1)
+    
+    if textField == emailTextField {
+      emailTextFieldView.backgroundColor = #colorLiteral(red: 0.2972877622, green: 0.2973434925, blue: 0.297280401, alpha: 1)
+      emailLabel.font = UIFont.systemFont(ofSize: 11)
+      emailLabel.snp.updateConstraints {
+        $0.centerY.equalToSuperview().offset(-13)
+      }
+    }
+    if textField == passwordTextField {
+      passwordTextFieldView.backgroundColor = #colorLiteral(red: 0.2972877622, green: 0.2973434925, blue: 0.297280401, alpha: 1)
+      passwordLabel.font = UIFont.systemFont(ofSize: 11)
+      passwordLabel.snp.updateConstraints {
+        $0.centerY.equalToSuperview().offset(-13)
+      }
+    }
+  
   }
   
-  // 텍스트필드 편집 종료되면 백그라운드 색 변경
+  // 텍스트필드 편집 종료되면 백그라운드 색 변경 (글자가 한개도 입력 안되었을때는 되돌리기)
   func textFieldDidEndEditing(_ textField: UITextField) {
-    textField.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+    
+    if textField == emailTextField {
+      emailTextFieldView.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+      if emailTextField.text == "" {
+        emailLabel.font = UIFont.systemFont(ofSize: 18)
+        emailLabel.snp.updateConstraints {
+          $0.centerY.equalToSuperview()
+        }
+      }
+    }
+    
+    if textField == passwordTextField {
+      passwordTextFieldView.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+      if passwordTextField.text == "" {
+        passwordLabel.font = UIFont.systemFont(ofSize: 18)
+        passwordLabel.snp.updateConstraints {
+          $0.centerY.equalToSuperview()
+        }
+      }
+    }
+  
   }
   
   // 엔터 누르면 일단 키보드 내림
@@ -330,3 +442,8 @@ extension LoginVC: UITextFieldDelegate {
     return true
   }
 }
+
+
+
+
+

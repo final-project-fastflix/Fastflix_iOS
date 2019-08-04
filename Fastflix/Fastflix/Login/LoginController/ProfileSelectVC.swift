@@ -170,7 +170,7 @@ class ProfileSelectVC: UIViewController {
     }
     introlabel.snp.makeConstraints {
       $0.centerX.equalToSuperview()
-      $0.top.equalTo(navigationView.snp.bottom).offset(35)
+      $0.centerY.equalTo(self.view.snp.top).offset(UIScreen.main.bounds.height * 0.15)
     }
     profileImageView1.snp.makeConstraints {
       $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
