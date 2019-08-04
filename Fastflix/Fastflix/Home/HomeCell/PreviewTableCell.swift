@@ -76,15 +76,20 @@ final class PreviewTableCell: UITableViewCell {
   }
   // MARK: - snpkitLayout
   private func setupSNP() {
-    collectionView.snp.makeConstraints {
-      $0.leading.trailing.bottom.equalToSuperview()
+    contentView.snp.makeConstraints {
       $0.height.equalTo(180)
-      $0.top.equalToSuperview()
+    }
+    collectionView.snp.makeConstraints {
+      $0.top.leading.trailing.bottom.equalToSuperview()
+//      $0.height.equalTo(180)
+    
     }
     sectionHeaderlabel.snp.makeConstraints {
-      $0.top.trailing.equalToSuperview().offset(10)
-      $0.leading.equalTo(10)
-      $0.height.equalTo(5)
+//      $0.top.trailing.equalToSuperview().offset(10)
+//      $0.leading.equalTo(10)
+//      $0.height.equalTo(5)
+      $0.leading.equalToSuperview().offset(10)
+      $0.top.equalToSuperview().offset(10)
     }
   }
   

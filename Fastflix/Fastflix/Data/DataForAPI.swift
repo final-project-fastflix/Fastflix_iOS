@@ -160,7 +160,7 @@ typealias ListOfFork = [ListOfForkElement]
 struct PreviewDatas: Codable {
   let id: Int
   let name: String
-  let circleImage: String
+  let circleImage: String?
   let logoImagePath: String
   let videoFile: String?
   let verticalSampleVideoFile: String?
