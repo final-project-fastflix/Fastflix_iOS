@@ -96,3 +96,5 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 19.08.04  feat: tass - FollowUpMovie Download
 
 19.08.05 feat: allen - LoginVC's keyboard notification, and the alert for the wrong password.
+
+19.08.05 feat: allen - LoginVC's emailTextField, passwordTextField's introlabel's moving autolayout
