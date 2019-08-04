@@ -16,7 +16,7 @@ enum RequestString: String {
   case createSubUserURL = "http://52.78.134.79/accounts/create_sub_user/"
   case changeProfileListURL = "http://52.78.134.79/accounts/change_profile/"
   case changeProfileImageURL = "http://52.78.134.79//accounts/change_profile_image/"
-  case getMainImgURL = "http://52.78.134.79/movies/"
+  case getMainImgURL = "http://52.78.134.79//movies/"
   case toggleForkMovieURL = "http://52.78.134.79/movies/add_delete_my_list/"
   case getBrandNewMovieURL = "http://52.78.134.79/movies/brand_new/"
   case toggleHateMovieURL = "http://52.78.134.79/movies/dislike/"
@@ -30,6 +30,78 @@ enum RequestString: String {
   case deleteProfileInfoURL = "http://52.78.134.79/accounts/delete_sub_user/"
   case getGoldenMovieURL = "http://52.78.134.79/movies/big_size_video/"
   case searchMovieURL = "http://52.78.134.79//movies/search/?search_key="
+  case getDetailURL = "http://52.78.134.79/movies/"
+}
+
+
+// MARK: - MovieDetail
+struct MovieDetail: Codable {
+  let id: Int
+  let name: String
+  let videoFile, sampleVideoFile, verticalSampleVideoFile: String
+  let productionDate, uploadedDate, synopsis, runningTime: String
+  let realRunningTime: Int
+  let logoImagePath: String
+  let horizontalImagePath: String
+  let verticalImage: String
+  let circleImage: String
+  let bigImagePath: String
+  let iosMainImage: String
+  let degree: Degree
+  let directors, actors, feature, genre: [Actor]
+  let author: [Actor]
+  let marked: Bool
+  let like, matchRate, totalMinute, toBeContinue: Int
+  let remainingTime: Int
+  let canIStore: Bool
+  let similarMovies: [SimilarMovie]
+  
+  enum CodingKeys: String, CodingKey {
+    case id, name
+    case videoFile = "video_file"
+    case sampleVideoFile = "sample_video_file"
+    case verticalSampleVideoFile = "vertical_sample_video_file"
+    case productionDate = "production_date"
+    case uploadedDate = "uploaded_date"
+    case synopsis
+    case runningTime = "running_time"
+    case realRunningTime = "real_running_time"
+    case logoImagePath = "logo_image_path"
+    case horizontalImagePath = "horizontal_image_path"
+    case verticalImage = "vertical_image"
+    case circleImage = "circle_image"
+    case bigImagePath = "big_image_path"
+    case iosMainImage = "ios_main_image"
+    case degree, directors, actors, feature, author, genre, marked, like
+    case matchRate = "match_rate"
+    case totalMinute = "total_minute"
+    case toBeContinue = "to_be_continue"
+    case remainingTime = "remaining_time"
+    case canIStore = "can_i_store"
+    case similarMovies = "similar_movies"
+  }
+}
+
+
+// MARK: - SimilarMovie
+struct SimilarMovie: Codable {
+  let id: Int
+  let name: String
+  let degree: Degree
+  let synopsis: String
+  let horizontalImagePath: String
+  let verticalImage: String
+  let productionDate, runningTime: String
+  let matchRate: Int
+  
+  enum CodingKeys: String, CodingKey {
+    case id, name, degree, synopsis
+    case horizontalImagePath = "horizontal_image_path"
+    case verticalImage = "vertical_image"
+    case productionDate = "production_date"
+    case runningTime = "running_time"
+    case matchRate = "match_rate"
+  }
 }
 
 
@@ -326,15 +398,15 @@ struct MainMovie: Codable {
 
 // MARK: - Actor
 struct Actor: Codable {
-  let id: Int?
-  let name: String?
+  let id: Int
+  let name: String
 }
 
 // MARK: - Degree
 struct Degree: Codable {
-  let id: Int?
-  let name: String?
-  let degreeImagePath: String?
+  let id: Int
+  let name: String
+  let degreeImagePath: String
   
   enum CodingKeys: String, CodingKey {
     case id, name

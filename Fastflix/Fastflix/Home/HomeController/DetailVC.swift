@@ -24,7 +24,6 @@ final class DetailVC: UITableViewController {
     super.viewDidLoad()
     
     setTableView()
-//    makeConstraints()
     registerTableViewCell()
     
   }
@@ -34,22 +33,6 @@ final class DetailVC: UITableViewController {
   override func viewDidLayoutSubviews() {
     tableView.contentInset.top = -view.safeAreaInsets.top
   }
-  
-  
-//  private func setupSNP() {
-//
-//    [dissmissButton].forEach { tableView.addSubview($0) }
-//
-//    //        tableView.snp.makeConstraints {
-//    //            $0.top.leading.bottom.trailing.equalTo(view)
-//    //        }
-//
-//    dissmissButton.snp.makeConstraints {
-//      $0.width.height.equalTo(16)
-//      $0.top.equalToSuperview().offset(5)
-//      $0.trailing.equalToSuperview().offset(-5)
-//    }
-//  }
   
   private func registerTableViewCell() {
     tableView.register(DetailViewUpperCell.self, forCellReuseIdentifier: "DetailViewUpperCell")

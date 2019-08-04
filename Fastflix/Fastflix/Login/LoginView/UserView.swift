@@ -137,7 +137,6 @@ class UserView: UIView {
     } else {
       if isForImageSelecting {
         delegate?.toUserIconSelectVC()
-        print("넘어가는뷰")
       }else {
         delegate?.didSelectUser(tag: tag)
       }

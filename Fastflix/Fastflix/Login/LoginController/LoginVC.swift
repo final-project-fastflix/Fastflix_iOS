@@ -204,7 +204,6 @@ class LoginVC: UIViewController {
   }
   
   private func setupSNP() {
-    
     emailLabel.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview().inset(8)
       $0.centerY.equalToSuperview()
