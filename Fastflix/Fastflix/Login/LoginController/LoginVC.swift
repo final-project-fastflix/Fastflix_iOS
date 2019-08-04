@@ -154,15 +154,6 @@ class LoginVC: UIViewController {
   
   private func setupSNP() {
     
-//    emailTextField.snp.makeConstraints {
-//      $0.height.equalTo(48)
-//    }
-//    passwordField.snp.makeConstraints {
-//      $0.height.equalTo(48)
-//    }
-//    loginButton.snp.makeConstraints {
-//      $0.height.equalTo(48)
-//    }
     
     stackView.snp.makeConstraints {
       $0.centerX.centerY.equalToSuperview()

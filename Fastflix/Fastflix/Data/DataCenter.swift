@@ -51,7 +51,6 @@ class DataCenter {
       switch result {
       case .success(let value):
         self.goldenMovie = value
-        print("Queue getGoldenMovieData")
         self.group.leave()
       case .failure(let err):
         dump(err)
@@ -67,11 +66,9 @@ class DataCenter {
       switch result {
       case .success(let value):
         self.mainImageCellData = value
-        print("Queue getMainImgCellData")
         self.group.leave()
       case .failure(let err):
         dump(err)
-        print("Queue getMainImgCellData Fail", err)
         self.mainImageCellData = nil
         self.group.leave()
       }
@@ -84,7 +81,6 @@ class DataCenter {
       switch result {
       case .success(let value):
         self.preViewCellData = value
-        print("Queue previewcelldata")
         self.group.leave()
       case .failure(let err):
         dump(err)
@@ -100,7 +96,6 @@ class DataCenter {
       switch result {
       case .success(let value):
         self.brandNewMovieData = value
-        print("Queue brandnewmovieData")
         self.group.leave()
       case .failure(let err):
         dump(err)
@@ -116,7 +111,6 @@ class DataCenter {
       switch result {
       case .success(let value):
         self.forkData = value
-        print("Queue forkData")
         self.group.leave()
       case .failure(let err):
         dump(err)
@@ -132,7 +126,6 @@ class DataCenter {
       switch result {
       case .success(let value):
         self.top10Data = value
-        print("Queue top10data")
         self.group.leave()
       case .failure(let err):
         dump(err)
@@ -148,7 +141,6 @@ class DataCenter {
       switch result {
       case .success(let value):
         self.followUpMovie = value
-        print("Queue followUpData", value)
         self.group.leave()
       case .failure(let err):
         dump(err)

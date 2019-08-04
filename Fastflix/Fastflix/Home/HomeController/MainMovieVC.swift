@@ -16,9 +16,9 @@ class MainMovieVC: UIViewController {
   var receiveData: RequestMovie? = nil {
     willSet(new) {
       receiveKeys = new?[0].listOfGenre
-//      loadView()
     }
   }
+  
   lazy var receiveKeys: [String]? = nil
   
   override func loadView() {
@@ -28,11 +28,6 @@ class MainMovieVC: UIViewController {
     mainMovieView.floatingView.delegate = self
     self.view = mainMovieView
   }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-      
-    }
 }
 
 extension MainMovieVC: FloatingViewDelegate {
