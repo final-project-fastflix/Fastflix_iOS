@@ -19,6 +19,7 @@ class LoginVC: UIViewController {
     view.addSubview(logoView)
     view.addSubview(customerCenterButton)
     view.addSubview(backButton)
+    view.addSubview(bigBackButton)
     return view
   }()
   
@@ -51,6 +52,14 @@ class LoginVC: UIViewController {
     button.addTarget(self, action: #selector(backButtonTapped(_:)), for: .touchUpInside)
     return button
   }()
+
+  // 뒤로가기 잘 안눌려서 큰 버튼 위에 입힘
+  let bigBackButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.backgroundColor = .clear
+    button.addTarget(self, action: #selector(backButtonTapped(_:)), for: .touchUpInside)
+    return button
+  }()
   
   //이메일 입력하는 텍스트 뷰 (뷰 위에 텍스트 필드 및 안내문구 올라가 있음)
   lazy var emailTextFieldView: UIView = {
@@ -65,6 +74,7 @@ class LoginVC: UIViewController {
     return view
   }()
   
+  // 이메일텍스트필드의 안내문구
   var emailLabel: UILabel = {
     let label = UILabel()
     label.text = "이메일주소 또는 전화번호"
@@ -85,7 +95,7 @@ class LoginVC: UIViewController {
     tf.spellCheckingType = .no
     tf.keyboardType = .emailAddress
     tf.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
-    tf.keyboardAppearance = .dark
+//    tf.keyboardAppearance = .dark
     return tf
   }()
   
@@ -103,6 +113,7 @@ class LoginVC: UIViewController {
     return view
   }()
   
+  // 패스워드텍스트필드의 안내문구
   var passwordLabel: UILabel = {
     let label = UILabel()
     label.text = "비밀번호"
@@ -125,10 +136,11 @@ class LoginVC: UIViewController {
     tf.isSecureTextEntry = true
     tf.clearsOnBeginEditing = false
     tf.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
-    tf.keyboardAppearance = .dark
+//    tf.keyboardAppearance = .dark
     return tf
   }()
   
+  // 패스워드에 "표시"버튼 비밀번호 가리기 기능
   let passwordSecureButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("표시", for: .normal)
@@ -137,7 +149,6 @@ class LoginVC: UIViewController {
     button.addTarget(self, action: #selector(passwordSecureModeSetting), for: .touchUpInside)
     return button
   }()
-  
   
   // 로그인버튼
   let loginButton: UIButton = {
@@ -164,7 +175,7 @@ class LoginVC: UIViewController {
   }()
   
   // 비밀번호 재설정 버튼
-  let passwordButton: UIButton = {
+  let passwordResetButton: UIButton = {
     let button = UIButton()
     button.backgroundColor = .clear
     button.setTitle("비밀번호 재설정", for: .normal)
@@ -172,6 +183,7 @@ class LoginVC: UIViewController {
     return button
   }()
   
+  // 3개의 각 텍스트필드 및 로그인 버튼의 높이 설정을 위한 속성
   let textViewHeight: CGFloat = 48
   
   // 스태터스바 글씨 하얗게 설정
@@ -186,12 +198,13 @@ class LoginVC: UIViewController {
     navigationBarSetting()
     addSubViews()
     makeObserverForKeyboard()
-  }
-  
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
     setupSNP()
   }
+  
+//  override func viewDidAppear(_ animated: Bool) {
+//    super.viewDidAppear(animated)
+////    setupSNP()
+//  }
   
   private func configure() {
     view.backgroundColor = #colorLiteral(red: 0.07450980392, green: 0.07450980392, blue: 0.07450980392, alpha: 1)
@@ -200,10 +213,34 @@ class LoginVC: UIViewController {
   }
   
   private func addSubViews() {
-    [navigationView, stackView, passwordButton].forEach { view.addSubview($0)}
+    [navigationView, stackView, passwordResetButton].forEach { view.addSubview($0)}
   }
   
   private func setupSNP() {
+    
+    navigationView.snp.makeConstraints {
+      $0.top.leading.trailing.equalToSuperview()
+      $0.height.equalTo(UIScreen.main.bounds.height * 0.11)
+    }
+    logoView.snp.makeConstraints {
+      $0.bottom.equalTo(navigationView.snp.bottom).offset(8)
+      $0.centerX.equalToSuperview()
+      $0.width.equalToSuperview().multipliedBy(0.25)
+      $0.height.equalTo(logoView.snp.width).multipliedBy(0.70)
+    }
+    customerCenterButton.snp.makeConstraints {
+      $0.centerY.equalTo(logoView.snp.centerY)
+      $0.trailing.equalTo(view.snp.trailing).offset(-15)
+    }
+    backButton.snp.makeConstraints {
+      $0.centerY.equalTo(logoView.snp.centerY)
+      $0.width.height.equalTo(14)
+      $0.leading.equalTo(view.snp.leading).offset(20)
+    }
+    bigBackButton.snp.makeConstraints {
+      $0.centerX.centerY.equalTo(backButton)
+      $0.width.height.equalTo(30)
+    }
     
     emailLabel.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview().inset(8)
@@ -243,31 +280,14 @@ class LoginVC: UIViewController {
         $0.height.equalTo(48)
       }
     }
-    passwordButton.snp.makeConstraints {
+    
+    passwordResetButton.snp.makeConstraints {
       $0.top.equalTo(stackView.snp.bottom).offset(10)
       $0.leading.equalTo(view.snp.leading).offset(30)
       $0.trailing.equalTo(view.snp.trailing).offset(-30)
       $0.height.equalTo(textViewHeight)
     }
-    navigationView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalTo(UIScreen.main.bounds.height * 0.11)
-    }
-    logoView.snp.makeConstraints {
-      $0.bottom.equalTo(navigationView.snp.bottom).offset(8)
-      $0.centerX.equalToSuperview()
-      $0.width.equalToSuperview().multipliedBy(0.25)
-      $0.height.equalTo(logoView.snp.width).multipliedBy(0.70)
-    }
-    customerCenterButton.snp.makeConstraints {
-      $0.centerY.equalTo(logoView.snp.centerY)
-      $0.trailing.equalTo(view.snp.trailing).offset(-15)
-    }
-    backButton.snp.makeConstraints {
-      $0.centerY.equalTo(logoView.snp.centerY)
-      $0.width.height.equalTo(14)
-      $0.leading.equalTo(view.snp.leading).offset(20)
-    }
+
   }
   
   // 네비게이션바 세팅
@@ -310,14 +330,15 @@ class LoginVC: UIViewController {
     
     UIView.animate(withDuration: duration*2){
       if keyboardFrame.minY >= self.view.frame.maxY {
-        self.stackView.snp.makeConstraints {
+        self.stackView.snp.updateConstraints {
           $0.centerY.equalToSuperview()
         }
       }else {
-        self.stackView.snp.makeConstraints {
+        self.stackView.snp.updateConstraints {
           $0.centerY.equalToSuperview().offset(-moveheight)
         }
       }
+      super.updateViewConstraints()
     }
   }
   
@@ -409,7 +430,7 @@ extension LoginVC: UITextFieldDelegate {
         $0.centerY.equalToSuperview().offset(-13)
       }
     }
-  
+    super.updateViewConstraints()
   }
   
   // 텍스트필드 편집 종료되면 백그라운드 색 변경 (글자가 한개도 입력 안되었을때는 되돌리기)
@@ -424,7 +445,6 @@ extension LoginVC: UITextFieldDelegate {
         }
       }
     }
-    
     if textField == passwordTextField {
       passwordTextFieldView.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
       if passwordTextField.text == "" {
@@ -432,9 +452,10 @@ extension LoginVC: UITextFieldDelegate {
         passwordLabel.snp.updateConstraints {
           $0.centerY.equalToSuperview()
         }
+        
       }
     }
-  
+    super.updateViewConstraints()
   }
   
   // 엔터 누르면 일단 키보드 내림
