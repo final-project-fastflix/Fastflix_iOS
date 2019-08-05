@@ -12,6 +12,7 @@ import AVKit
 
 class MainHomeVC: UIViewController {
   
+  // download 가 끝났을 시, 결과값이 true라면 reload
   var finishDownload = false {
     willSet(new) {
       DispatchQueue.main.async {
@@ -21,10 +22,9 @@ class MainHomeVC: UIViewController {
     }
   }
   
+  // floatingView를 움직이기위한 properties
   var originValue: CGFloat = 0
-  
   var compareArr: [CGFloat] = []
-  
   var originY: CGFloat {
     get {
       return floatingView.frame.origin.y
@@ -35,6 +35,7 @@ class MainHomeVC: UIViewController {
     }
   }
   
+  // streamingCell이 보여질때 플레이 아니면 일시정지
   private var streamingCellFocus = false {
     willSet(newValue) {
       newValue ? streamingCell.playVideo() : streamingCell.pauseVideo()
@@ -52,8 +53,12 @@ class MainHomeVC: UIViewController {
     return tbl
   }()
   
-  private let streamingCell: StreamingCell = {
+  // video가 있을때 configure 실행 아니면 재생안함
+  private lazy var streamingCell: StreamingCell = {
     let cell = StreamingCell()
+    guard let video = DataCenter.shared.goldenMovie?.videoFile else {
+      return cell }
+    cell.configure(url: video)
     return cell
   }()
   
@@ -71,32 +76,12 @@ class MainHomeVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     addSubViews()
-    
     registerTableViewCell()
-//    view.clipsToBounds = true
-    
-//    DataCenter.shared.downloadDatas()
-    
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     setupSNP()
-//    downloadDatas()
-//    group.notify(queue: .main) {
-//      DispatchQueue.main.async {
-//        self.setupSNP()
-//        self.tableView.reloadData()
-//        print("group worked")
-//      }
-//    }
-    let paht = DataCenter.shared
-    paht.group.notify(queue: paht.downloadQueue) {
-      print("Queue noti finish")
-//      self.finishDownload = true
-    }
-    
-    
   }
   
   
@@ -147,15 +132,15 @@ extension MainHomeVC: UITableViewDataSource {
       cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
       if let data = path.mainImageCellData?.mainMovie?.genre {
         for idx in data {
-          text += (idx.name ?? "Error" + "･")
+          text += (idx.name + "･")
         }
       }
+      let lastText = String(text.dropLast())
       cell.selectionStyle = .none
-      cell.movieDetailLabel.text = text
+      cell.movieDetailLabel.text = lastText
       return cell
       
     case 1:
-//      guard let data = path.preViewCellData else { return UITableViewCell() }
       let cell = tableView.dequeueReusableCell(withIdentifier: PreviewTableCell.identifier, for: indexPath) as! PreviewTableCell
       var mainURLs: [String] = []
       var logoURLs: [String] = []
@@ -165,7 +150,6 @@ extension MainHomeVC: UITableViewDataSource {
           logoURLs.append(index.logoImagePath)
         }
       }
-      print("check: ", logoURLs)
       cell.configure(mainURLs: mainURLs, logoURLs: logoURLs)
       cell.delegate = self
       cell.selectionStyle = .none
@@ -175,44 +159,47 @@ extension MainHomeVC: UITableViewDataSource {
     case 2:
       let cell = SubCell()
       var mainURLs: [String] = []
+      var movieIDArr: [Int] = []
       if let data = path.brandNewMovieData {
         for index in data {
           mainURLs.append(index.verticalImage)
+          movieIDArr.append(index.id)
         }
       }
       
-      cell.configure(url: mainURLs, title: "최신영화")
+      cell.configure(url: mainURLs, title: "최신영화", movieIDs: movieIDArr)
       return cell
       
     case 3:
       let cell = SubCell()
       var mainURLs: [String] = []
+      var movieIDArr: [Int] = []
       if let data = path.forkData {
         for index in data {
           mainURLs.append(index.verticalImage)
+          movieIDArr.append(index.id)
         }
       }
       
-      cell.configure(url: mainURLs, title: "찜 리스트")
+      cell.configure(url: mainURLs, title: "찜 리스트", movieIDs: movieIDArr)
       return cell
       
     case 4:
       let cell = SubCell()
       var mainURLs: [String] = []
+      var movieIDArr: [Int] = []
       if let data = path.top10Data {
         for index in data {
           mainURLs.append(index.verticalImage)
+          movieIDArr.append(index.id)
         }
       }
       
-      cell.configure(url: mainURLs, title: "좋아요 TOP 10")
+      cell.configure(url: mainURLs, title: "좋아요 TOP 10", movieIDs: movieIDArr)
       return cell
       
     case 5:
       let cell = streamingCell
-      if let video = path.goldenMovie?.videoFile {
-        cell.configure(url: video)
-      }
       return cell
       
     case 6:
@@ -226,17 +213,14 @@ extension MainHomeVC: UITableViewDataSource {
       if let data = path.followUpMovie {
         cell.configure(data: data, title: "시청중인 영화")
       }
-//      cell.configure(url: nil, title: "hea님이 시청중인 영화", time: "2시간 5분", progress: nil)
-//      cell.configure(url: ImagesData.shared.myContentImages, title: "시청중인 영화")
       cell.selectionStyle = .none
       cell.delegate = self
       return cell
       
     default:
       let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
-      cell.configure(url: imageUrls, title: "\(indexPath)")
+      cell.configure(url: imageUrls, title: "\(indexPath)", movieIDs: nil)
       return cell
-//      return UITableViewCell()
     }
   }
   
@@ -261,9 +245,7 @@ extension MainHomeVC: PreviewTableCellDelegate {
 
 extension MainHomeVC: OriginalTableCellDelegate {
   func originalDidSelectItemAt(indexPath: IndexPath) {
-    //    let detailVC = DetailTableVC()
     let detailVC = DetailVC()
-    print("present DetailVC")
     present(detailVC, animated: true)
   }
   
@@ -284,7 +266,6 @@ extension MainHomeVC: UITableViewDelegate {
     
     streamingCellFocus = (state == nil) ? false : true
     
-    //    print(scrollView.contentOffset.y)
     let offset = scrollView.contentOffset.y
     
     let transition = scrollView.panGestureRecognizer.translation(in: scrollView).y.rounded()
@@ -361,7 +342,7 @@ extension MainHomeVC: FloatingViewDelegate {
           self.tabBarController?.viewControllers?[0] = mainMovieVC
         }
       case .failure(let err):
-        print("ErrorType: ", err)
+        dump(err)
       }
     }
     

@@ -13,6 +13,7 @@ class SubCell: UITableViewCell {
   static let identifier = "SubCell"
   
   private var urls: [URL?] = []
+  private var movieIDs: [Int] = []
   
   private let layout = UICollectionViewFlowLayout()
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -25,12 +26,14 @@ class SubCell: UITableViewCell {
     return label
   }()
   
-  func configure(url: [String]?, title: String?) {
+  func configure(url: [String]?, title: String?, movieIDs: [Int]?) {
     let urlArr = url ?? imageUrls
+    let idArr = movieIDs ?? []
     let title = title ?? "title"
     
     self.urls = urlArr.map { URL(string: $0) }
     self.titleLabel.text = title
+    self.movieIDs = idArr
     self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
   }
   
@@ -51,6 +54,7 @@ class SubCell: UITableViewCell {
     collectionView.showsHorizontalScrollIndicator = false
     collectionView.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     collectionView.dataSource = self
+    collectionView.delegate = self
     setupSNP()
   }
   
@@ -85,17 +89,29 @@ extension SubCell: UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     
-    return urls.count
+    return movieIDs.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.identifier, for: indexPath) as! ImageCell
-//    let cell = ImageCell()
-    print("index: ", indexPath.row, " ", urls.count)
 
-    cell.configure(url: urls[indexPath.row])
+    cell.configure(url: urls[indexPath.row], movieID: movieIDs[indexPath.row])
     
     return cell
   }
   
+}
+
+extension SubCell: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let id = movieIDs[indexPath.row]
+    APICenter.shared.getDetailData(id: id) { (result) in
+      switch result {
+      case .success(let value):
+        print("!!!need to bind Data!!!", value)
+      case .failure(let err):
+        dump(err)
+      }
+    }
+  }
 }

@@ -59,7 +59,6 @@ class AddProfileView: UIView {
   
   
   @objc private func buttonTapped() {
-    print("프로필추가 눌렀당")
     delegate?.addProfileButtonTapped()
   }
   

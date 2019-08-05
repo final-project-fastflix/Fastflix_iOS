@@ -118,7 +118,6 @@ extension UserIconTableCell: UICollectionViewDataSource {
 // MARK: - 델리게이트 구현(테이블뷰안의 컬렉션뷰 셀을 한개 선택했을때의 동작)
 extension UserIconTableCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    print("클릭됨??????")
     let cell = collectionView.cellForItem(at: indexPath) as? UserIconCollectionViewCell
     guard let url = cell?.imageURL else { return }
     self.cellDelegate?.collectionViewCellDidTap(collectioncell: cell, imageURL: url, didTappedInTableview: self)

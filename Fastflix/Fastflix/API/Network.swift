@@ -12,10 +12,6 @@ import Alamofire
 
 class APICenter {
   static let shared = APICenter()
-  let downloadQueue = DispatchQueue(label: "downloadQueue", attributes: .concurrent)
-//  let group = DispatchGroup()
-//  let downloadQueue = DispatchQueue(label: "downloadQueue", attributes: .concurrent)
-//  let dataQueue = DataCenter.shared.downloadQueue
   
   // MARK: 유저디폴트 객체
   private let path = UserDefaults.standard
@@ -47,6 +43,29 @@ class APICenter {
       return withOutSubuser
     }
   }
+  
+  
+  func getDetailData(id: Int, completion: @escaping (Result<MovieDetail>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    let fullURL = RequestString.getDetailURL.rawValue + "\(id)/"
+    
+    Alamofire.request(fullURL, method: .get, headers: header)
+      .responseData(queue: .global()) { (result) in
+        switch result.result {
+        case .success(let value):
+          guard let result = try? JSONDecoder().decode(MovieDetail.self, from: value) else {
+            completion(.failure(ErrorType.FailToParsing))
+            return
+          }
+          completion(.success(result))
+        case .failure(let err):
+          dump(err)
+          completion(.failure(ErrorType.networkError))
+        }
+    }
+    
+  }
+  
   
   // search Movie with key!
   func searchMovie(searchKey: String, completion: @escaping (Result<SearchMovie>) -> ()) {
@@ -139,7 +158,8 @@ class APICenter {
           completion(.failure(ErrorType.FailToParsing))
           return }
         completion(.success(result))
-      case .failure(_):
+      case .failure(let err):
+        dump(err)
         completion(.failure(ErrorType.networkError))
       }
     }
@@ -151,14 +171,15 @@ class APICenter {
     
     let header = getHeader(needSubuser: true)
     
-    Alamofire.request(RequestString.getTop10URL.rawValue, method: .get, headers: header).responseData(queue: downloadQueue) { (res) in
+    Alamofire.request(RequestString.getTop10URL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (res) in
       switch res.result {
       case .success(let value):
         guard let result = try? JSONDecoder().decode(Top10.self, from: value) else {
           completion(.failure(ErrorType.FailToParsing))
           return }
         completion(.success(result))
-      case .failure(_):
+      case .failure(let err):
+        dump(err)
         completion(.failure(ErrorType.networkError))
       }
     }
@@ -168,7 +189,7 @@ class APICenter {
   func getListOfFork(completion: @escaping (Result<ListOfFork>) -> ()) {
     let header = getHeader(needSubuser: true)
     
-    Alamofire.request(RequestString.getListOfForkURL.rawValue, method: .get, headers: header).responseData(queue: downloadQueue) { (data) in
+    Alamofire.request(RequestString.getListOfForkURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (data) in
       switch data.result {
       case .success(let data):
         guard let result = try? JSONDecoder().decode(ListOfFork.self, from: data) else {
@@ -178,6 +199,7 @@ class APICenter {
         
         completion(.success(result))
       case .failure(let err):
+        dump(err)
         completion(.failure(ErrorType.networkError))
       }
     }
@@ -187,7 +209,7 @@ class APICenter {
   func getPreviewData(completion: @escaping (Result<PreviewData>) -> ()) {
     let header = getHeader(needSubuser: true)
     
-    Alamofire.request(RequestString.getPreviewDataURL.rawValue, method: .get, headers: header).responseData(queue: downloadQueue) { (data) in
+    Alamofire.request(RequestString.getPreviewDataURL.rawValue, method: .get, headers: header).responseData(queue: .global()) { (data) in
       switch data.result {
       case .success(let value):
         guard let result = try? JSONDecoder().decode(PreviewData.self, from: value) else {
@@ -209,7 +231,7 @@ class APICenter {
     
     let req = Alamofire.request(RequestString.getBrandNewMovieURL.rawValue, method: .get, headers: header)
     
-    req.responseJSON(queue: downloadQueue) { (res) in
+    req.responseJSON(queue: .global()) { (res) in
       switch res.result {
       case .success(_):
         guard let data = res.data else {
@@ -223,7 +245,7 @@ class APICenter {
         completion(.success(result))
         
       case .failure(let err):
-        print("Error: ", err)
+        dump(err)
         completion(.failure(ErrorType.networkError))
       }
     }
@@ -264,7 +286,7 @@ class APICenter {
           completion(.success(state))
         }
       case .failure(let err):
-        print("result: ", err)
+        dump(err)
         completion(.failure(ErrorType.networkError))
       }
     }
@@ -303,7 +325,7 @@ class APICenter {
           completion(.success(state))
         }
       case .failure(let err):
-        print("result: ", err)
+        dump(err)
         completion(.failure(ErrorType.networkError))
       }
     }
@@ -344,7 +366,7 @@ class APICenter {
           completion(.success(state))
         }
       case .failure(let err):
-        print("result: ", err)
+        dump(err)
         completion(.failure(ErrorType.networkError))
       }
     }
@@ -392,24 +414,19 @@ class APICenter {
     
     let req = Alamofire.request(RequestString.getMainImgURL.rawValue, method: .get, headers: header)
     
-    req.response(queue: downloadQueue) { (res) in
+    req.response(queue: .global()) { (res) in
       guard res.error == nil else {
         completion(.failure(ErrorType.networkError))
         return
       }
-      print("Queue checkNetwork")
       guard let data = res.data else {
         completion(.failure(ErrorType.NoData))
         return
       }
-      print("Queue noData")
-      let test = try? JSONSerialization.jsonObject(with: data)
-//      print("Queue Test", test as? [String: [String: Any]])
       guard let result = try? JSONDecoder().decode(MainImgCellElement.self, from: data) else {
         completion(.failure(ErrorType.FailToParsing))
         return
       }
-      print("Queue failToParsing")
       completion(.success(result))
     }
   }
@@ -427,7 +444,6 @@ class APICenter {
         return }
       guard let resultData = try? JSONDecoder().decode(RequestMovie.self, from: data) else {
         completion(.failure(ErrorType.FailToParsing))
-        //        print("data: ", data as? [String])
         return }
       completion(.success(resultData))
     }
@@ -453,7 +469,6 @@ class APICenter {
       switch $0 {
       case .success(let upload, _, _):
         upload.responseJSON { (res) in
-          //          print("run", res.data as? [String: String])
           guard let data = res.data else {
             completion(.failure(ErrorType.NoData))
             return }
@@ -462,7 +477,6 @@ class APICenter {
             return }
           let token = origin.token
           let subUserArr = origin.subUserList.sorted(by: { $0.id < $1.id })
-          print("subUser: ", subUserArr)
           
           // 토큰값 유저디폴트에 저장하기
           self.saveToken(token: token)
@@ -470,9 +484,8 @@ class APICenter {
           completion(.success(subUserArr))
         }
       case .failure(let err):
-        print(err)
+        dump(err)
         completion(.failure(ErrorType.NoData))
-        break
       }
     }
   }
@@ -482,27 +495,23 @@ class APICenter {
   // MARK: 유저디폴트에 키값"token"로 토큰값 저장하기
   private func saveToken(token: String) {
     path.set(token, forKey: "token")
-    print("'Token' save complete ")
   }
   
   
   // MARK: 서브 유저 관련 메서드
   // MARK: 유저디폴트에 Int값으로된 서브유저 아이디 가져오기
   func getSubUserID() -> Int {
-    print("subUserID: ", path.integer(forKey: "subUserID"))
     return path.integer(forKey: "subUserID")
   }
   
   // MARK: 유저디폴트에 Int값으로 서브유저 아이디 저장하기
   func saveSubUserID(id: Int) {
     path.set(id, forKey: "subUserID")
-    print("'subUserID' save complete ")
   }
   
   // MARK: 유저디폴트에 현재 저장된 서브유저 아이디 지우기
   func deleteCurrentSubUserID() {
     path.removeObject(forKey: "subUserID")
-    print("'subUserID' is deleted")
   }
   
   
@@ -522,7 +531,6 @@ class APICenter {
       .responseJSON { response in
         guard response.result.isSuccess,
           let _ = response.result.value else {
-            print("Error while fetching tags: \(String(describing: response.result.error))")
             completion(.failure(ErrorType.networkError))
             return
         }
@@ -535,7 +543,6 @@ class APICenter {
           return
         }
         let subUserArr = origin.subUserList.sorted(by: { $0.id < $1.id })
-        print("유저생성 subUser: ", subUserArr)
         
         //서브유저 정보들 넘기기
         completion(.success(subUserArr))
@@ -552,7 +559,6 @@ class APICenter {
       .responseJSON { response in
         guard response.result.isSuccess,
           let _ = response.result.value else {
-            print("Error while fetching tags: \(String(describing: response.result.error))")
             completion(.failure(ErrorType.networkError))
             return
         }
@@ -566,7 +572,6 @@ class APICenter {
         }
         // 서브유저 리스트를 받되, 정렬해서 넘김 --> 유저 이름 바꾸는 경우 정렬 순서가 바뀌기도 하기때문에
         let subUserArr = origin.sorted(by: { $0.id < $1.id })
-        print("유저생성 subUser: ", subUserArr)
         
         //서브유저 정보들 넘기기
         completion(.success(subUserArr))
@@ -589,7 +594,8 @@ class APICenter {
           completion(.failure(ErrorType.FailToParsing))
           return }
         completion(.success(result))
-      case .failure(_):
+      case .failure(let err):
+        dump(err)
         completion(.failure(ErrorType.networkError))
       }
     }
@@ -598,6 +604,7 @@ class APICenter {
     
   }
   
+  // profile 변경시 필요한 body 고르기
   func pickupBody(id: Int, name: String?, kid: Bool?, imgPath: String?) -> Data {
     
     if name != nil && kid != nil && imgPath != nil {

@@ -25,10 +25,6 @@ final class MainTabBarController: UITabBarController {
     return navi
   }()
   
-//   lazy var searchNavi: UINavigationController = {
-//    let navi = UINavigationController(rootViewController: searchVC)
-//    return navi
-//  }()
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -38,15 +34,6 @@ final class MainTabBarController: UITabBarController {
     super.viewDidLoad()
     setupTabBar()
     
-  }
-  
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-//    let dataCenter = DataCenter.shared
-//    dataCenter.downloadDatas()
-//    dataCenter.group.notify(queue: dataCenter.downloadQueue) {
-//      print("notify done")
-//    }
   }
   
   private func setupTabBar() {

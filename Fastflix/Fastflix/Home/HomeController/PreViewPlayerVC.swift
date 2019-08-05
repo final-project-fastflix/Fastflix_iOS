@@ -22,7 +22,6 @@ final class PreViewPlayerVC: UIViewController {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "x"), for: .normal)
     button.addTarget(self, action: #selector(dismissBtnDidTap(_:)), for: .touchUpInside)
-    
     return button
   }()
   
@@ -73,7 +72,6 @@ final class PreViewPlayerVC: UIViewController {
   }
   
   @objc func didFinishVideo(_ sender: NSNotification) {
-    print("run")
     dismiss(animated: true)
   }
   

@@ -54,7 +54,7 @@ final class MainMovieView: UIView {
     tableView.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     tableView.separatorStyle = .none
     tableView.allowsSelection = false
-
+    
   }
   
   private func registerTableViewCell() {
@@ -68,7 +68,7 @@ final class MainMovieView: UIView {
     [tableView, floatingView]
       .forEach { self.addSubview($0) }
   }
-
+  
   private func setupSNP() {
     tableView.snp.makeConstraints {
       $0.top.leading.trailing.bottom.equalToSuperview()
@@ -80,7 +80,7 @@ final class MainMovieView: UIView {
     }
   }
   
-
+  
 }
 
 extension MainMovieView: UITableViewDataSource {
@@ -91,7 +91,7 @@ extension MainMovieView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
     let mainData = receiveData?[0]
-    var mainImgUrl: [String] = []
+    
     
     switch indexPath.row {
     case 0:
@@ -118,22 +118,22 @@ extension MainMovieView: UITableViewDataSource {
       cell.layoutIfNeeded()
       return cell
     default:1
-      
-      let keys = mainData!.listOfGenre
-      let key = keys[indexPath.row - 2]
-      print("key: ", key)
-      
-      if let data = mainData {
-        for idx in data.moviesByGenre[key]! {
-          mainImgUrl.append(idx.verticalImage)
-          print("string: ", idx.verticalImage)
-          print("list: ", data.moviesByGenre[key]?.count)
-        }
+    var mainImgUrl: [String] = []
+    var movieIDArr: [Int] = []
+    let keys = mainData!.listOfGenre
+    let key = keys[indexPath.row - 2]
+    print("key: ", key)
+    
+    if let data = mainData {
+      for idx in data.moviesByGenre[key]! {
+        mainImgUrl.append(idx.verticalImage)
+        movieIDArr.append(idx.id)
       }
-      print("count: ", mainImgUrl)
-      let cell = SubCell()
-      cell.configure(url: mainImgUrl, title: key)
-      return cell
+    }
+    print("count: ", mainImgUrl)
+    let cell = SubCell()
+    cell.configure(url: mainImgUrl, title: key, movieIDs: movieIDArr)
+    return cell
     }
   }
   

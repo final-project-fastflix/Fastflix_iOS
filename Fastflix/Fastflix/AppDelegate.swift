@@ -29,8 +29,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.makeKeyAndVisible()
     topPadding = launchScreenVC.view.safeAreaInsets.top
     
-    
-    
     return true
   }
   
@@ -75,11 +73,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     window?.rootViewController = madeByHeaji
     window?.makeKeyAndVisible()
   }
-  
-  
-  
-  
-  
   
 
   func applicationWillResignActive(_ application: UIApplication) {}

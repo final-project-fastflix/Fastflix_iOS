@@ -43,8 +43,8 @@ class UserIconSelectVC: UIViewController {
   var categories: [String] = []
   
   let tableView: UITableView = {
-      let tableView = UITableView()
-      return tableView
+    let tableView = UITableView()
+    return tableView
   }()
   
   override func viewDidLoad() {
@@ -98,7 +98,7 @@ class UserIconSelectVC: UIViewController {
       $0.centerX.equalToSuperview()
       $0.bottom.equalTo(navigationView.snp.bottom).offset(-12)
     }
-  
+    
     tableView.snp.makeConstraints {
       $0.top.equalTo(navigationView.snp.bottom)
       $0.leading.trailing.bottom.equalToSuperview()
@@ -118,7 +118,7 @@ class UserIconSelectVC: UIViewController {
 
 extension UserIconSelectVC: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    return  categories.count
+    return categories.count
   }
   
   // 각 섹션별로는 테이블 1개만 존재
@@ -147,15 +147,15 @@ extension UserIconSelectVC: UserIconCollectionCellDelegate {
     
     //셀 선택 후 이미지 전달해야함
     if let cell = collectioncell {
-
+      
       let image = cell.mainImageView.image
       
       // 이미지 주소값 던져야함
       let imagePath = cell.imageURL
       
-      guard let navi = presentingViewController as? UINavigationController else { return }
-
-      print(navi.viewControllers)
+      guard let navi = presentingViewController as? UINavigationController else {
+        return }
+      
       guard let profileSelectVC = navi.viewControllers.last as? ProfileSelectVC else { return }
       profileSelectVC.profileChangeVC.viewWillAppear(true)
       profileSelectVC.profileChangeVC.profileImagePath = imagePath

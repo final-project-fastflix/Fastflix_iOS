@@ -170,7 +170,7 @@ class ProfileSelectVC: UIViewController {
     }
     introlabel.snp.makeConstraints {
       $0.centerX.equalToSuperview()
-      $0.top.equalTo(navigationView.snp.bottom).offset(35)
+      $0.centerY.equalTo(self.view.snp.top).offset(UIScreen.main.bounds.height * 0.15)
     }
     profileImageView1.snp.makeConstraints {
       $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
@@ -402,7 +402,6 @@ extension ProfileSelectVC: UserViewDelegate {
 // MARK: - 프로필 추가(AddProfileView)에 관한 델리게이트 구현
 extension ProfileSelectVC: AddProfileViewDelegate {
   func addProfileButtonTapped() {
-    print("프로필추가 눌렀음====================동작바람")
     
     // 유저 생성중
     profileChangeVC.isUserCreating = true
