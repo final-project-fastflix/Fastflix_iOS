@@ -14,8 +14,6 @@ final class PlayerVC: UIViewController {
   
   private let appDelegate = UIApplication.shared.delegate as! AppDelegate
   
-  
-  
   private var player: AVPlayer?
   
   private let playerView = PlayerView()
@@ -26,7 +24,7 @@ final class PlayerVC: UIViewController {
   
   var urlString: String?
   
-  // Properties
+  // Propertiese
   private let videoPlayerView: UIView = {
     let view = UIView()
     view.backgroundColor = .black
@@ -44,6 +42,11 @@ final class PlayerVC: UIViewController {
     super.viewDidAppear(animated)
     setupVideoPlayer()
     resetTimer()
+  }
+  
+  func configure(videoPath: String?, seekTime: Int?) {
+    self.urlString = videoPath
+    player?.play()
   }
   
   private func resetTimer() {
@@ -71,7 +74,7 @@ final class PlayerVC: UIViewController {
     let playerLayer = AVPlayerLayer(player: player)
     playerLayer.frame = videoPlayerView.bounds
     videoPlayerView.layer.addSublayer(playerLayer)
-    player?.play()
+//    player?.play()
     
     let interval = CMTime(seconds: 0.01, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
     timeObserver = player?.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main, using: { (elapsedTime) in

@@ -21,7 +21,7 @@ class PlayerView: UIView {
   
   var delegate: PlayerViewDelegate?
   
-  lazy var views = [playBtn, progressSlider, timeLabel, backwardBtn, forwardBtn, titleLabel]
+  lazy var views = [playBtn, progressSlider, timeLabel, backwardBtn, forwardBtn, titleLabel, backLabel, backMovingLabel, forwardLabel, forwardMovingLabel]
   
   
   
@@ -70,6 +70,43 @@ class PlayerView: UIView {
     label.text = "Worlds Of The Last Jedi"
     label.textColor = .white
     label.font = UIFont.boldSystemFont(ofSize: 20)
+    return label
+  }()
+  
+  let forwardLabel: UILabel = {
+    let label = UILabel()
+    label.text = "10"
+    label.textColor = .white
+    label.font = UIFont.boldSystemFont(ofSize: 17)
+    label.textAlignment = .center
+    return label
+  }()
+  
+  let forwardMovingLabel: UILabel = {
+    let label = UILabel()
+    label.text = "+10"
+    label.textColor = .white
+    label.font = UIFont.boldSystemFont(ofSize: 19)
+    label.textAlignment = .center
+    label.alpha = 0
+    return label
+  }()
+  
+  let backLabel: UILabel = {
+    let label = UILabel()
+    label.text = "10"
+    label.textColor = .white
+    label.font = UIFont.boldSystemFont(ofSize: 17)
+    label.textAlignment = .center
+    return label
+  }()
+  let backMovingLabel: UILabel = {
+    let label = UILabel()
+    label.text = "-10"
+    label.textColor = .white
+    label.font = UIFont.boldSystemFont(ofSize: 19)
+    label.textAlignment = .center
+    label.alpha = 0
     return label
   }()
   
@@ -166,6 +203,26 @@ class PlayerView: UIView {
     titleLabel.snp.makeConstraints {
       $0.centerX.equalToSuperview()
       $0.top.equalTo(self.snp.topMargin)
+    }
+    
+    backLabel.snp.makeConstraints {
+      $0.centerY.equalToSuperview()
+      $0.centerX.equalToSuperview().multipliedBy(0.5)
+    }
+    
+    backMovingLabel.snp.makeConstraints {
+      $0.centerY.equalToSuperview()
+      $0.centerX.equalToSuperview().multipliedBy(0.5)
+    }
+    
+    forwardLabel.snp.makeConstraints {
+      $0.centerY.equalToSuperview()
+      $0.centerX.equalToSuperview().multipliedBy(1.5)
+    }
+    
+    forwardMovingLabel.snp.makeConstraints {
+      $0.centerY.equalToSuperview()
+      $0.centerX.equalToSuperview().multipliedBy(1.5)
     }
     
   }
