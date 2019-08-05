@@ -18,13 +18,15 @@ final class PreViewPlayerVC: UIViewController {
   
   private var delegate: PreViewPlayerVCDelegate?
   
-  private let dismissBtn: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "x"), for: .normal)
-    button.addTarget(self, action: #selector(dismissBtnDidTap(_:)), for: .touchUpInside)
-    return button
+  // MARK: - collectionView
+  private let layout = UICollectionViewFlowLayout()
+  
+  lazy var collectionView: UICollectionView = {
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    return collectionView
   }()
   
+
   private let url = URL(string: preViewUrl)!
   
   
@@ -37,8 +39,6 @@ final class PreViewPlayerVC: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    
-    
     NotificationCenter.default.addObserver(self, selector: #selector(didFinishVideo(_:)), name: .AVPlayerItemDidPlayToEndTime, object: playerViewController.player?.currentItem)
     
     let player = AVPlayer(url: url)
@@ -50,8 +50,7 @@ final class PreViewPlayerVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    view.addSubview(dismissBtn)
-    view.backgroundColor = .clear
+    addSubViews()
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -63,12 +62,12 @@ final class PreViewPlayerVC: UIViewController {
     delegate?.finishVideo()
   }
   
+  private func addSubViews() {
+    
+  }
+  
   private func setupSNP() {
-    dismissBtn.snp.makeConstraints {
-      $0.top.equalTo(50)
-      $0.centerX.equalToSuperview()
-      $0.width.equalTo(40)
-    }
+
   }
   
   @objc func didFinishVideo(_ sender: NSNotification) {
