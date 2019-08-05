@@ -99,12 +99,11 @@ final class DetailViewBelowCell: UITableViewCell {
             $0.bottom.equalTo(contentView.snp.bottom).offset(-30)
         }
     }
-    
-    
+  
     private func collectionViewSetup() {
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(DetailCollectionViewCell.self, forCellWithReuseIdentifier: "DetailCollectionViewCell")
+        collectionView.register(DetailViewBelowCollectionViewCell.self, forCellWithReuseIdentifier: "DetailCollectionViewCell")
         collectionView.backgroundColor = #colorLiteral(red: 0.09802495688, green: 0.09804918617, blue: 0.09802179784, alpha: 1)
         
     }
@@ -117,7 +116,7 @@ extension DetailViewBelowCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCollectionViewCell", for: indexPath) as! DetailCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCollectionViewCell", for: indexPath) as! DetailViewBelowCollectionViewCell
 //        cell.detailImageView.image = UIImage(named: "toystory")
 //        cell.detailImageView.contentMode = .scaleToFill
       cell.configure(imageName: "toystory")

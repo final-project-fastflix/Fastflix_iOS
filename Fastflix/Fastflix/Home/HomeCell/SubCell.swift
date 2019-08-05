@@ -109,6 +109,12 @@ extension SubCell: UICollectionViewDelegate {
       switch result {
       case .success(let value):
         print("!!!need to bind Data!!!", value)
+        
+        // 디테일뷰로 넘어가는 코드 필요
+        
+        
+        
+        
       case .failure(let err):
         dump(err)
       }

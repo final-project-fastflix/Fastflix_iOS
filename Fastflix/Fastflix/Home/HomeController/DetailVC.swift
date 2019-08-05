@@ -10,24 +10,33 @@ import UIKit
 
 final class DetailVC: UITableViewController {
   
+  var movieImage: UIImage?
+  var movieId: Int?
+  var movieDetailData: MovieDetail?
+  
   private let movieTitleLabel: UILabel = {
     let label = UILabel()
-    label.text = "토이스토리"
+//    label.text = "토이스토리"
     label.textColor = .white
     label.font = UIFont.boldSystemFont(ofSize: 18)
     return label
   }()
   
   
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    setupDetailInfo()
     setTableView()
     registerTableViewCell()
     
   }
   
+  private func setupDetailInfo() {
+    //    movieDetailData.
+    movieTitleLabel.text = movieDetailData?.name
+  
+  }
   
   
   override func viewDidLayoutSubviews() {
@@ -61,11 +70,36 @@ final class DetailVC: UITableViewController {
     case 0 :
       let cell = tableView.dequeueReusableCell(withIdentifier: "DetailViewUpperCell", for: indexPath) as! DetailViewUpperCell
       cell.delegate = self
+      
+      // 무비아이디전달
+      cell.movieId(movieId)
+      // 이미지는 있는 것으로 그냥 전달
+      cell.configureImage(image: movieImage)
+      
+      // 남은시간비율(Float)에 대한 계산 공식
+      let sliderFloat = Float(0.3455555)
+      let remainingTime = String(movieDetailData?.remainingTime ?? 0)
+      
+      let actorsss = "\(String(describing: movieDetailData?.actors[0].name)) + \(String(describing: movieDetailData?.actors[1].name))"
+      let director = "\(String(describing: movieDetailData?.directors[0].name))"
+      
+      // 무비아이디, 이미지 이외의 데이터를 표시하고 있는 디테일뷰의 테이블뷰에 전달
+      cell.detailDataSetting(matchRate: movieDetailData?.matchRate, productionDate: movieDetailData?.productionDate, degree: movieDetailData?.degree.name, runningTime: movieDetailData?.runningTime, sliderTime: sliderFloat, remainingTime: remainingTime, synopsis: movieDetailData?.synopsis, actors: actorsss, directors: director)
+    
       return cell
       
     case 1 :
       let cell = tableView.dequeueReusableCell(withIdentifier: "DetailViewBelowCell", for: indexPath) as! DetailViewBelowCell
       cell.delegate = self
+      // 셀에 비슷한 콘텐츠 내용 들어가야함
+      
+      
+      
+      
+      
+      
+      
+      
       return cell
       
     default:

@@ -128,7 +128,6 @@ class UserView: UIView {
     imagePath = imageURLString
     let imageURL = URL(string: imageURLString ?? "ImagesData.shared.imagesUrl[5]")
     self.userImageView.kf.setImage(with: imageURL, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])
-  
   }
   
   @objc private func buttonTapped() {

@@ -385,9 +385,13 @@ extension ProfileChangeVC: UserViewDelegate {
     APICenter.shared.changeProfileImage { (result) in
       switch result {
       case .success(let profileImage):
+        
         self.userIconSelectVC.profileImages = profileImage
+        
+        // "logo"카테고리가 아닌 카테고리만 유저셀렉트 카테고리(스트링배열)에 전달
         let imageinfo = profileImage.keys.filter { $0 != "logo"}
         self.userIconSelectVC.categories = imageinfo.sorted()
+        
         DispatchQueue.main.async {
           self.navigationController?.pushViewController(self.userIconSelectVC, animated: true)
         }

@@ -318,26 +318,43 @@ class LoginVC: UIViewController {
       let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
       else { return }
     
-    // 키보드의 x좌표, y좌표, width, height값 가져오기(키보드가 올라왔을때, 내려왔을 때)
-    print(keyboardFrame)
-    // 키보드가 올라오고 내려가는 속도
-    print(duration)
+    // 키보드 이동시킬 높이 계산 ---> 키보드가 올라와서 스택뷰(+10)와 겹치는 영역만큼 (다만 0보다 작을땐 안 움직이게)
+    let shouldBeMovedHeight = (textViewHeight*3 + 36 + 10)/2 - (self.view.frame.height/2 - keyboardFrame.height)
     
-    // 키보드 이동시킬 높이 계산 ---> 키보드가 올라와서 스택뷰(+10)와 겹치는 영역만큼
-    let moveheight = (textViewHeight*3 + 36 + 10)/2 - (self.view.frame.height/2 - keyboardFrame.height)
+    // 기기에 따라서 실제 이동할 높이
+    var movingHeight: CGFloat
     
-    UIView.animate(withDuration: duration*2){
-      if keyboardFrame.minY >= self.view.frame.maxY {
-        self.stackView.snp.updateConstraints {
-          $0.centerY.equalToSuperview()
-        }
-      }else {
-        self.stackView.snp.updateConstraints {
-          $0.centerY.equalToSuperview().offset(-moveheight)
-        }
-      }
-      super.updateViewConstraints()
+    // 겹치는 부분이 0보다 크면 이동, 겹치는 부분이 0보다 작으면(겹치는 부분이 없으면) 0 (즉, 이동 안함)
+    if shouldBeMovedHeight >= 0 {
+      movingHeight = shouldBeMovedHeight
+    }else {
+      movingHeight = 0
     }
+    
+    // 키보드와 뷰의 조건에 따라 오토레이아웃 바꾸기
+    if keyboardFrame.minY >= self.view.frame.maxY {
+      // 스택뷰의 오토레이아웃 업데이트
+      self.stackView.snp.updateConstraints {
+        $0.centerY.equalToSuperview()
+      }
+      // 레이아웃 변경이 필요해
+      self.stackView.setNeedsLayout()
+    }else {
+      // 스택뷰의 오토레이아웃 업데이트
+      self.stackView.snp.updateConstraints {
+          $0.centerY.equalToSuperview().offset(-movingHeight)
+      }
+      // 레이아웃 변경이 필요해
+      self.stackView.setNeedsLayout()
+    }
+    // 오토레이아웃 업데이트 메서드
+    super.updateViewConstraints()
+    
+    // 실제 레이아웃 변경은 애니메이션으로 줄꺼야
+    UIView.animate(withDuration: duration*2) {
+      self.view.layoutIfNeeded()
+    }
+
   }
   
   @objc private func passwordSecureModeSetting() {
@@ -420,6 +437,7 @@ extension LoginVC: UITextFieldDelegate {
       emailLabel.snp.updateConstraints {
         $0.centerY.equalToSuperview().offset(-13)
       }
+      emailLabel.setNeedsLayout()
     }
     if textField == passwordTextField {
       passwordTextFieldView.backgroundColor = #colorLiteral(red: 0.2972877622, green: 0.2973434925, blue: 0.297280401, alpha: 1)
@@ -427,8 +445,14 @@ extension LoginVC: UITextFieldDelegate {
       passwordLabel.snp.updateConstraints {
         $0.centerY.equalToSuperview().offset(-13)
       }
+      passwordLabel.setNeedsLayout()
     }
     super.updateViewConstraints()
+  
+    // 실제 레이아웃 변경은 애니메이션으로 줄꺼야
+    UIView.animate(withDuration: 0.3) {
+      self.view.layoutIfNeeded()
+    }
   }
   
   // 텍스트필드 편집 종료되면 백그라운드 색 변경 (글자가 한개도 입력 안되었을때는 되돌리기)
@@ -441,6 +465,7 @@ extension LoginVC: UITextFieldDelegate {
         emailLabel.snp.updateConstraints {
           $0.centerY.equalToSuperview()
         }
+        emailLabel.setNeedsLayout()
       }
     }
     if textField == passwordTextField {
@@ -450,10 +475,15 @@ extension LoginVC: UITextFieldDelegate {
         passwordLabel.snp.updateConstraints {
           $0.centerY.equalToSuperview()
         }
-        
+        passwordLabel.setNeedsLayout()
       }
     }
     super.updateViewConstraints()
+  
+    // 실제 레이아웃 변경은 애니메이션으로 줄꺼야
+    UIView.animate(withDuration: 0.3) {
+      self.view.layoutIfNeeded()
+    }
   }
   
   // 엔터 누르면 일단 키보드 내림
