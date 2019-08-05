@@ -10,13 +10,13 @@ import UIKit
 import SnapKit
 import AVKit
 
-protocol PreViewPlayerVCDelegate {
+protocol PreViewPlayerVCDelegate: class {
   func finishVideo()
 }
 
 final class PreViewPlayerVC: UIViewController {
   
-  private var delegate: PreViewPlayerVCDelegate?
+  private weak var delegate: PreViewPlayerVCDelegate?
   
   private let dismissBtn: UIButton = {
     let button = UIButton(type: .custom)

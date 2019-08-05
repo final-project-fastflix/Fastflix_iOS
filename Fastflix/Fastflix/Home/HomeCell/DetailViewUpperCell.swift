@@ -10,13 +10,14 @@ import UIKit
 import Kingfisher
 
 protocol PlayButtonDelegate: class {
-  func playButtonDidTap(sender: UIButton)
+  func playButtonDidTap(movieId: Int)
   func didTapDismissBtn()
 }
 
 final class DetailViewUpperCell: UITableViewCell {
   
   var movieId: Int?
+  var isWatching: Bool = false
   
   //이미지뷰 가로 크기(고정)
   private let imageWidth: CGFloat = 133
@@ -25,12 +26,12 @@ final class DetailViewUpperCell: UITableViewCell {
     let button = UIButton(type: .system)
     button.backgroundColor = .black
     button.tintColor = .white
-    //        let image = UIImage(named: "close")
-    //        button.setImage(image, for: .normal)
-    button.setTitle("X", for: .normal)
+//    button.setTitle("X", for: .normal)
+    button.setImage(UIImage(named: "close"), for: .normal)
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
     button.layer.cornerRadius = 8
     button.addTarget(self, action: #selector(didTapDismissBtn(_:)), for: .touchUpInside)
+    button.clipsToBounds = true
     return button
   }()
   
@@ -100,6 +101,15 @@ final class DetailViewUpperCell: UITableViewCell {
     return button
   }()
   
+  // 플레이버튼 스택뷰
+  private lazy var playButtonStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [playButton, movieTimeStackView])
+    stackView.alignment = .fill
+    stackView.spacing = 0
+    stackView.axis = .vertical
+    return stackView
+  }()
+  
   // 보던 영화일 경우, 남은시간 표시
   private let slider: UISlider = {
     let slider = UISlider()
@@ -149,7 +159,7 @@ final class DetailViewUpperCell: UITableViewCell {
     return label
   }()
   
-  // 영화설명 및 출연/감독 레이블 스택뷰
+  // movieTimeStackView, 영화설명 및 출연/감독 레이블 스택뷰
   private lazy var movieDescriptionStackView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [descriptionLabel, directorAndCastLabel])
     stackView.alignment = .fill
@@ -253,6 +263,14 @@ final class DetailViewUpperCell: UITableViewCell {
     
     configure()
     setupSNP()
+    
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    
+    dissmissButton.layer.cornerRadius = dissmissButton.frame.width / 2
+    timeStackViewSetting()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -275,12 +293,14 @@ final class DetailViewUpperCell: UITableViewCell {
   
   // 스냅킷 오토레이아웃
   private func setupSNP() {
-    [backgroundBlurView, backgroundLayerView, mainImageView, imageBelowStackView, playButton, movieTimeStackView, movieDescriptionStackView, myPokedStackView, evaluationStackView, shareStackView, dissmissButton].forEach { contentView.addSubview($0) }
+    [backgroundBlurView, backgroundLayerView, mainImageView, imageBelowStackView, playButtonStackView, movieDescriptionStackView, myPokedStackView, evaluationStackView, shareStackView, ].forEach { contentView.addSubview($0) }
+    
+    contentView.superview?.addSubview(dissmissButton)
     
     let buttonWidth = (UIScreen.main.bounds.width - 20)/4
     
     dissmissButton.snp.makeConstraints {
-      $0.width.height.equalTo(20)
+      $0.width.height.equalTo(23)
       $0.top.equalToSuperview().offset(44)
       $0.trailing.equalToSuperview().offset(-15)
     }
@@ -311,21 +331,17 @@ final class DetailViewUpperCell: UITableViewCell {
     }
     
     playButton.snp.makeConstraints {
-      $0.top.equalTo(imageBelowStackView.snp.bottom).offset(30)
-      $0.leading.equalTo(contentView.snp.leading).offset(8)
-      $0.trailing.equalTo(contentView.snp.trailing).offset(-8)
       $0.height.equalTo(35)
     }
     
-    movieTimeStackView.snp.makeConstraints {
-      $0.top.equalTo(playButton.snp.bottom).offset(10)
+    playButtonStackView.snp.makeConstraints {
+      $0.top.equalTo(imageBelowStackView.snp.bottom).offset(30)
       $0.leading.equalTo(contentView.snp.leading).offset(8)
       $0.trailing.equalTo(contentView.snp.trailing).offset(-8)
-      $0.height.equalTo(12)
     }
     
     movieDescriptionStackView.snp.makeConstraints {
-      $0.top.equalTo(movieTimeStackView.snp.bottom).offset(4)
+      $0.top.equalTo(playButtonStackView.snp.bottom).offset(4)
       $0.leading.equalTo(contentView.snp.leading).offset(8)
       $0.trailing.equalTo(contentView.snp.trailing).offset(-8)
     }
@@ -368,9 +384,17 @@ final class DetailViewUpperCell: UITableViewCell {
     }
   }
   
+  private func timeStackViewSetting() {
+    if isWatching {
+      movieTimeStackView.isHidden = false
+    }else {
+      movieTimeStackView.isHidden = true
+    }
+  }
+  
   // 플레이버튼 눌렀을 때의 동작 - 델리게이트로 전달
   @objc private func play(_ sender: UIButton) {
-    delegate?.playButtonDidTap(sender: sender)
+    delegate?.playButtonDidTap(movieId: movieId!)
   }
   
   // 디테일뷰 이미지 설정(메인이미지, 백그라운드)관련 메서드
@@ -384,20 +408,23 @@ final class DetailViewUpperCell: UITableViewCell {
     self.movieId = number
   }
   
-  func configureImage(image: UIImage?) {
-    self.mainImageView.image = image
-    self.backgroundBlurView.image = image
-  }
+//  func configureImage(image: UIImage?) {
+//    self.mainImageView.image = image
+//    self.backgroundBlurView.image = image
+//  }
   
   // 디테일뷰 이미지외의 내용 설정관련 메서드
-  func detailDataSetting(matchRate: Int?, productionDate: String?, degree: String?, runningTime: String?, sliderTime: Float?, remainingTime: String?, synopsis: String?, actors: String?, directors: String?) {
+  func detailDataSetting(matchRate: Int?, productionDate: String?, degree: String?, runningTime: String?, sliderTime: Float?, remainingTime: String?, synopsis: String?, actors: String?, directors: String?, toBeContinue: Int?) {
     
     let matchRate1 = matchRate ?? 90
     let productionDate1 = productionDate ?? "2020"
     let degree1 = degree ?? "청불"
     let runningTime1 = runningTime ?? "1시간 30분"
     let sliderTime1 = sliderTime ?? 0.5
+    
     let remainingTime1 = remainingTime ?? "1시간 10분"
+    
+    
     let synopsis1 = synopsis ?? "안녕하세요"
     let actors1 = actors ?? "정우성"
     let directors1 = directors ?? "정우성"
@@ -411,6 +438,14 @@ final class DetailViewUpperCell: UITableViewCell {
     출연: \(actors1)
     감독: \(directors1)
     """
+    if toBeContinue == 0 {
+      self.isWatching = false
+      timeStackViewSetting()
+    }else {
+      self.isWatching = true
+      timeStackViewSetting()
+    }
+  
   }
   
 }

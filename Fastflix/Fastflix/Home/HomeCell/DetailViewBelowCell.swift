@@ -15,7 +15,6 @@ protocol SimilarMoviesDetailViewCellDelegate: class {
 final class DetailViewBelowCell: UITableViewCell {
   
   var movieId: Int?
-  
   var similarMoviesData = [SimilarMovie]()
   
   private let firstBlackLine: UIView = {
@@ -107,7 +106,7 @@ final class DetailViewBelowCell: UITableViewCell {
   private func collectionViewSetup() {
     collectionView.dataSource = self
     collectionView.delegate = self
-    collectionView.register(DetailViewBelowCollectionViewCell.self, forCellWithReuseIdentifier: "DetailCollectionViewCell")
+    collectionView.register(DetailViewBelowCollectionViewCell.self, forCellWithReuseIdentifier: "DetailViewBelowCollectionViewCell")
     collectionView.backgroundColor = #colorLiteral(red: 0.09802495688, green: 0.09804918617, blue: 0.09802179784, alpha: 1)
     
   }
@@ -118,15 +117,15 @@ extension DetailViewBelowCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     
     // 비슷한 콘텐츠가 6개 이상이면 6개만 생성 나머지는 버림
-    if similarMoviesData.count > 6 {
-      return 6
-    }else {
+//    if similarMoviesData.count > 6 {
+//      return 6
+//    }else {
       return similarMoviesData.count
-    }
+//    }
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailCollectionViewCell", for: indexPath) as! DetailViewBelowCollectionViewCell
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailViewBelowCollectionViewCell", for: indexPath) as! DetailViewBelowCollectionViewCell
     
     // 영화정보의 전달
     cell.movieId = similarMoviesData[indexPath.item].id
@@ -138,10 +137,10 @@ extension DetailViewBelowCell: UICollectionViewDataSource {
 
 // (비슷한 콘텐츠)에서 한가지 눌렀을때의 동작 (델리게이트)
 extension DetailViewBelowCell: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
     let movieNum = similarMoviesData[indexPath.item].id
-    
     delegate?.similarMovieDetailViewDidSelectItemAt(movieId: movieNum)
   }
 }

@@ -133,5 +133,6 @@ extension SubCell: UICollectionViewDelegate {
         self.delegate?.errOccurSendingAlert(message: message, okMessage: okMessage)
       }
     }
+    
   }
 }

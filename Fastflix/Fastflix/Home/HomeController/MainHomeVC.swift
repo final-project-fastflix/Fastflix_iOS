@@ -368,6 +368,7 @@ extension MainHomeVC: SubTableCellDelegate {
   func didSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
     
     DispatchQueue.main.async {
+      print("영화정보 디테일: ", movieId, movieInfo.name)
       let detailVC = DetailVC()
       detailVC.movieId = movieId
       detailVC.movieDetailData = movieInfo
