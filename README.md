@@ -97,8 +97,10 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 
 19.08.05 feat: allen - LoginVC's keyboard notification, and the alert for the wrong password.
 
-29.08.05  feat: tass - getDetailMovieDataRequest, delete Success Logers, StreamingCell FIX
+19.08.05  feat: tass - getDetailMovieDataRequest, delete Success Logers, StreamingCell FIX
 
 19.08.05 feat: allen - LoginVC's emailTextField, passwordTextField's introlabel's moving autolayout
 
 19.08.06  feat: tass - add Player, need to bind
+
+19.08.06 feat: allen - detailVC
