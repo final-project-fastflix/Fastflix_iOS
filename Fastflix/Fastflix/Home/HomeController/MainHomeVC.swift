@@ -114,6 +114,7 @@ class MainHomeVC: UIViewController {
 }
 
 extension MainHomeVC: UITableViewDataSource {
+  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return 8
   }
@@ -168,6 +169,7 @@ extension MainHomeVC: UITableViewDataSource {
       }
       
       cell.configure(url: mainURLs, title: "최신영화", movieIDs: movieIDArr)
+      cell.delegate = self
       return cell
       
     case 3:
@@ -182,6 +184,7 @@ extension MainHomeVC: UITableViewDataSource {
       }
       
       cell.configure(url: mainURLs, title: "찜 리스트", movieIDs: movieIDArr)
+      cell.delegate = self
       return cell
       
     case 4:
@@ -196,6 +199,7 @@ extension MainHomeVC: UITableViewDataSource {
       }
       
       cell.configure(url: mainURLs, title: "좋아요 TOP 10", movieIDs: movieIDArr)
+      cell.delegate = self
       return cell
       
     case 5:
@@ -220,6 +224,7 @@ extension MainHomeVC: UITableViewDataSource {
     default:
       let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
       cell.configure(url: imageUrls, title: "\(indexPath)", movieIDs: nil)
+      cell.delegate = self
       return cell
     }
   }
@@ -345,9 +350,6 @@ extension MainHomeVC: FloatingViewDelegate {
         dump(err)
       }
     }
-    
-    
-    
   }
   
   func didTapPoke() {
@@ -355,5 +357,22 @@ extension MainHomeVC: FloatingViewDelegate {
     let mainPokeVC = MainPokeVC()
     mainPokeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
     tabBarController?.viewControllers?[0] = mainPokeVC
+  }
+}
+
+extension MainHomeVC: SubTableCellDelegate {
+  func errOccurSendingAlert(message: String, okMessage: String) {
+    self.oneAlert(title: "영화데이터 오류", message: message, okButton: okMessage)
+  }
+  
+  func didSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
+    
+    DispatchQueue.main.async {
+      let detailVC = DetailVC()
+      detailVC.movieId = movieId
+      detailVC.movieDetailData = movieInfo
+      
+      self.present(detailVC, animated: true)
+    }
   }
 }

@@ -43,12 +43,12 @@ struct MovieDetail: Codable {
   let logoImagePath: String
   let horizontalImagePath: String
   let verticalImage: String
-  let circleImage: String
+  let originalVerticalImagePath, circleImage: String
   let bigImagePath: String
   let iosMainImage: String
   let degree: Degree
-  let directors, actors, feature, genre: [Actor]
-  let author: [Actor]
+  let directors, actors, feature, author: [Actor]
+  let genre: [Actor]
   let marked: Bool
   let like, matchRate, totalMinute, toBeContinue: Int
   let remainingTime: Int
@@ -68,6 +68,7 @@ struct MovieDetail: Codable {
     case logoImagePath = "logo_image_path"
     case horizontalImagePath = "horizontal_image_path"
     case verticalImage = "vertical_image"
+    case originalVerticalImagePath = "original_vertical_image_path"
     case circleImage = "circle_image"
     case bigImagePath = "big_image_path"
     case iosMainImage = "ios_main_image"

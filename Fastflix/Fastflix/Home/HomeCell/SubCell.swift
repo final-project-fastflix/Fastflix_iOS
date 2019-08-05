@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol SubTableCellDelegate: class {
+  func didSelectItemAt(movieId: Int, movieInfo: MovieDetail)
+  func errOccurSendingAlert(message: String, okMessage: String)
+}
+
+
 class SubCell: UITableViewCell {
   
   static let identifier = "SubCell"
@@ -36,6 +42,8 @@ class SubCell: UITableViewCell {
     self.movieIDs = idArr
     self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
   }
+  
+  weak var delegate: SubTableCellDelegate?
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
@@ -107,16 +115,22 @@ extension SubCell: UICollectionViewDelegate {
     let id = movieIDs[indexPath.row]
     APICenter.shared.getDetailData(id: id) { (result) in
       switch result {
-      case .success(let value):
-        print("!!!need to bind Data!!!", value)
-        
-        // 디테일뷰로 넘어가는 코드 필요
-        
-        
-        
+      case .success(let movie):
+        print("!!!need to bind Data!!!", movie)
+        print("value: ", movie)
+        self.delegate?.didSelectItemAt(movieId: movie.id, movieInfo: movie)
         
       case .failure(let err):
         dump(err)
+        print("fail to login, reason: ", err)
+        
+        let message = """
+        죄송합니다. 해당 영화에 대한 정보를 가져오지
+        못했습니다. 다시 시도해 주세요.
+        """
+        let okMessage = "재시도"
+        
+        self.delegate?.errOccurSendingAlert(message: message, okMessage: okMessage)
       }
     }
   }

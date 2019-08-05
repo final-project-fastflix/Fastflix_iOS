@@ -408,8 +408,8 @@ final class DetailViewUpperCell: UITableViewCell {
     self.leftTimeLabel.text = "남은시간: \(remainingTime1)"
     self.descriptionLabel.text = "\(synopsis1)"
     self.directorAndCastLabel.text = """
-      출연: \(actors1)
-      감독: \(directors1)
+    출연: \(actors1)
+    감독: \(directors1)
     """
   }
   
