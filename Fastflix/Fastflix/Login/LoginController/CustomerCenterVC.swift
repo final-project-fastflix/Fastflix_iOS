@@ -202,12 +202,12 @@ class CustomerCenterVC: UIViewController {
   
   
   @objc private func passwordResetButtonTapped(_ sender: UIButton) {
-    print("비밀번호 재설정 버튼 눌렀당")
+//    print("비밀번호 재설정 버튼 눌렀당")
   }
   
   
   @objc private func customerCenterCallButtonTapped(_ sender: UIButton) {
-    print("문의 전화 버튼 눌렀당")
+//    print("문의 전화 버튼 눌렀당")
   }
   
 }

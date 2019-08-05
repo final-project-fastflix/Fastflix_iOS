@@ -13,7 +13,9 @@ import SnapKit
 final class ImageCell: UICollectionViewCell {
   static let identifier = "ImageCell"
   
-  private let imageView: UIImageView = {
+  var movieID: Int?
+  
+  private lazy var imageView: UIImageView = {
     let img = UIImageView()
     img.contentMode = .scaleAspectFill
     img.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
@@ -21,9 +23,9 @@ final class ImageCell: UICollectionViewCell {
     return img
   }()
   
-  func configure(url: URL?) {
+  func configure(url: URL?, movieID: Int) {
     imageView.kf.setImage(with: url, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 200))), .cacheOriginalImage])
-//    imageView.kf.setImage(with: url, placeholder: Placeholder, options: <#T##KingfisherOptionsInfo?#>, progressBlock: <#T##DownloadProgressBlock?##DownloadProgressBlock?##(Int64, Int64) -> Void#>, completionHandler: <#T##((Result<RetrieveImageResult, KingfisherError>) -> Void)?##((Result<RetrieveImageResult, KingfisherError>) -> Void)?##(Result<RetrieveImageResult, KingfisherError>) -> Void#>)
+    self.movieID = movieID
   }
   
   override func didMoveToSuperview() {

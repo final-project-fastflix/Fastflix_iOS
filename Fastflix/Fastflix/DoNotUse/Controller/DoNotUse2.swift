@@ -74,7 +74,7 @@ final class DoNotUse2: UITableViewController {
       
     default:
       let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
-      cell.configure(url: imageUrls, title: "\(indexPath)")
+      cell.configure(url: imageUrls, title: "\(indexPath)", movieIDs: nil)
       return cell
     }
     

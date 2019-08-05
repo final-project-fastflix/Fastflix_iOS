@@ -60,11 +60,9 @@ final class PreviewCollectionCell: UICollectionViewCell {
     preImageLogo.kf.setImage(with: logoURL, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 200))), .cacheOriginalImage]) { img in
       switch img {
       case .success(let data):
-        print("kingfisher Success")
         self.preImageLogo.image = data.image.cropAlpha()
         self.preImageLogo.contentMode = .scaleAspectFit
       case .failure(let err):
-        print("kingfisher fail")
         dump(err)
       }
       

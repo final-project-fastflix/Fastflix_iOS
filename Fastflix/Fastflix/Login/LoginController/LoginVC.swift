@@ -201,11 +201,6 @@ class LoginVC: UIViewController {
     setupSNP()
   }
   
-//  override func viewDidAppear(_ animated: Bool) {
-//    super.viewDidAppear(animated)
-////    setupSNP()
-//  }
-  
   private func configure() {
     view.backgroundColor = #colorLiteral(red: 0.07450980392, green: 0.07450980392, blue: 0.07450980392, alpha: 1)
     emailTextField.delegate = self
@@ -228,20 +223,23 @@ class LoginVC: UIViewController {
       $0.width.equalToSuperview().multipliedBy(0.25)
       $0.height.equalTo(logoView.snp.width).multipliedBy(0.70)
     }
+    
     customerCenterButton.snp.makeConstraints {
       $0.centerY.equalTo(logoView.snp.centerY)
       $0.trailing.equalTo(view.snp.trailing).offset(-15)
     }
+    
     backButton.snp.makeConstraints {
       $0.centerY.equalTo(logoView.snp.centerY)
       $0.width.height.equalTo(14)
       $0.leading.equalTo(view.snp.leading).offset(20)
     }
+    
     bigBackButton.snp.makeConstraints {
       $0.centerX.centerY.equalTo(backButton)
       $0.width.height.equalTo(30)
     }
-    
+  
     emailLabel.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview().inset(8)
       $0.centerY.equalToSuperview()

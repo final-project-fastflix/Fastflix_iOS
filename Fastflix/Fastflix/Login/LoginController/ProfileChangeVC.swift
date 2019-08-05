@@ -156,7 +156,6 @@ class ProfileChangeVC: UIViewController {
   }
 
   private func configure() {
-//    view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
     view.backgroundColor = .black
     userView.profileUserName = "변경"
     subUserNameTextField.text = userName ?? ""
@@ -229,10 +228,6 @@ class ProfileChangeVC: UIViewController {
     
   }
   
-//  private func CheckKid() {
-//      kidsSwitchButton.setOn(kidChecking, animated: false)
-//  }
-  
   private func navigationBarSetting() {
     let navCon = navigationController!
     navCon.navigationBar.barTintColor = .black
@@ -276,27 +271,21 @@ class ProfileChangeVC: UIViewController {
         case .failure(let err):
           print("result1: ", err)
         }
-//        self.dismiss(animated: true)
       }
-//    }
   }
   
   private func whenCreatingUser(completion: @escaping () -> ()) {
     guard let name = subUserNameTextField.text else { return }
     let kid = kidsSwitchButton.isOn
     if isUserCreating {
-      print("유저 새로 만들고 있는데???")
       APICenter.shared.createSubUser(name: name, kid: kid) {
         switch $0 {
         case .success(let subUsers):
-          print("User Creating Success!!!")
-          print("value: ", subUsers)
           self.subUserSingle.subUserList = subUsers
           self.subUserIDtag = subUsers.last?.id
-          print("새로 생성하고 저장한 서브유저아이디 태그1111:", self.subUserIDtag)
           completion()
         case .failure(let err):
-          print("fail to login, reason: ", err)
+          dump(err)
         }
       }
     }
@@ -309,22 +298,19 @@ class ProfileChangeVC: UIViewController {
     APICenter.shared.getSubUserList() {
       switch $0 {
       case .success(let subUsers):
-        print("Get SubuserList Success!!!")
         self.subUserSingle.subUserList = subUsers
         completion()
       case .failure(let err):
-        print("fail to login, reason: ", err)
+        dump(err)
       }
     }
   }
 
   @objc private func cancelButtonTapped(_ sender: UIButton) {
-    print("취소")
     dismiss(animated: true)
   }
   
   @objc private func deleteButtonTapped(_ sender: UIButton) {
-    print("삭제 누름")
     deleteSubUser {
       self.dismissingView()
     }
@@ -336,12 +322,11 @@ class ProfileChangeVC: UIViewController {
       APICenter.shared.deleteProfileInfo(id: self.subUserIDtag!) { (result) in
         switch result {
         case .success(let value):
-          print("지우기 결과 성공 result: ", value)
           self.regetSubUserList() {
             completion()
           }
         case .failure(let err):
-          print("지우기 결과 실패 result: ", err)
+          dump(err)
         }
       }
     }
@@ -367,9 +352,7 @@ class ProfileChangeVC: UIViewController {
         return
       }
     }
-    guard
-      let username = subUserNameTextField.text, !username.isEmpty
-      else {
+    guard let username = subUserNameTextField.text, !username.isEmpty else {
         saveButton.setTitleColor(#colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1), for: .normal)
         saveButton.isEnabled = false
         return
@@ -398,12 +381,10 @@ extension ProfileChangeVC: UserViewDelegate {
   
   // 유저뷰(UserView)를 눌렀을때 이미지변경을 위한 이미지를 다 받은 다음 UserIconSelectVC로 넘어가기
   func toUserIconSelectVC() {
-    print("유저아이콘 선택화면으로 이동하는 메서드 구현")
     userName = subUserNameTextField.text
     APICenter.shared.changeProfileImage { (result) in
       switch result {
       case .success(let profileImage):
-        print("이미지변경 버튼 성공 Images 받기: ", profileImage)
         self.userIconSelectVC.profileImages = profileImage
         let imageinfo = profileImage.keys.filter { $0 != "logo"}
         self.userIconSelectVC.categories = imageinfo.sorted()
@@ -411,14 +392,14 @@ extension ProfileChangeVC: UserViewDelegate {
           self.navigationController?.pushViewController(self.userIconSelectVC, animated: true)
         }
       case .failure(let err):
-        print("넘어가기 실패 result: ", err)
+        dump(err)
       }
     }
   }
   
   func profileChangeTapped(tag: Int, userName: String, userImage: UIImage, imageURL: String) {
     
-    print("유저변경 사항 저장 구현???")
+//    print("유저변경 사항 저장 구현???")
     
     
   }
