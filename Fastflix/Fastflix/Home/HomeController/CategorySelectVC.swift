@@ -127,11 +127,6 @@ extension CategorySelectVC: UITableViewDataSource {
     let cell = genreSelectTableView.dequeueReusableCell(withIdentifier: "CategorySelectCell", for: indexPath) as! CategorySelectCell
     cell.genreLabel.text = categoryArray[indexPath.row]
     
-//    if cell.genreLabel.text == categoryArray[0] {
-//      cell.isSelected = true
-//      cell.setSelected(true, animated: true)
-//    }
-    
     return cell
   }
 }
@@ -192,9 +187,6 @@ extension CategorySelectVC: UITableViewDelegate {
       print("checkData: ", data)
       self.delegate?.sendData(data: data, keys: keys)
     }
-    
-    //      mainMovieVC.loadView()
-    //      mainMovieVC.viewWillAppear(true)
     
     //      self.tabBarController?.viewControllers?[0] = mainMovieVC
 //    DispatchQueue.main.async {
