@@ -10,7 +10,13 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+protocol MainImageTableCellDelegate: class {
+  func playVideo()
+}
+
 final class MainImageTableCell: UITableViewCell {
+  
+  weak var delegate: MainImageTableCellDelegate?
   
   static let identifier = "MainImageTableCell" 
   
@@ -45,9 +51,10 @@ final class MainImageTableCell: UITableViewCell {
     return button
   }()
   
-  private let playButton: UIButton = {
+  private lazy var playButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "play2"), for: .normal)
+    button.addTarget(self, action: #selector(didTapPlayBtn(_:)), for: .touchUpInside)
     return button
   }()
   
@@ -105,6 +112,10 @@ final class MainImageTableCell: UITableViewCell {
       }
       
     }
+  }
+  
+  @objc private func didTapPlayBtn(_ sender: UIButton) {
+    delegate?.playVideo()
   }
   
   private func setupStackView() {

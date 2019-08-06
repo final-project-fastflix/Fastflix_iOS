@@ -12,7 +12,7 @@ import AVKit
 
 final class PlayerVC: UIViewController {
   
-  private let appDelegate = AppDelegate.instance
+  private let appDelegate = UIApplication.shared.delegate as! AppDelegate
   
   private var player: AVPlayer?
   
@@ -23,6 +23,12 @@ final class PlayerVC: UIViewController {
   private var timeObserver: Any?
   
   var urlString: String?
+  
+  var movieID: Int?
+  
+  var movieTitle: String?
+  
+  var seekTime: Int?
   
   // Propertiese
   private let videoPlayerView: UIView = {
@@ -44,9 +50,11 @@ final class PlayerVC: UIViewController {
     resetTimer()
   }
   
-  func configure(videoPath: String?, seekTime: Int?) {
+  func configure(id: Int?, title: String?, videoPath: String?, seekTime: Int?) {
     self.urlString = videoPath
-    player?.play()
+    self.movieTitle = title
+    self.movieID = id
+    self.seekTime = seekTime
   }
   
   private func resetTimer() {
@@ -67,19 +75,26 @@ final class PlayerVC: UIViewController {
   
   
   private func setupVideoPlayer() {
-    guard let url = URL(string: urlString ?? "http://movietrailers.apple.com/movies/lucasfilm/star-wars-the-last-jedi/the-last-jedi-worlds-of-the-last-jedi_i320.m4v") else { return }
+    
+    playerView.titleLabel.text = movieTitle ?? "No Title"
+    
+    guard let url = URL(string: urlString ?? streamingUrl) else { return }
     
     player = AVPlayer(url: url)
     
     let playerLayer = AVPlayerLayer(player: player)
     playerLayer.frame = videoPlayerView.bounds
     videoPlayerView.layer.addSublayer(playerLayer)
-    //    player?.play()
+    player?.play()
     
     let interval = CMTime(seconds: 0.01, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
     timeObserver = player?.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main, using: { (elapsedTime) in
       self.updateVideoPlayerSlider()
     })
+    
+    guard let seek = seekTime else { return }
+    let seekPoint = CMTime(seconds: Double(seek), preferredTimescale: 1)
+    player?.seek(to: seekPoint)
   }
   
   private func updateVideoPlayerSlider() {
@@ -140,6 +155,14 @@ final class PlayerVC: UIViewController {
 }
 
 extension PlayerVC: PlayerViewDelegate {
+  func didTapDismiss() {
+    appDelegate.shouldSupportAllOrientation = true
+    dismiss(animated: true) {
+      self.player?.pause()
+      self.player = nil
+    }
+  }
+  
   func didTapScreen() {
     tapScreen()
   }

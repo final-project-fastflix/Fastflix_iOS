@@ -117,7 +117,7 @@ extension MainMovieView: UITableViewDataSource {
       cell.selectionStyle = .none
       cell.layoutIfNeeded()
       return cell
-    default:1
+    default:
     var mainImgUrl: [String] = []
     var movieIDArr: [Int] = []
     let keys = mainData!.listOfGenre

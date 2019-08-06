@@ -109,3 +109,4 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 
 19.08.06 feat: allen - detailVC's poked button feature.
 
+19.08.06  feat: tass - can play Video
