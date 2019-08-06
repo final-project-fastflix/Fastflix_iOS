@@ -17,7 +17,16 @@ protocol PlayButtonDelegate: class {
 final class DetailViewUpperCell: UITableViewCell {
   
   var movieId: Int?
+  
+  // 보고있는 영화여부(보고 있는 경우, 현재 보고있는 위치 표시하기 위함)
   var isWatching: Bool = false
+  
+  // 찜되어있는 영화인지 여부
+  var isPoked: Bool = false {
+    didSet {
+      pokeButtonSetting()
+    }
+  }
   
   //이미지뷰 가로 크기(고정)
   private let imageWidth: CGFloat = 133
@@ -26,7 +35,6 @@ final class DetailViewUpperCell: UITableViewCell {
     let button = UIButton(type: .system)
     button.backgroundColor = .black
     button.tintColor = .white
-//    button.setTitle("X", for: .normal)
     button.setImage(UIImage(named: "close"), for: .normal)
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
     button.layer.cornerRadius = 8
@@ -38,7 +46,6 @@ final class DetailViewUpperCell: UITableViewCell {
   // 백그라운드에 깔리는 이미지뷰
   private let backgroundBlurView: UIImageView = {
     let view = UIImageView()
-//    view.image = UIImage(named: "toystory")
     return view
   }()
   
@@ -53,7 +60,6 @@ final class DetailViewUpperCell: UITableViewCell {
   // 디테일뷰 영화 메인이미지
   private let mainImageView: UIImageView = {
     let imageView = UIImageView()
-//    imageView.image = UIImage(named: "toystory")
     imageView.layer.shadowColor = UIColor.black.cgColor
     imageView.layer.shadowOffset = CGSize(width: 0, height: 0)
     imageView.layer.shadowOpacity = 0.5
@@ -62,19 +68,17 @@ final class DetailViewUpperCell: UITableViewCell {
     return imageView
   }()
   
-  // 일치율
+  // 일치율 레이블
   private let suggestionLabel: UILabel = {
     let label = UILabel()
-//    label.text = "74%일치"
     label.textColor = #colorLiteral(red: 0, green: 0.9810667634, blue: 0.5736914277, alpha: 1)
     label.font = UIFont.boldSystemFont(ofSize: 14)
     return label
   }()
   
-  //출시년도 관람등급, 상영시간
+  // 출시년도 관람등급, 상영시간
   private lazy var movieExplainLabel: UILabel = {
     let label = UILabel()
-//    label.text = "2009   청불   1시간 39분"
     label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
     label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
     return label
@@ -121,7 +125,6 @@ final class DetailViewUpperCell: UITableViewCell {
   // 남은 시간
   private let leftTimeLabel: UILabel = {
     let label = UILabel()
-//    label.text = "남은시간: 1시간 4분"
     label.font = UIFont.systemFont(ofSize: 10, weight: .light)
     label.textColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
     return label
@@ -140,7 +143,6 @@ final class DetailViewUpperCell: UITableViewCell {
   private let descriptionLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 0
-//    label.text = "전직경찰이자 자칭 보안관 백단 오지랖으로 수호하는 마을. 평화롭던 이곳에 수상한 외지인이 등장했다. 잘나가는 이 사업가에게 토박이들이 마음을 여는 사이, 보안관은 오히려 구린 냄새에 뒤를 캐기 시작한다. 우리 마을은 내가 지켜!"
     label.textColor = .white
     label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
     return label
@@ -152,10 +154,6 @@ final class DetailViewUpperCell: UITableViewCell {
     label.numberOfLines = 2
     label.font = UIFont.systemFont(ofSize: 12, weight: .light)
     label.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-//    label.text = """
-//    출연: 이성민, 조진웅, 김성균
-//    감독: 김형주
-//    """
     return label
   }()
   
@@ -171,10 +169,9 @@ final class DetailViewUpperCell: UITableViewCell {
   // 내가 찜한 콘텐츠 버튼
   private lazy var myPokedContentsButton: UIButton = {
     let button = UIButton(type: .system)
-    let image = UIImage(named: "add")
-    button.setImage(image, for: .normal)
+    button.setImage(UIImage(named: "add"), for: .normal)
     button.tintColor = .white
-    //button.addTarget(self, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
+    button.addTarget(self, action: #selector(pokeBtnDidTap(_:)), for: .touchUpInside)
     return button
   }()
   
@@ -184,7 +181,7 @@ final class DetailViewUpperCell: UITableViewCell {
     button.setTitle("내가 찜한 콘텐츠", for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 11, weight: .light)
     button.setTitleColor(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), for: .normal)
-    // button.addTarget(self, action: #selector(play), for: .touchUpInside)
+    button.addTarget(self, action: #selector(pokeBtnDidTap(_:)), for: .touchUpInside)
     return button
   }()
   
@@ -271,6 +268,7 @@ final class DetailViewUpperCell: UITableViewCell {
     
     dissmissButton.layer.cornerRadius = dissmissButton.frame.width / 2
     timeStackViewSetting()
+    pokeButtonSetting()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -384,6 +382,7 @@ final class DetailViewUpperCell: UITableViewCell {
     }
   }
   
+  // 보고있는 영화여부에 따라 타임레이블 표시할지 결정하는 메서드
   private func timeStackViewSetting() {
     if isWatching {
       movieTimeStackView.isHidden = false
@@ -392,9 +391,38 @@ final class DetailViewUpperCell: UITableViewCell {
     }
   }
   
+  // 찜되어있는 영화여부에 따라 체크 표시할지 결정하는 메서드
+  private func pokeButtonSetting() {
+    if isPoked {
+      myPokedContentsButton.setImage(UIImage(named: "poke"), for: .normal)
+    }else {
+      myPokedContentsButton.setImage(UIImage(named: "add"), for: .normal)
+    }
+  }
+  
   // 플레이버튼 눌렀을 때의 동작 - 델리게이트로 전달
   @objc private func play(_ sender: UIButton) {
     delegate?.playButtonDidTap(movieId: movieId!)
+  }
+  
+  @objc private func pokeBtnDidTap(_ sender: UIButton) {
+    print("포크버튼 눌렀습니다용")
+    
+    APICenter.shared.toggleForkMovie(movieID: movieId!) {
+      switch $0 {
+      case .success(let success):
+        print("디테일뷰에서 영화찜하기 성공: ", success)
+        DispatchQueue.main.async {
+          if success == 1 {
+            self.isPoked = true
+          }else {
+            self.isPoked = false
+          }
+        }
+      case .failure(let err):
+        print("reason: ", err)
+      }
+    }
   }
   
   // 디테일뷰 이미지 설정(메인이미지, 백그라운드)관련 메서드
@@ -404,31 +432,26 @@ final class DetailViewUpperCell: UITableViewCell {
     self.backgroundBlurView.kf.setImage(with: imageURL, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 100))), .scaleFactor(UIScreen.main.scale)])
   }
   
+  // 영화아이디 저장하는 메서드
   func movieId(_ number: Int?) {
     self.movieId = number
   }
   
-//  func configureImage(image: UIImage?) {
-//    self.mainImageView.image = image
-//    self.backgroundBlurView.image = image
-//  }
-  
   // 디테일뷰 이미지외의 내용 설정관련 메서드
-  func detailDataSetting(matchRate: Int?, productionDate: String?, degree: String?, runningTime: String?, sliderTime: Float?, remainingTime: String?, synopsis: String?, actors: String?, directors: String?, toBeContinue: Int?) {
+  func detailDataSetting(matchRate: Int?, productionDate: String?, degree: String?, runningTime: String?, sliderTime: Float?, remainingTime: String?, synopsis: String?, actors: String?, directors: String?, toBeContinue: Int?, isPoked: Bool) {
     
+    // 옵셔널 처리
     let matchRate1 = matchRate ?? 90
-    let productionDate1 = productionDate ?? "2020"
-    let degree1 = degree ?? "청불"
-    let runningTime1 = runningTime ?? "1시간 30분"
+    let productionDate1 = productionDate ?? ""
+    let degree1 = degree ?? ""
+    let runningTime1 = runningTime ?? ""
     let sliderTime1 = sliderTime ?? 0.5
+    let remainingTime1 = remainingTime ?? ""
+    let synopsis1 = synopsis ?? ""
+    let actors1 = actors ?? ""
+    let directors1 = directors ?? ""
     
-    let remainingTime1 = remainingTime ?? "1시간 10분"
-    
-    
-    let synopsis1 = synopsis ?? "안녕하세요"
-    let actors1 = actors ?? "정우성"
-    let directors1 = directors ?? "정우성"
-    
+    // 레이블들에 표시
     self.suggestionLabel.text = "\(matchRate1)%일치"
     self.movieExplainLabel.text = "\(productionDate1)   \(degree1)   \(runningTime1)"
     self.slider.setValue(sliderTime1, animated: false)
@@ -438,6 +461,9 @@ final class DetailViewUpperCell: UITableViewCell {
     출연: \(actors1)
     감독: \(directors1)
     """
+    self.isPoked = isPoked
+    
+    // 지금까지 시청한 시간이 "0"인 경우 타임레이블 없애기
     if toBeContinue == 0 {
       self.isWatching = false
       timeStackViewSetting()
@@ -445,7 +471,6 @@ final class DetailViewUpperCell: UITableViewCell {
       self.isWatching = true
       timeStackViewSetting()
     }
-  
   }
   
 }
