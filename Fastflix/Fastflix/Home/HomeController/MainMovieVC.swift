@@ -13,6 +13,8 @@ import Alamofire
 
 class MainMovieVC: UIViewController {
   
+  let categoryVC = CategorySelectVC()
+  
   let mainMovieView = MainMovieView()
   
   var receiveData: RequestMovie? = nil {
@@ -23,11 +25,33 @@ class MainMovieVC: UIViewController {
   
   lazy var receiveKeys: [String]? = nil
   
-  override func loadView() {
+//  override func loadView() {
+//    mainMovieView.receiveKeys = receiveKeys
+//    mainMovieView.receiveData = receiveData
+//    mainMovieView.floatingView.delegate = self
+//    categoryVC.delegate = self
+//    self.view = mainMovieView
+//  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
     mainMovieView.receiveKeys = receiveKeys
     mainMovieView.receiveData = receiveData
     mainMovieView.floatingView.delegate = self
-    self.view = mainMovieView
+    categoryVC.delegate = self
+//    self.view = mainMovieView
+    view.addSubview(mainMovieView)
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    setupSNP()
+  }
+  
+  func setupSNP() {
+    mainMovieView.snp.makeConstraints {
+      $0.top.leading.bottom.trailing.equalToSuperview()
+    }
   }
   
   // 카테고리 선택했을때 메인 영화정보를 바꾸기 위해서 데이터리로드
@@ -47,10 +71,10 @@ extension MainMovieVC: FloatingViewDelegate {
 //    let mainMovieVC = self
 //    mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
 //    tabBarController?.viewControllers?[0] = mainMovieVC
-    let categoryVC = CategorySelectVC()
+    
     categoryVC.modalPresentationStyle = .overCurrentContext
     UIView.animate(withDuration: 0.7) {
-      self.present(categoryVC, animated: false)
+      self.present(self.categoryVC, animated: false)
     }
   }
   
@@ -63,11 +87,24 @@ extension MainMovieVC: FloatingViewDelegate {
   
   
   func didTapGenreCategory() {
-    let categoryVC = CategorySelectVC()
+    
     
     UIView.animate(withDuration: 0.7) {
-      self.present(categoryVC, animated: false)
+      self.present(self.categoryVC, animated: false)
     }
   }
+  
+}
+
+extension MainMovieVC: CategorySelectVCDelegate {
+  func sendData(data: [RequestMovieElement], keys: [String]) {
+//    let view = self.view as! MainMovieView
+    print("runrun")
+    mainMovieView.receiveData = data
+    mainMovieView.receiveKeys = keys
+    mainMovieView.tableView.reloadData()
+    categoryVC.dismiss(animated: true)
+  }
+  
   
 }

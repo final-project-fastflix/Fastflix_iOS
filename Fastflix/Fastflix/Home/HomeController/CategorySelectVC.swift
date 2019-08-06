@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol CategorySelectVCDelegate {
+  func sendData(data: [RequestMovieElement], keys: [String])
+}
+
 class CategorySelectVC: UIViewController {
+  
+  var delegate: CategorySelectVCDelegate?
   
   var categoryArray = [
     "전체 영화", "한국 영화", "미국 영화", "어린이", "액션", "스릴러", "SF", "판타지", "범죄", "호러",
@@ -42,7 +48,7 @@ class CategorySelectVC: UIViewController {
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -53,7 +59,7 @@ class CategorySelectVC: UIViewController {
   }
   
   private func configure() {
-
+    
     backgroundView.backgroundColor = .black
     backgroundView.alpha = 0.5
     
@@ -137,7 +143,7 @@ extension CategorySelectVC: UITableViewDelegate {
     // 전체영화(indexPath:0)의 경우 눌리면 안됨 ===> 전체영화 눌리면 나감
     if indexPath.row == 0 {
       return
-    // 전체영화가 아닌 경우엔 계속 진행
+      // 전체영화가 아닌 경우엔 계속 진행
     }else {
       print("버튼 눌렸다....")
       APICenter.shared.getMovieData {
@@ -165,7 +171,7 @@ extension CategorySelectVC: UITableViewDelegate {
         print("장르별 영화받기도 성공")
         self.genre = Array(value.keys)
         self.listByGenre = value
-        print(self.listByGenre ?? "장르가 안나와요")
+//        print(self.listByGenre ?? "장르가 안나와요")
         self.thirdStepForGenreSelected()
       case .failure(let err):
         dump(err)
@@ -179,21 +185,25 @@ extension CategorySelectVC: UITableViewDelegate {
     
     print("구조체 만들기 성공")
     
+    let data = [movieforMovieHome]
+    let keys = movieforMovieHome.listOfGenre
+    print("안의 내용은 다 바꿨는데.. 뷰를 바꾸고 싶어여.....")
     DispatchQueue.main.async {
-      let mainMovieVC = MainMovieVC()
-      mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
-      mainMovieVC.receiveData = [movieforMovieHome]
-      
-      print(movieforMovieHome.mainMovie)
-      print("안의 내용은 다 바꿨는데.. 뷰를 바꾸고 싶어여.....")
-      mainMovieVC.loadView()
-      mainMovieVC.viewWillAppear(true)
-      
-      self.tabBarController?.viewControllers?[0] = mainMovieVC
-      self.dismiss(animated: true)
+      print("checkData: ", data)
+      self.delegate?.sendData(data: data, keys: keys)
     }
+    
+    //      mainMovieVC.loadView()
+    //      mainMovieVC.viewWillAppear(true)
+    
+    //      self.tabBarController?.viewControllers?[0] = mainMovieVC
+//    DispatchQueue.main.async {
+//      self.dismiss(animated: true)
+//    }
+    
+    
   }
-
+  
   private func checkGenre(genre: String) -> String {
     switch genre {
     case "한국 영화":

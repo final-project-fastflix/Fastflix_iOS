@@ -23,7 +23,7 @@ enum RequestString: String {
   case getPreviewDataURL = "http://52.78.134.79/movies/preview/"
   case getListOfForkURL = "http://52.78.134.79/movies/my_list/"
   case getTop10URL = "http://52.78.134.79/movies/most_likes/"
-  case getPauseTimeMovieURL = "http://52.78.134.79/movies/paused_time/"
+  case postPauseTimeMovieURL = "http://52.78.134.79/movies/paused_time/"
   case getFollowUpListURL = "http://52.78.134.79/movies/followup/"
   case changeProfileInfoURL = "http://52.78.134.79/accounts/change_sub_user/"
   case deleteProfileInfoURL = "http://52.78.134.79/accounts/delete_sub_user/"

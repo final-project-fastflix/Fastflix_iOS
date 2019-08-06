@@ -115,7 +115,7 @@ extension MainMovieView: UITableViewDataSource {
       cell.selectionStyle = .none
       cell.layoutIfNeeded()
       return cell
-    default:1
+    default:
     var mainImgUrl: [String] = []
     var movieIDArr: [Int] = []
     let keys = mainData!.listOfGenre
@@ -194,55 +194,6 @@ extension MainMovieView: UITableViewDelegate {
         return
       }
     }
-    
-    
-    
-    
-    //    print("transition: ", transition)
-    //    print("originValue: ", originValue)
-    // hide
-    
-    
-    //    if transition < 0, transition >= -940 {
-    //      guard originY >= -94 || originY <= 0 else { return }
-    //      floatValue += transition/10
-    //      originY = floatValue
-    //    }else if transition > 0, transition <= 94 {
-    //      // show
-    //
-    //      guard originY >= -940 || originY <= 0 else { return }
-    //      floatValue += transition/10
-    //      originY = floatValue
-    //    }
-    //
-    //
-    //
-    
-    
-    
-    //    if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0 {
-    //
-    //      UIView.animate(withDuration: 1.5) {
-    //        self.navigationController?.hidesBarsOnSwipe = true
-    //        UIView.animate(withDuration: 1.7, animations: {
-    //          self.navigationController?.navigationBar.alpha = 0
-    //        })
-    //
-    ////        print("내려감")
-    //      }
-    //
-    //    } else {
-    //      UIView.animate(withDuration: 1.5) {
-    //        self.navigationController?.hidesBarsOnSwipe = false
-    //        self.navigationController?.setNavigationBarHidden(false, animated: false)
-    //        UIView.animate(withDuration: 1.7, animations: {
-    //          self.navigationController?.navigationBar.alpha = 1
-    //
-    //        })
-    ////        print("올라감??")
-    //      }
-    //
-    //    }
     
     
   }
