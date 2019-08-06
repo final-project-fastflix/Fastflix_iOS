@@ -159,8 +159,20 @@ extension PlayerVC: PlayerViewDelegate {
     appDelegate.shouldSupportAllOrientation = true
     dismiss(animated: true) {
       self.player?.pause()
+      guard let currentTime = self.player?.currentTime() else { return }
+      let bySecond = Int(CMTimeGetSeconds(currentTime))
+      APICenter.shared.postPauseTime(movieID: self.movieID, time: bySecond) {
+        switch $0 {
+        case .success(let value):
+          print("saved? :", value)
+        case .failure(let err):
+          dump(err)
+          print("saved? :", err)
+        }
+      }
       self.player = nil
     }
+    
   }
   
   func didTapScreen() {
