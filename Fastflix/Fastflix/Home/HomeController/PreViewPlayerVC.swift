@@ -18,15 +18,14 @@ final class PreViewPlayerVC: UIViewController {
   
   private var delegate: PreViewPlayerVCDelegate?
   
-  // MARK: - collectionView
-  private let layout = UICollectionViewFlowLayout()
   
-  lazy var collectionView: UICollectionView = {
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    return collectionView
+  private let dismissBtn: UIButton = {
+    let button = UIButton(type: .custom)
+    button.setImage(UIImage(named: "x"), for: .normal)
+    button.addTarget(self, action: #selector(dismissBtnDidTap(_:)), for: .touchUpInside)
+    return button
   }()
   
-
   private let url = URL(string: preViewUrl)!
   
   
@@ -50,7 +49,8 @@ final class PreViewPlayerVC: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    addSubViews()
+    view.addSubview(dismissBtn)
+    view.backgroundColor = .clear
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -62,12 +62,12 @@ final class PreViewPlayerVC: UIViewController {
     delegate?.finishVideo()
   }
   
-  private func addSubViews() {
-    
-  }
-  
   private func setupSNP() {
-
+    dismissBtn.snp.makeConstraints {
+      $0.top.equalTo(50)
+      $0.centerX.equalToSuperview()
+      $0.width.equalTo(40)
+    }
   }
   
   @objc func didFinishVideo(_ sender: NSNotification) {
