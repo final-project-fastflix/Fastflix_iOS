@@ -12,6 +12,8 @@ import Kingfisher
 protocol PlayButtonDelegate: class {
   func playButtonDidTap(movieId: Int)
   func didTapDismissBtn()
+  func saveButtonDidTap()
+  func shareButtonDidTap()
 }
 
 final class DetailViewUpperCell: UITableViewCell {
@@ -25,6 +27,12 @@ final class DetailViewUpperCell: UITableViewCell {
   var isPoked: Bool = false {
     didSet {
       pokeButtonSetting()
+    }
+  }
+  
+  var isPossibleSave: Bool = false {
+    didSet {
+      savingButtonSetting()
     }
   }
   
@@ -229,7 +237,7 @@ final class DetailViewUpperCell: UITableViewCell {
     let image = UIImage(named: "share")
     button.setImage(image, for: .normal)
     button.tintColor = .white
-    //button.addTarget(self, action: <#T##Selector#>, for: <#T##UIControl.Event#>)
+    button.addTarget(self, action: #selector(shareBtnDidTap(_:)), for: .touchUpInside)
     return button
   }()
   
@@ -239,7 +247,7 @@ final class DetailViewUpperCell: UITableViewCell {
     button.setTitle("공유", for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 11, weight: .light)
     button.setTitleColor(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), for: .normal)
-    // button.addTarget(self, action: #selector(play), for: .touchUpInside)
+    button.addTarget(self, action: #selector(shareBtnDidTap(_:)), for: .touchUpInside)
     return button
   }()
   
@@ -251,6 +259,44 @@ final class DetailViewUpperCell: UITableViewCell {
     stackView.axis = .vertical
     return stackView
   }()
+  
+  // 저장가능 버튼
+  private lazy var savingPossibleButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.setImage(UIImage(named: "tabBarDownLoad1"), for: .normal)
+    button.tintColor = .white
+    button.addTarget(self, action: #selector(saveButtonDidTap(_:)), for: .touchUpInside)
+    return button
+  }()
+  
+  // 저장가능 버튼의 레이블
+  private lazy var savingPossibleButtonLabel: UIButton = {
+    let button = UIButton()
+    button.setTitle("저장", for: .normal)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 11, weight: .light)
+    button.setTitleColor(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), for: .normal)
+    button.addTarget(self, action: #selector(saveButtonDidTap(_:)), for: .touchUpInside)
+    return button
+  }()
+  
+  // 저장가능 버튼/레이블 스택뷰
+  private lazy var savingPossibleStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [savingPossibleButton, savingPossibleButtonLabel])
+    stackView.alignment = .center
+    stackView.spacing = 7
+    stackView.axis = .vertical
+    return stackView
+  }()
+  
+  // 위의 4가지 스택뷰를 담는 스택뷰
+  private lazy var allButtonStackView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [myPokedStackView, evaluationStackView, shareStackView, savingPossibleStackView])
+    stackView.alignment = .center
+    stackView.spacing = 0
+    stackView.axis = .horizontal
+    return stackView
+  }()
+  
   
   // 델리게이트(뷰컨트롤러에 전달)
   weak var delegate: PlayButtonDelegate?
@@ -291,7 +337,7 @@ final class DetailViewUpperCell: UITableViewCell {
   
   // 스냅킷 오토레이아웃
   private func setupSNP() {
-    [backgroundBlurView, backgroundLayerView, mainImageView, imageBelowStackView, playButtonStackView, movieDescriptionStackView, myPokedStackView, evaluationStackView, shareStackView, ].forEach { contentView.addSubview($0) }
+    [backgroundBlurView, backgroundLayerView, mainImageView, imageBelowStackView, playButtonStackView, movieDescriptionStackView, allButtonStackView].forEach { contentView.addSubview($0) }
     
     contentView.superview?.addSubview(dissmissButton)
     
@@ -348,24 +394,8 @@ final class DetailViewUpperCell: UITableViewCell {
       $0.width.height.equalTo(20)
     }
     
-    myPokedStackView.snp.makeConstraints {
-      $0.top.equalTo(movieDescriptionStackView.snp.bottom).offset(12)
-      $0.width.equalTo(buttonWidth)
-      $0.height.equalTo(40)
-      $0.leading.equalTo(contentView.snp.leading).offset(10)
-      $0.bottom.equalTo(contentView.snp.bottom).offset(-10)
-    }
-    
     evaluationButton.snp.makeConstraints {
       $0.width.height.equalTo(20)
-    }
-    
-    evaluationStackView.snp.makeConstraints {
-      $0.top.equalTo(myPokedStackView.snp.top)
-      $0.width.equalTo(buttonWidth)
-      $0.height.equalTo(40)
-      $0.leading.equalTo(myPokedStackView.snp.trailing)
-      $0.bottom.equalTo(contentView.snp.bottom).offset(-10)
     }
     
     shareButton.snp.makeConstraints {
@@ -373,13 +403,39 @@ final class DetailViewUpperCell: UITableViewCell {
       $0.height.equalTo(20)
     }
     
-    shareStackView.snp.makeConstraints {
-      $0.top.equalTo(myPokedStackView.snp.top)
+    savingPossibleButton.snp.makeConstraints {
+      $0.width.equalTo(16)
+      $0.height.equalTo(20)
+    }
+    
+    // 스택뷰 모음
+    myPokedStackView.snp.makeConstraints {
       $0.width.equalTo(buttonWidth)
       $0.height.equalTo(40)
-      $0.leading.equalTo(evaluationStackView.snp.trailing)
+    }
+    
+    evaluationStackView.snp.makeConstraints {
+      $0.width.equalTo(buttonWidth)
+      $0.height.equalTo(40)
+    }
+    
+    shareStackView.snp.makeConstraints {
+      $0.width.equalTo(buttonWidth)
+      $0.height.equalTo(40)
+    }
+    
+    savingPossibleStackView.snp.makeConstraints {
+      $0.width.equalTo(buttonWidth)
+      $0.height.equalTo(40)
+    }
+    
+    allButtonStackView.snp.makeConstraints {
+      $0.top.equalTo(movieDescriptionStackView.snp.bottom).offset(12)
+      $0.leading.equalTo(contentView.snp.leading).offset(10)
+//      $0.trailing.equalTo(contentView.snp.trailing).offset(-10)
       $0.bottom.equalTo(contentView.snp.bottom).offset(-10)
     }
+  
   }
   
   // 보고있는 영화여부에 따라 타임레이블 표시할지 결정하는 메서드
@@ -397,6 +453,14 @@ final class DetailViewUpperCell: UITableViewCell {
       myPokedContentsButton.setImage(UIImage(named: "poke"), for: .normal)
     }else {
       myPokedContentsButton.setImage(UIImage(named: "add"), for: .normal)
+    }
+  }
+  
+  private func savingButtonSetting() {
+    if isPossibleSave {
+      savingPossibleStackView.isHidden = false
+    }else {
+      savingPossibleStackView.isHidden = true
     }
   }
   
@@ -425,6 +489,15 @@ final class DetailViewUpperCell: UITableViewCell {
     }
   }
   
+  @objc private func shareBtnDidTap(_ sender: UIButton) {
+    delegate?.shareButtonDidTap()
+  }
+  
+  
+  @objc private func saveButtonDidTap(_ sender: UIButton) {
+    delegate?.saveButtonDidTap()
+  }
+  
   // 디테일뷰 이미지 설정(메인이미지, 백그라운드)관련 메서드
   func configureImage(imageURLString: String?) {
     let imageURL = URL(string: imageURLString ?? "ImagesData.shared.imagesUrl[5]")
@@ -438,7 +511,7 @@ final class DetailViewUpperCell: UITableViewCell {
   }
   
   // 디테일뷰 이미지외의 내용 설정관련 메서드
-  func detailDataSetting(matchRate: Int?, productionDate: String?, degree: String?, runningTime: String?, sliderTime: Float?, remainingTime: String?, synopsis: String?, actors: String?, directors: String?, toBeContinue: Int?, isPoked: Bool) {
+  func detailDataSetting(matchRate: Int?, productionDate: String?, degree: String?, runningTime: String?, sliderTime: Float?, remainingTime: String?, synopsis: String?, actors: String?, directors: String?, toBeContinue: Int?, isPoked: Bool, isPossibleSave: Bool) {
     
     // 옵셔널 처리
     let matchRate1 = matchRate ?? 90
@@ -470,6 +543,14 @@ final class DetailViewUpperCell: UITableViewCell {
     }else {
       self.isWatching = true
       timeStackViewSetting()
+    }
+    
+    if isPossibleSave {
+      self.isPossibleSave = true
+      savingButtonSetting()
+    }else {
+      self.isPossibleSave = false
+      savingButtonSetting()
     }
   }
   
