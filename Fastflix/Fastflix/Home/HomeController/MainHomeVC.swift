@@ -42,6 +42,8 @@ class MainHomeVC: UIViewController {
     }
   }
   
+  let path = DataCenter.shared
+  
   private lazy var tableView: UITableView = {
     let tbl = UITableView()
     tbl.dataSource = self
@@ -121,7 +123,7 @@ extension MainHomeVC: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-    let path = DataCenter.shared
+    
     
     switch indexPath.row {
     case 0:
@@ -130,6 +132,7 @@ extension MainHomeVC: UITableViewDataSource {
       let logoImgPath = path.mainImageCellData?.mainMovie?.logoImagePath
       var text = ""
       
+      cell.delegate = self
       cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
       if let data = path.mainImageCellData?.mainMovie?.genre {
         for idx in data {
@@ -139,6 +142,7 @@ extension MainHomeVC: UITableViewDataSource {
       let lastText = String(text.dropLast())
       cell.selectionStyle = .none
       cell.movieDetailLabel.text = lastText
+      
       return cell
       
     case 1:
@@ -376,4 +380,22 @@ extension MainHomeVC: SubTableCellDelegate {
       self.present(detailVC, animated: true)
     }
   }
+}
+
+
+extension MainHomeVC: MainImageTableCellDelegate {
+  func playVideo() {
+    print("run playVideo")
+    let player = PlayerVC()
+    
+    let url = path.mainImageCellData?.mainMovie?.videoFile
+    let title = path.mainImageCellData?.mainMovie?.name
+    let id = path.mainImageCellData?.mainMovie?.id
+    
+    player.configure(id: id, title: title, videoPath: url, seekTime: nil)
+    AppDelegate.instance.shouldSupportAllOrientation = false
+    self.present(player, animated: true)
+  }
+  
+  
 }
