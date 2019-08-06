@@ -40,12 +40,12 @@ final class DetailViewUpperCell: UITableViewCell {
   private let imageWidth: CGFloat = 133
   
   private lazy var dissmissButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.backgroundColor = .black
-    button.tintColor = .white
-    button.setImage(UIImage(named: "close"), for: .normal)
-    button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
-    button.layer.cornerRadius = 8
+    let button = UIButton(type: .custom)
+//    button.backgroundColor = .black
+//    button.tintColor = .white
+    button.setImage(UIImage(named: "close1"), for: .normal)
+//    button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
+//    button.layer.cornerRadius = 8
     button.addTarget(self, action: #selector(didTapDismissBtn(_:)), for: .touchUpInside)
     button.clipsToBounds = true
     return button
@@ -344,7 +344,7 @@ final class DetailViewUpperCell: UITableViewCell {
     let buttonWidth = (UIScreen.main.bounds.width - 20)/4
     
     dissmissButton.snp.makeConstraints {
-      $0.width.height.equalTo(23)
+      $0.width.height.equalTo(28)
       $0.top.equalToSuperview().offset(44)
       $0.trailing.equalToSuperview().offset(-15)
     }
