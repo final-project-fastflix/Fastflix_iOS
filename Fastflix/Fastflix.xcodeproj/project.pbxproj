@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		470B0BCA22F857FD006EFBE2 /* BlurEffectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 470B0BC922F857FD006EFBE2 /* BlurEffectExtension.swift */; };
 		4743D1B322F35AB100B26067 /* UserIconSelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743D1B222F35AB100B26067 /* UserIconSelectVC.swift */; };
 		4743D1B522F35D2500B26067 /* UserIconTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743D1B422F35D2500B26067 /* UserIconTableCell.swift */; };
 		4743D1B722F36AAE00B26067 /* UserIconCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4743D1B622F36AAE00B26067 /* UserIconCollectionViewCell.swift */; };
@@ -24,7 +25,7 @@
 		47FF9DC122DE3C15005C7BAD /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF9DC022DE3C15005C7BAD /* DetailVC.swift */; };
 		47FF9DC322DE3C51005C7BAD /* DetailViewUpperCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF9DC222DE3C51005C7BAD /* DetailViewUpperCell.swift */; };
 		47FF9DC522DE3C98005C7BAD /* DetailViewBelowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF9DC422DE3C98005C7BAD /* DetailViewBelowCell.swift */; };
-		47FF9DC722DE3CC4005C7BAD /* DetailCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF9DC622DE3CC4005C7BAD /* DetailCollectionViewCell.swift */; };
+		47FF9DC722DE3CC4005C7BAD /* DetailViewBelowCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF9DC622DE3CC4005C7BAD /* DetailViewBelowCollectionViewCell.swift */; };
 		4D80BA9E4F9865588E244065 /* Pods_Fastflix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E29600FEE1EEB7B6DD9E0171 /* Pods_Fastflix.framework */; };
 		5295214E22D5D3E800174BC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5295214D22D5D3E800174BC1 /* AppDelegate.swift */; };
 		5295215522D5D3E900174BC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5295215422D5D3E900174BC1 /* Assets.xcassets */; };
@@ -80,6 +81,7 @@
 /* Begin PBXFileReference section */
 		10C6909ABE5E5DC87C1917A1 /* Pods-Fastflix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fastflix.release.xcconfig"; path = "Target Support Files/Pods-Fastflix/Pods-Fastflix.release.xcconfig"; sourceTree = "<group>"; };
 		3EB1C6A592B8954DDA0CD4B0 /* Pods-Fastflix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Fastflix.debug.xcconfig"; path = "Target Support Files/Pods-Fastflix/Pods-Fastflix.debug.xcconfig"; sourceTree = "<group>"; };
+		470B0BC922F857FD006EFBE2 /* BlurEffectExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurEffectExtension.swift; sourceTree = "<group>"; };
 		4743D1B222F35AB100B26067 /* UserIconSelectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIconSelectVC.swift; sourceTree = "<group>"; };
 		4743D1B422F35D2500B26067 /* UserIconTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserIconTableCell.swift; path = Fastflix/Login/LoginController/UserIconTableCell.swift; sourceTree = SOURCE_ROOT; };
 		4743D1B622F36AAE00B26067 /* UserIconCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserIconCollectionViewCell.swift; path = Fastflix/Login/LoginController/UserIconCollectionViewCell.swift; sourceTree = SOURCE_ROOT; };
@@ -97,7 +99,7 @@
 		47FF9DC022DE3C15005C7BAD /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 		47FF9DC222DE3C51005C7BAD /* DetailViewUpperCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewUpperCell.swift; sourceTree = "<group>"; };
 		47FF9DC422DE3C98005C7BAD /* DetailViewBelowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewBelowCell.swift; sourceTree = "<group>"; };
-		47FF9DC622DE3CC4005C7BAD /* DetailCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCollectionViewCell.swift; sourceTree = "<group>"; };
+		47FF9DC622DE3CC4005C7BAD /* DetailViewBelowCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewBelowCollectionViewCell.swift; sourceTree = "<group>"; };
 		5295214A22D5D3E800174BC1 /* Fastflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fastflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5295214D22D5D3E800174BC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5295215422D5D3E900174BC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 			isa = PBXGroup;
 			children = (
 				C1FC3F4022EAE5BB008E1FE9 /* AlertExtension.swift */,
+				470B0BC922F857FD006EFBE2 /* BlurEffectExtension.swift */,
 				47B4086922EAF30400D6A19D /* ImageCropExtension.swift */,
 			);
 			path = Extensions;
@@ -330,7 +333,7 @@
 				52BA342F22DDE7EF005F8489 /* SubCell.swift */,
 				47FF9DC222DE3C51005C7BAD /* DetailViewUpperCell.swift */,
 				47FF9DC422DE3C98005C7BAD /* DetailViewBelowCell.swift */,
-				47FF9DC622DE3CC4005C7BAD /* DetailCollectionViewCell.swift */,
+				47FF9DC622DE3CC4005C7BAD /* DetailViewBelowCollectionViewCell.swift */,
 				C1FC3F8D22F2FD0C008E1FE9 /* WatchingMoviesTableCell.swift */,
 				C1FC3F8B22F2FC83008E1FE9 /* WatchingMoviesCollectionCell.swift */,
 			);
@@ -664,10 +667,11 @@
 				C1C522FA22F4AECB00B34866 /* LoadingView.swift in Sources */,
 				C1E21BE622DF1BB400930115 /* LaunchScreenVC.swift in Sources */,
 				C1FC3F8E22F2FD0C008E1FE9 /* WatchingMoviesTableCell.swift in Sources */,
-				47FF9DC722DE3CC4005C7BAD /* DetailCollectionViewCell.swift in Sources */,
+				47FF9DC722DE3CC4005C7BAD /* DetailViewBelowCollectionViewCell.swift in Sources */,
 				47E35BDB22F0C57A002D5319 /* AddView.swift in Sources */,
 				C1FC3F3422E8ACFC008E1FE9 /* MyContentVC.swift in Sources */,
 				C143560222DC8D1C005189E9 /* Player.swift in Sources */,
+				470B0BCA22F857FD006EFBE2 /* BlurEffectExtension.swift in Sources */,
 				C1FC3F2E22E6B9BA008E1FE9 /* MainMovieVC.swift in Sources */,
 				5295216522D5D57F00174BC1 /* DataOfTass.swift in Sources */,
 				52BA342A22DDE513005F8489 /* MainTabBarController.swift in Sources */,
