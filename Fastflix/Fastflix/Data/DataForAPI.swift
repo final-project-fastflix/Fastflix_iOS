@@ -30,6 +30,8 @@ enum RequestString: String {
   case getGoldenMovieURL = "http://52.78.134.79/movies/big_size_video/"
   case searchMovieURL = "http://52.78.134.79//movies/search/?search_key="
   case getDetailURL = "http://52.78.134.79/movies/"
+  case getMovieGenre = "http://52.78.134.79//movies/genre/list/"
+  case getListByGenre = "http://52.78.134.79//movies/list_by_genre/"
 }
 
 
@@ -418,11 +420,15 @@ struct Degree: Codable {
 struct MoviesByGenre: Codable {
   let id: Int
   let name: String
+  let sampleVideoFile: String?
+  let logoImagePath: String?
   let horizontalImagePath: String
   let verticalImage: String
   
   enum CodingKeys: String, CodingKey {
     case id, name
+    case sampleVideoFile = "sample_video_file"
+    case logoImagePath = "logo_image_path"
     case horizontalImagePath = "horizontal_image_path"
     case verticalImage = "vertical_image"
   }
@@ -430,3 +436,22 @@ struct MoviesByGenre: Codable {
 
 typealias RequestMovie = [RequestMovieElement]
 
+
+//struct ListMovieElement: Codable {
+//  let id: Int
+//  let name: String
+//  let sampleVideoFile: String
+//  let logoImagePath: String
+//  let horizontalImagePath: String
+//  let verticalImage: String
+//
+//  enum CodingKeys: String, CodingKey {
+//    case id, name
+//    case sampleVideoFile
+//    case logoImagePath
+//    case horizontalImagePath
+//    case verticalImage
+//  }
+//}
+
+typealias RequestListByGenre = [String: [MoviesByGenre]]

@@ -35,9 +35,7 @@ final class MainMovieView: UIView {
     return view
   }()
   
-  
-  
-  private let tableView = UITableView()
+  let tableView = UITableView()
   
   
   override func didMoveToSuperview() {

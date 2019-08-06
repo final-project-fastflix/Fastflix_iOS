@@ -169,9 +169,6 @@ extension DetailVC: PlayButtonDelegate {
   
   func playButtonDidTap(movieId: Int) {
     print("여기에 플레이어 붙이면 됩니다.")
-
-    
-    
     
     
     

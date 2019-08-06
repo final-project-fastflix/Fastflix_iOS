@@ -678,4 +678,29 @@ class APICenter {
     }
   }
   
+  // 장르를 선택하면 보여줄 영화리스트
+  func getListByGenreData(genre: String, completion: @escaping (Result<RequestListByGenre>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    let fullURL = RequestString.getListByGenre.rawValue + "\(genre)/"
+    
+    let encoding = fullURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+    
+    let apiURL = URL(string: encoding)!
+    
+    Alamofire.request(apiURL, method: .get, headers: header)
+      .responseData(queue: .global()) { (result) in
+        switch result.result {
+        case .success(let value):
+          guard let result = try? JSONDecoder().decode(RequestListByGenre.self, from: value) else {
+            completion(.failure(ErrorType.FailToParsing))
+            return
+          }
+          completion(.success(result))
+        case .failure(let err):
+          dump(err)
+          completion(.failure(ErrorType.networkError))
+        }
+    }
+  }
+
 }
