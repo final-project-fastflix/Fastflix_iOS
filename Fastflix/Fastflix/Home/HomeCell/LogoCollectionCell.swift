@@ -9,19 +9,19 @@
 import UIKit
 import SnapKit
 
-protocol LogoCollectionCellDelegate {
-  func dismissBtnDidTap()
-}
+
 
 class LogoCollectionCell: UICollectionViewCell {
   
   static let identifier = "LogoCollectionCell"
   
-  var delegate: LogoCollectionCellDelegate?
+  
   
   var logoImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "preViewLogo")
+    imageView.backgroundColor = .clear
+    imageView.contentMode = .scaleAspectFit
     return imageView
   }()
   
@@ -33,23 +33,17 @@ class LogoCollectionCell: UICollectionViewCell {
     
   }()
   
-  private let dismissBtn: UIButton = {
-    let button = UIButton(type: .custom)
-    button.addTarget(self, action: #selector(dismissBtnDidTap(_:)), for: .touchUpInside)
-    button.setImage(UIImage(named: "x"), for: .normal)
-    return button
-  }()
+
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     self.backgroundColor = .clear
     addSubViews()
     setupSNP()
-    
   }
   
   private func addSubViews() {
-    [logoImageView, progressBar, dismissBtn].forEach {
+    [logoImageView, progressBar].forEach {
       self.addSubview($0)
     }
   }
@@ -57,25 +51,15 @@ class LogoCollectionCell: UICollectionViewCell {
   private func setupSNP() {
     progressBar.snp.makeConstraints {
       $0.top.equalToSuperview()
+      $0.width.equalTo(100)
       
     }
     
     logoImageView.snp.makeConstraints {
-      $0.top.equalTo(progressBar.snp.bottom).offset(10)
-      $0.width.height.equalTo(200)
+      $0.top.equalTo(progressBar.snp.bottom)
+      $0.width.height.equalTo(100)
     }
     
-    dismissBtn.snp.makeConstraints {
-      $0.top.equalToSuperview()
-      $0.trailing.equalToSuperview().inset(10)
-    }
   }
-  
-  @objc private func dismissBtnDidTap(_ sender: UIButton) {
-    print(" 뒤로가여 ")
-    delegate?.dismissBtnDidTap()
-    
-  }
-  
   
 }

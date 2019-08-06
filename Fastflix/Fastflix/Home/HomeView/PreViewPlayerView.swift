@@ -9,13 +9,21 @@
 import UIKit
 import SnapKit
 
+protocol PreViewPlayerViewDelegate {
+  func dismissBtnDidTap()
+}
+
 class PreViewPlayerView: UIView {
+  
+  var delegate: PreViewPlayerViewDelegate?
   
   // MARK: - collectionView
   private let layout = UICollectionViewFlowLayout()
+  private let logoLyaout = UICollectionViewFlowLayout()
   
   lazy var logoCollectionView: UICollectionView = {
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: logoLyaout)
+    collectionView.backgroundColor = .clear
     return collectionView
   }()
   
@@ -23,6 +31,19 @@ class PreViewPlayerView: UIView {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     return collectionView
   }()
+  
+  lazy var logoPageController: UIPageControl = {
+    let page = UIPageControl()
+    page.currentPage = 0
+    return page
+  }()
+  
+  lazy var playPageController: UIPageControl = {
+    let page = UIPageControl()
+    page.currentPage = 0
+    return page
+  }()
+  
   
   private lazy var pokeButton: UIButton = {
     let button = UIButton(type: .custom)
@@ -34,7 +55,8 @@ class PreViewPlayerView: UIView {
   
   private let playButton: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "play2"), for: .normal)
+    button.setImage(UIImage(named: "play3"), for: .normal)
+    button.tintColor = .white
     return button
   }()
   
@@ -51,42 +73,67 @@ class PreViewPlayerView: UIView {
     return stackView
   }()
   
-  let img = ["test1", "test2", "test3", "test4"]
+  private let dismissBtn: UIButton = {
+    let button = UIButton(type: .custom)
+    button.addTarget(self, action: #selector(dismissBtnDidTap(_:)), for: .touchUpInside)
+    button.setImage(UIImage(named: "x"), for: .normal)
+    return button
+  }()
   
+  //test
+  let img = ["test1", "test2", "test3", "test4"]
+  let logoImg = ["logoTest2", "preViewLogo", "logoTest2", "preViewLogo"]
 
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
-    
+    setupStackView()
     addSubViews()
     setupSNP()
     setupCollectionView()
     registerCollectionCell()
     
+    
   }
   
   private func addSubViews() {
     
-    [logoCollectionView, playCollectionView, stackView].forEach {
-      self.addSubview($0)
-    }
-    
+    [playCollectionView, stackView, logoCollectionView, dismissBtn, logoPageController, playPageController].forEach { self.addSubview($0) }
+//    [logoCollectionView].forEach { playCollectionView.addSubview($0) }
+    self.bringSubviewToFront(logoCollectionView)
+    self.bringSubviewToFront(stackView)
   }
+  
   private func setupSNP() {
-    logoCollectionView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
-    }
     
     playCollectionView.snp.makeConstraints {
       $0.top.leading.trailing.bottom.equalToSuperview()
     }
     
     stackView.snp.makeConstraints {
-      $0.bottom.equalToSuperview().offset(-20)
+      $0.bottom.equalToSuperview().offset(-topPadding)
       $0.centerX.equalToSuperview()
     }
     
+    logoCollectionView.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(topPadding)
+      $0.leading.equalToSuperview()
+      $0.height.equalTo(UIScreen.main.bounds.height * 0.2)
+      
+    }
     
+    dismissBtn.snp.makeConstraints {
+      $0.top.equalToSuperview().offset(topPadding)
+      $0.leading.equalTo(logoCollectionView.snp.trailing).offset(20)
+      $0.trailing.equalToSuperview().offset(-5)
+    }
     
+
+    
+  }
+  
+  private func registerCollectionCell() {
+    logoCollectionView.register(LogoCollectionCell.self, forCellWithReuseIdentifier: LogoCollectionCell.identifier)
+    playCollectionView.register(PlayCollectionViewCell.self, forCellWithReuseIdentifier: PlayCollectionViewCell.identifier)
     
   }
   private func setupCollectionView() {
@@ -97,12 +144,29 @@ class PreViewPlayerView: UIView {
     playCollectionView.delegate = self
     
     layout.scrollDirection = .horizontal
-    self.logoCollectionView.collectionViewLayout = layout
+    logoLyaout.scrollDirection = .horizontal
+    self.logoCollectionView.collectionViewLayout = logoLyaout
     self.playCollectionView.collectionViewLayout = layout
-    layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     
+    // logo layout
+    
+    logoLyaout.sectionInset = UIEdgeInsets(top:0, left: 15, bottom: 0, right: 15)
+    logoLyaout.minimumLineSpacing = 20
+    logoLyaout.minimumInteritemSpacing = 20
+    
+    let w = (UIScreen.main.bounds.width - 44)/3
+    let h = w * 1.4
+    // 컬렉션뷰의 각 한개의 아이템 사이즈 설정
+    logoLyaout.itemSize = CGSize(width: w, height: h)
+    
+    logoLyaout.sectionHeadersPinToVisibleBounds = true
+    logoCollectionView.showsHorizontalScrollIndicator = false
+    playCollectionView.isPagingEnabled = true
+    logoCollectionView.isPagingEnabled = true
+    
+    // Play layout
+    layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
     layout.minimumLineSpacing = 0
-
     layout.minimumInteritemSpacing = 0
     
     let width = UIScreen.main.bounds.width
@@ -112,6 +176,7 @@ class PreViewPlayerView: UIView {
     
     layout.sectionHeadersPinToVisibleBounds = true
     playCollectionView.showsHorizontalScrollIndicator = false
+    playCollectionView.clipsToBounds = false
     
   }
   
@@ -133,20 +198,20 @@ class PreViewPlayerView: UIView {
     }
   }
   
-  
-  
-  private func registerCollectionCell() {
-    logoCollectionView.register(LogoCollectionCell.self, forCellWithReuseIdentifier: LogoCollectionCell.identifier)
-    playCollectionView.register(PlayCollectionViewCell.self, forCellWithReuseIdentifier: PlayCollectionViewCell.identifier)
-
+  @objc private func dismissBtnDidTap(_ sender: UIButton) {
+    print(" 뒤로가여 ")
+    delegate?.dismissBtnDidTap()
+    
   }
-
+  
+  
+  
 }
 
 extension PreViewPlayerView : UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     if collectionView == self.logoCollectionView {
-      return 1
+      return logoImg.count
     } else {
       return img.count
     }
@@ -155,26 +220,25 @@ extension PreViewPlayerView : UICollectionViewDataSource {
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
-    let cell = UICollectionViewCell()
-    
     if collectionView == self.logoCollectionView {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LogoCollectionCell.identifier, for: indexPath) as! LogoCollectionCell
-      cell.logoImageView.image = UIImage(named: "preViewLogo")
+      cell.logoImageView.image = UIImage(named: logoImg[indexPath.row])
       
       return cell
       
-    } else if collectionView == self.playCollectionView {
+    } else {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlayCollectionViewCell.identifier, for: indexPath) as! PlayCollectionViewCell
 
       cell.playView.image = UIImage(named: img[indexPath.row])
       return cell
     }
-    
-    return cell
   
   }
 }
 
 extension PreViewPlayerView: UICollectionViewDelegate {
-  
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+     let currentPage = round(scrollView.contentOffset.x / self.frame.width)
+    
+  }
 }

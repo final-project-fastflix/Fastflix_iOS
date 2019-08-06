@@ -19,8 +19,6 @@ class PlayCollectionViewCell: UICollectionViewCell {
       return view
     }()
     
-    
-    
     override func didMoveToSuperview() {
       super.didMoveToSuperview()
       addSubViews()
@@ -36,7 +34,6 @@ class PlayCollectionViewCell: UICollectionViewCell {
         $0.top.leading.trailing.bottom.equalToSuperview()
       }
     }
-    
-
+  
 
 }
