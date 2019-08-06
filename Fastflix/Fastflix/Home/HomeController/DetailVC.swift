@@ -106,7 +106,7 @@ extension DetailVC: UITableViewDataSource {
       let director = "\(direc)"
       
       // 무비아이디, 이미지 이외의 데이터를 표시하고 있는 디테일뷰의 테이블뷰에 전달
-      cell.detailDataSetting(matchRate: movieDetailData?.matchRate, productionDate: movieDetailData?.productionDate, degree: rate, runningTime: movieDetailData?.runningTime, sliderTime: sliderFloat, remainingTime: remainingTime, synopsis: movieDetailData?.synopsis, actors: actors, directors: director, toBeContinue: movieDetailData?.toBeContinue)
+      cell.detailDataSetting(matchRate: movieDetailData?.matchRate, productionDate: movieDetailData?.productionDate, degree: rate, runningTime: movieDetailData?.runningTime, sliderTime: sliderFloat, remainingTime: remainingTime, synopsis: movieDetailData?.synopsis, actors: actors, directors: director, toBeContinue: movieDetailData?.toBeContinue, isPoked: movieDetailData!.marked)
       
       return cell
       
