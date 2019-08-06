@@ -10,7 +10,13 @@ import UIKit
 import SnapKit
 import Kingfisher
 
+protocol MainImageTableCellDelegate: class {
+  func playVideo()
+}
+
 final class MainImageTableCell: UITableViewCell {
+  
+  weak var delegate: MainImageTableCellDelegate?
   
   static let identifier = "MainImageTableCell" 
   
@@ -30,7 +36,7 @@ final class MainImageTableCell: UITableViewCell {
     return imageView
   }()
   
-   let movieDetailLabel: UILabel = {
+  let movieDetailLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
     label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
@@ -45,9 +51,10 @@ final class MainImageTableCell: UITableViewCell {
     return button
   }()
   
-  private let playButton: UIButton = {
+  private lazy var playButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "play2"), for: .normal)
+    button.addTarget(self, action: #selector(didTapPlayBtn(_:)), for: .touchUpInside)
     return button
   }()
   
@@ -82,7 +89,6 @@ final class MainImageTableCell: UITableViewCell {
     return blurImage
   }()
 
-  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     self.backgroundColor = .clear
@@ -106,6 +112,10 @@ final class MainImageTableCell: UITableViewCell {
       }
       
     }
+  }
+  
+  @objc private func didTapPlayBtn(_ sender: UIButton) {
+    delegate?.playVideo()
   }
   
   private func setupStackView() {

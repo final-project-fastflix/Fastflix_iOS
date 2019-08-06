@@ -10,8 +10,6 @@ import UIKit
 
 class LoadingVC: UIViewController {
   
-  
-  
   override func loadView() {
     DataCenter.shared.downloadDatas()
     let loadingView = LoadingView()
@@ -27,6 +25,4 @@ class LoadingVC: UIViewController {
     }
     
   }
-  
-  
 }

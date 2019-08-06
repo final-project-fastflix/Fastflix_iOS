@@ -106,7 +106,7 @@ extension DetailVC: UITableViewDataSource {
       let director = "\(direc)"
       
       // 무비아이디, 이미지 이외의 데이터를 표시하고 있는 디테일뷰의 테이블뷰에 전달
-      cell.detailDataSetting(matchRate: movieDetailData?.matchRate, productionDate: movieDetailData?.productionDate, degree: rate, runningTime: movieDetailData?.runningTime, sliderTime: sliderFloat, remainingTime: remainingTime, synopsis: movieDetailData?.synopsis, actors: actors, directors: director, toBeContinue: movieDetailData?.toBeContinue)
+      cell.detailDataSetting(matchRate: movieDetailData?.matchRate, productionDate: movieDetailData?.productionDate, degree: rate, runningTime: movieDetailData?.runningTime, sliderTime: sliderFloat, remainingTime: remainingTime, synopsis: movieDetailData?.synopsis, actors: actors, directors: director, toBeContinue: movieDetailData?.toBeContinue, isPoked: movieDetailData!.marked, isPossibleSave: movieDetailData!.canIStore)
       
       return cell
       
@@ -148,15 +148,38 @@ extension DetailVC: UITableViewDataSource {
 
 // (델리게이트) 플레이버튼 눌렀을때 플레이어 띄우기
 extension DetailVC: PlayButtonDelegate {
+  func shareButtonDidTap() {
+    let message = """
+    본 콘텐츠를 지인에게 공유할 수 있습니다.
+    """
+    self.oneAlert(title: "공유하시겠습니까?", message: message, okButton: "공유하러 가기")
+  }
+  
+  func saveButtonDidTap() {
+    let message = """
+    Wi-Fi에 연결되어야만 콘텐츠를 저장하실 수
+    있습니다.
+    """
+    self.oneAlert(title: "저장하시겠습니까?", message: message, okButton: "콘텐츠 저장하기")
+  }
+  
   func didTapDismissBtn() {
     dismiss(animated: true)
   }
   
   func playButtonDidTap(movieId: Int) {
     print("여기에 플레이어 붙이면 됩니다.")
+    print("run playVideo")
+    let player = PlayerVC()
     
+    let url = movieDetailData?.videoFile
+    let title = movieDetailData?.name
+    let id = movieDetailData?.id
+    let time = movieDetailData?.remainingTime
     
-    
+    player.configure(id: id, title: title, videoPath: url, seekTime: time)
+    AppDelegate.instance.shouldSupportAllOrientation = false
+    self.present(player, animated: true)
     
     
   }

@@ -17,6 +17,8 @@
 		477F4F6B22E7630E003268F9 /* ProfileSelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F4F6A22E7630E003268F9 /* ProfileSelectVC.swift */; };
 		478AA3D222E9868900A632EF /* ProfileChangeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AA3D122E9868900A632EF /* ProfileChangeVC.swift */; };
 		478AA3D822EA2D3100A632EF /* CustomerCenterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478AA3D722EA2D3100A632EF /* CustomerCenterVC.swift */; };
+		47A8040B22F98E7900E14450 /* CategorySelectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A8040A22F98E7900E14450 /* CategorySelectVC.swift */; };
+		47A8040D22F997C500E14450 /* CategorySelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A8040C22F997C500E14450 /* CategorySelectCell.swift */; };
 		47AC179722E2341E00D6AACD /* BeforeLoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC179622E2341E00D6AACD /* BeforeLoginVC.swift */; };
 		47AC179922E2343800D6AACD /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC179822E2343800D6AACD /* LoginVC.swift */; };
 		47AC179B22E234E700D6AACD /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AC179A22E234E700D6AACD /* PlayerViewController.swift */; };
@@ -96,6 +98,8 @@
 		477F4F6A22E7630E003268F9 /* ProfileSelectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSelectVC.swift; sourceTree = "<group>"; };
 		478AA3D122E9868900A632EF /* ProfileChangeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileChangeVC.swift; sourceTree = "<group>"; };
 		478AA3D722EA2D3100A632EF /* CustomerCenterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerCenterVC.swift; sourceTree = "<group>"; };
+		47A8040A22F98E7900E14450 /* CategorySelectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectVC.swift; sourceTree = "<group>"; };
+		47A8040C22F997C500E14450 /* CategorySelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategorySelectCell.swift; sourceTree = "<group>"; };
 		47AC179622E2341E00D6AACD /* BeforeLoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeforeLoginVC.swift; sourceTree = "<group>"; tabWidth = 2; };
 		47AC179822E2343800D6AACD /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		47AC179A22E234E700D6AACD /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
@@ -316,6 +320,7 @@
 				529BDC3922F924A5004D9B10 /* PlayerVC.swift */,
 				47AC179A22E234E700D6AACD /* PlayerViewController.swift */,
 				C1C522F722F4AEBA00B34866 /* LoadingVC.swift */,
+				47A8040A22F98E7900E14450 /* CategorySelectVC.swift */,
 			);
 			path = HomeController;
 			sourceTree = "<group>";
@@ -351,6 +356,7 @@
 				C1FC3F8B22F2FC83008E1FE9 /* WatchingMoviesCollectionCell.swift */,
 				C17A3C2322F8204800C4C29B /* LogoCollectionCell.swift */,
 				C17A3C2722F9524300C4C29B /* PlayCollectionViewCell.swift */,
+				47A8040C22F997C500E14450 /* CategorySelectCell.swift */,
 			);
 			path = HomeCell;
 			sourceTree = "<group>";
@@ -650,6 +656,8 @@
 				5295214E22D5D3E800174BC1 /* AppDelegate.swift in Sources */,
 				4743D1B522F35D2500B26067 /* UserIconTableCell.swift in Sources */,
 				C1FC3F9522F408B7008E1FE9 /* LaunchView.swift in Sources */,
+				C17A3C1E22F8072C00C4C29B /* PlayCollectionCell.swift in Sources */,
+				47A8040B22F98E7900E14450 /* CategorySelectVC.swift in Sources */,
 				C1FC3F3C22E97548008E1FE9 /* SeeMoreView.swift in Sources */,
 				C14355F822DB0E22005189E9 /* MainImageTableCell.swift in Sources */,
 				C17A3C2822F9524300C4C29B /* PlayCollectionViewCell.swift in Sources */,
@@ -707,6 +715,7 @@
 				5295216D22D5D62F00174BC1 /* FloatingView.swift in Sources */,
 				529BDC3A22F924A5004D9B10 /* PlayerVC.swift in Sources */,
 				529BDC3E22F924D6004D9B10 /* PlayerView.swift in Sources */,
+				47A8040D22F997C500E14450 /* CategorySelectCell.swift in Sources */,
 				C1FC3F6022EC9E9F008E1FE9 /* SearchView.swift in Sources */,
 				477F4F6B22E7630E003268F9 /* ProfileSelectVC.swift in Sources */,
 				C1FC3F2C22E6B9A1008E1FE9 /* MainPokeVC.swift in Sources */,
