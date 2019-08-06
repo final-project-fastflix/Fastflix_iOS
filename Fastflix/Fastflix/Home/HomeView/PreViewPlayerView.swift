@@ -17,6 +17,10 @@ class PreViewPlayerView: UIView {
   
   var delegate: PreViewPlayerViewDelegate?
   
+  //test
+  let img = ["test1", "test2", "test3", "test4", "test1", "test2", "test3", "test4"]
+  let logoImg = ["logoTest2", "preViewLogo", "logoTest2", "preViewLogo", "logoTest2", "preViewLogo", "logoTest2", "preViewLogo"]
+  
   // MARK: - collectionView
   private let layout = UICollectionViewFlowLayout()
   private let logoLyaout = UICollectionViewFlowLayout()
@@ -34,13 +38,18 @@ class PreViewPlayerView: UIView {
   
   lazy var logoPageController: UIPageControl = {
     let page = UIPageControl()
-    page.currentPage = 0
+    //    page.currentPage = 0
+    page.numberOfPages = 4
+    
+    page.isHidden = true
     return page
   }()
   
   lazy var playPageController: UIPageControl = {
     let page = UIPageControl()
-    page.currentPage = 0
+    //    page.currentPage = 0
+    page.numberOfPages = 4
+    page.isHidden = true
     return page
   }()
   
@@ -80,10 +89,6 @@ class PreViewPlayerView: UIView {
     return button
   }()
   
-  //test
-  let img = ["test1", "test2", "test3", "test4"]
-  let logoImg = ["logoTest2", "preViewLogo", "logoTest2", "preViewLogo"]
-
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     setupStackView()
@@ -98,7 +103,7 @@ class PreViewPlayerView: UIView {
   private func addSubViews() {
     
     [playCollectionView, stackView, logoCollectionView, dismissBtn, logoPageController, playPageController].forEach { self.addSubview($0) }
-//    [logoCollectionView].forEach { playCollectionView.addSubview($0) }
+    //    [logoCollectionView].forEach { playCollectionView.addSubview($0) }
     self.bringSubviewToFront(logoCollectionView)
     self.bringSubviewToFront(stackView)
   }
@@ -115,8 +120,9 @@ class PreViewPlayerView: UIView {
     }
     
     logoCollectionView.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(topPadding)
-      $0.leading.equalToSuperview()
+      $0.top.equalToSuperview()
+      $0.leading.trailing.equalToSuperview()
+      $0.width.equalTo(UIScreen.main.bounds.width)
       $0.height.equalTo(UIScreen.main.bounds.height * 0.2)
       
     }
@@ -127,7 +133,7 @@ class PreViewPlayerView: UIView {
       $0.trailing.equalToSuperview().offset(-5)
     }
     
-
+    
     
   }
   
@@ -150,12 +156,12 @@ class PreViewPlayerView: UIView {
     
     // logo layout
     
-    logoLyaout.sectionInset = UIEdgeInsets(top:0, left: 15, bottom: 0, right: 15)
-    logoLyaout.minimumLineSpacing = 20
-    logoLyaout.minimumInteritemSpacing = 20
+    logoLyaout.sectionInset = UIEdgeInsets(top:0, left: 0, bottom: 0, right: 0)
+    logoLyaout.minimumLineSpacing = 0
+    logoLyaout.minimumInteritemSpacing = 0
     
-    let w = (UIScreen.main.bounds.width - 44)/3
-    let h = w * 1.4
+    let w = (UIScreen.main.bounds.width)/3
+    let h = w * 0.8
     // 컬렉션뷰의 각 한개의 아이템 사이즈 설정
     logoLyaout.itemSize = CGSize(width: w, height: h)
     
@@ -186,7 +192,7 @@ class PreViewPlayerView: UIView {
     stackView.axis = .horizontal
     stackView.distribution = .fillEqually
     stackView.spacing = 50
-
+    
   }
   @objc func pokeBtnDidTap(_ sender: UIButton) {
     UIView.animate(withDuration: 0.3) {
@@ -224,21 +230,60 @@ extension PreViewPlayerView : UICollectionViewDataSource {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LogoCollectionCell.identifier, for: indexPath) as! LogoCollectionCell
       cell.logoImageView.image = UIImage(named: logoImg[indexPath.row])
       
+      logoPageController.currentPage = indexPath.item
+      
+      //      logoCollectionView.reloadData()
+      //      print("현재페이지:" ,logoPageController.currentPage = indexPath.item)
+      
+      
+      //      cell.logoImageView.tintColor = !isFocused ? .gray: .white
+      //      if isFocused {
+      //        cell.logoImageView.backgroundColor = .white
+      //      } else {
+      //        cell.logoImageView.backgroundColor = .gray
+      //      }
       return cell
       
     } else {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlayCollectionViewCell.identifier, for: indexPath) as! PlayCollectionViewCell
-
+      
       cell.playView.image = UIImage(named: img[indexPath.row])
       return cell
     }
-  
+    
   }
 }
 
 extension PreViewPlayerView: UICollectionViewDelegate {
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    
+    
+    if collectionView == logoCollectionView {
+      print("logo Indexpath: ", indexPath)
+      logoCollectionView.selectItem(at: indexPath, animated: true, scrollPosition: .left)
+    } else if collectionView == playCollectionView {
+      print("play collectionView IndexPath: ", indexPath)
+    }
+    
+  }
+  
+  
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-     let currentPage = round(scrollView.contentOffset.x / self.frame.width)
+    if scrollView == playCollectionView {
+//      let currentPage = round(scrollView.contentOffset.x / self.frame.width)
+//      let index = IndexPath(row: Int(currentPage), section: 0)
+//      logoCollectionView.scrollToItem(at: index, at: .left, animated: true)
+        logoCollectionView.contentOffset.x = scrollView.contentOffset.x/3
+    }
+    if scrollView == logoCollectionView {
+        playCollectionView.contentOffset.x = scrollView.contentOffset.x * 3
+//      print("logo frame: ", logoCollectionView.frame.maxX)
+//      let currentPage = round((scrollView.contentOffset.x) / (logoCollectionView.frame.width))
+//      print("currentPage in logo: ", currentPage)
+//      let index = IndexPath(row: Int(currentPage), section: 0)
+//      playCollectionView.scrollToItem(at: index, at: .left, animated: true)
+    }
     
   }
 }

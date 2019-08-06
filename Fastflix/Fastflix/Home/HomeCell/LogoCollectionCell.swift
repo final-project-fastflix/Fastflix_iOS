@@ -51,13 +51,17 @@ class LogoCollectionCell: UICollectionViewCell {
   private func setupSNP() {
     progressBar.snp.makeConstraints {
       $0.top.equalToSuperview()
-      $0.width.equalTo(100)
+      $0.width.equalTo((UIScreen.main.bounds.width / 3) - 30)
+      $0.leading.equalToSuperview().offset(15)
+      $0.trailing.equalToSuperview().offset(-15)
       
     }
     
     logoImageView.snp.makeConstraints {
       $0.top.equalTo(progressBar.snp.bottom)
-      $0.width.height.equalTo(100)
+//      $0.width.height.equalTo(100)
+      $0.width.equalTo(progressBar)
+
     }
     
   }
