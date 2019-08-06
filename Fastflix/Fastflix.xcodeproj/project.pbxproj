@@ -46,6 +46,9 @@
 		C143560822DCAA98005189E9 /* OriginalCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C143560722DCAA98005189E9 /* OriginalCollectionCell.swift */; };
 		C143560A22DCAAD5005189E9 /* OriginalTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C143560922DCAAD5005189E9 /* OriginalTableCell.swift */; };
 		C143560C22DCD16E005189E9 /* DoNotUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C143560B22DCD16E005189E9 /* DoNotUse.swift */; };
+		C17A3C1E22F8072C00C4C29B /* PlayCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17A3C1D22F8072C00C4C29B /* PlayCollectionCell.swift */; };
+		C17A3C2222F81DBE00C4C29B /* PreViewPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17A3C2122F81DBE00C4C29B /* PreViewPlayerView.swift */; };
+		C17A3C2422F8204800C4C29B /* LogoCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17A3C2322F8204800C4C29B /* LogoCollectionCell.swift */; };
 		C1C522F822F4AEBA00B34866 /* LoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C522F722F4AEBA00B34866 /* LoadingVC.swift */; };
 		C1C522FA22F4AECB00B34866 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C522F922F4AECB00B34866 /* LoadingView.swift */; };
 		C1CA09C422E0A087009B1296 /* SeeMoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CA09C322E0A087009B1296 /* SeeMoreVC.swift */; };
@@ -121,6 +124,9 @@
 		C143560922DCAAD5005189E9 /* OriginalTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalTableCell.swift; sourceTree = "<group>"; };
 		C143560B22DCD16E005189E9 /* DoNotUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoNotUse.swift; sourceTree = "<group>"; };
 		C143561B22DE1D9B005189E9 /* LaunchScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenVC.swift; sourceTree = "<group>"; };
+		C17A3C1D22F8072C00C4C29B /* PlayCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayCollectionCell.swift; sourceTree = "<group>"; };
+		C17A3C2122F81DBE00C4C29B /* PreViewPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreViewPlayerView.swift; sourceTree = "<group>"; };
+		C17A3C2322F8204800C4C29B /* LogoCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoCollectionCell.swift; sourceTree = "<group>"; };
 		C1C522F722F4AEBA00B34866 /* LoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingVC.swift; sourceTree = "<group>"; };
 		C1C522F922F4AECB00B34866 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		C1CA09C322E0A087009B1296 /* SeeMoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeMoreVC.swift; sourceTree = "<group>"; };
@@ -313,6 +319,7 @@
 				5295216C22D5D62F00174BC1 /* FloatingView.swift */,
 				C143560122DC8D1C005189E9 /* Player.swift */,
 				C1C522F922F4AECB00B34866 /* LoadingView.swift */,
+				C17A3C2122F81DBE00C4C29B /* PreViewPlayerView.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -333,6 +340,8 @@
 				47FF9DC622DE3CC4005C7BAD /* DetailCollectionViewCell.swift */,
 				C1FC3F8D22F2FD0C008E1FE9 /* WatchingMoviesTableCell.swift */,
 				C1FC3F8B22F2FC83008E1FE9 /* WatchingMoviesCollectionCell.swift */,
+				C17A3C1D22F8072C00C4C29B /* PlayCollectionCell.swift */,
+				C17A3C2322F8204800C4C29B /* LogoCollectionCell.swift */,
 			);
 			path = HomeCell;
 			sourceTree = "<group>";
@@ -632,6 +641,7 @@
 				5295214E22D5D3E800174BC1 /* AppDelegate.swift in Sources */,
 				4743D1B522F35D2500B26067 /* UserIconTableCell.swift in Sources */,
 				C1FC3F9522F408B7008E1FE9 /* LaunchView.swift in Sources */,
+				C17A3C1E22F8072C00C4C29B /* PlayCollectionCell.swift in Sources */,
 				C1FC3F3C22E97548008E1FE9 /* SeeMoreView.swift in Sources */,
 				C14355F822DB0E22005189E9 /* MainImageTableCell.swift in Sources */,
 				47AC179922E2343800D6AACD /* LoginVC.swift in Sources */,
@@ -659,6 +669,7 @@
 				47AC179722E2341E00D6AACD /* BeforeLoginVC.swift in Sources */,
 				4743D1B922F4153300B26067 /* UserIconHeaderView.swift in Sources */,
 				C14355F422DB0B11005189E9 /* PreviewCollectionCell.swift in Sources */,
+				C17A3C2422F8204800C4C29B /* LogoCollectionCell.swift in Sources */,
 				52BA343022DDE7EF005F8489 /* SubCell.swift in Sources */,
 				C1FC3EFE22E4899C008E1FE9 /* MainHomeVC.swift in Sources */,
 				C1C522FA22F4AECB00B34866 /* LoadingView.swift in Sources */,
@@ -677,6 +688,7 @@
 				C14355F622DB0B18005189E9 /* PreviewTableCell.swift in Sources */,
 				C1FC3F7E22F045AF008E1FE9 /* DownloadView.swift in Sources */,
 				4743D1B322F35AB100B26067 /* UserIconSelectVC.swift in Sources */,
+				C17A3C2222F81DBE00C4C29B /* PreViewPlayerView.swift in Sources */,
 				C1FC3F0622E59631008E1FE9 /* CreateProfileView.swift in Sources */,
 				C1FC3F0A22E5A725008E1FE9 /* ProfileView.swift in Sources */,
 				52BA342C22DDE7BB005F8489 /* StreamingCell.swift in Sources */,
