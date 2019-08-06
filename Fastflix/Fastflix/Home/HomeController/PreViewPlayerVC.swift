@@ -18,6 +18,7 @@ final class PreViewPlayerVC: UIViewController {
   
   private weak var delegate: PreViewPlayerVCDelegate?
   
+  
   private let dismissBtn: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "x"), for: .normal)
@@ -36,8 +37,6 @@ final class PreViewPlayerVC: UIViewController {
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    
-    
     
     NotificationCenter.default.addObserver(self, selector: #selector(didFinishVideo(_:)), name: .AVPlayerItemDidPlayToEndTime, object: playerViewController.player?.currentItem)
     

@@ -77,7 +77,8 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
     super.didMoveToSuperview()
     self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     addSubViews()
-    setupSNP()
+    setupSNP() 
+    
   }
   
   func configure(imageUrl: String, id: Int, video: String, runningTime: Int, progress: Int, toBe: Int) {

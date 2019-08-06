@@ -13,6 +13,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var window: UIWindow? 
   
+
+  // false -> landscape || true -> portrait
+  var shouldSupportAllOrientation = true
+  
+  
   static var instance: AppDelegate {
     return (UIApplication.shared.delegate as! AppDelegate)
   }
@@ -29,7 +34,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     return true
   }
   
-  
+  // check landscapeState
+  func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+    if shouldSupportAllOrientation {
+      return UIInterfaceOrientationMask.portrait
+    }
+    return UIInterfaceOrientationMask.landscape
+  }
   
   func checkLoginState() {
     let beforeLoginVC = BeforeLoginVC()
