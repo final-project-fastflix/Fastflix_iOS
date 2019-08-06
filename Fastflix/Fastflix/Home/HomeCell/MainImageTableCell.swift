@@ -30,7 +30,7 @@ final class MainImageTableCell: UITableViewCell {
     return imageView
   }()
   
-   let movieDetailLabel: UILabel = {
+  let movieDetailLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
     label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)

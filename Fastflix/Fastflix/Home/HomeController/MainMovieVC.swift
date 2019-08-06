@@ -13,6 +13,8 @@ import Alamofire
 
 class MainMovieVC: UIViewController {
   
+  let mainMovieView = MainMovieView()
+  
   var receiveData: RequestMovie? = nil {
     willSet(new) {
       receiveKeys = new?[0].listOfGenre
@@ -22,12 +24,18 @@ class MainMovieVC: UIViewController {
   lazy var receiveKeys: [String]? = nil
   
   override func loadView() {
-    let mainMovieView = MainMovieView()
     mainMovieView.receiveKeys = receiveKeys
     mainMovieView.receiveData = receiveData
     mainMovieView.floatingView.delegate = self
     self.view = mainMovieView
   }
+  
+  // 카테고리 선택했을때 메인 영화정보를 바꾸기 위해서 데이터리로드
+//  override func viewWillAppear(_ animated: Bool) {
+//    super.viewWillAppear(animated)
+//    mainMovieView.tableView.reloadData()
+//  }
+
 }
 
 extension MainMovieVC: FloatingViewDelegate {
@@ -36,9 +44,14 @@ extension MainMovieVC: FloatingViewDelegate {
   }
   
   func didTapMovie() {
-    let mainMovieVC = self
-    mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
-    tabBarController?.viewControllers?[0] = mainMovieVC
+//    let mainMovieVC = self
+//    mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
+//    tabBarController?.viewControllers?[0] = mainMovieVC
+    let categoryVC = CategorySelectVC()
+    categoryVC.modalPresentationStyle = .overCurrentContext
+    UIView.animate(withDuration: 0.7) {
+      self.present(categoryVC, animated: false)
+    }
   }
   
   func didTapPoke() {
@@ -47,5 +60,14 @@ extension MainMovieVC: FloatingViewDelegate {
     tabBarController?.viewControllers?[0] = mainPokeVC
   }
   
+  
+  
+  func didTapGenreCategory() {
+    let categoryVC = CategorySelectVC()
+    
+    UIView.animate(withDuration: 0.7) {
+      self.present(categoryVC, animated: false)
+    }
+  }
   
 }
