@@ -169,7 +169,17 @@ extension DetailVC: PlayButtonDelegate {
   
   func playButtonDidTap(movieId: Int) {
     print("여기에 플레이어 붙이면 됩니다.")
+    print("run playVideo")
+    let player = PlayerVC()
     
+    let url = movieDetailData?.videoFile
+    let title = movieDetailData?.name
+    let id = movieDetailData?.id
+    let time = movieDetailData?.remainingTime
+    
+    player.configure(id: id, title: title, videoPath: url, seekTime: time)
+    AppDelegate.instance.shouldSupportAllOrientation = false
+    self.present(player, animated: true)
     
     
   }
