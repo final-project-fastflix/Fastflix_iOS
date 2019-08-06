@@ -10,15 +10,22 @@ import UIKit
 import SnapKit
 
 
+
 class LogoCollectionCell: UICollectionViewCell {
-    static let identifier = "WatchingMoviesCollectionCell"
   
-  let logoLabel: UILabel = {
-    let label = UILabel()
-    return label
+  static let identifier = "LogoCollectionCell"
+  
+  
+  
+  var logoImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "preViewLogo")
+    imageView.backgroundColor = .clear
+    imageView.contentMode = .scaleAspectFit
+    return imageView
   }()
   
-  let progressBar: UISlider = {
+  var progressBar: UISlider = {
     let slider = UISlider()
     slider.tintColor = .white
     slider.thumbTintColor = .clear
@@ -26,22 +33,37 @@ class LogoCollectionCell: UICollectionViewCell {
     
   }()
   
+
+  
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
+    self.backgroundColor = .clear
     addSubViews()
     setupSNP()
-    
   }
   
   private func addSubViews() {
-    [logoLabel, progressBar].forEach {
+    [logoImageView, progressBar].forEach {
       self.addSubview($0)
     }
   }
   
   private func setupSNP() {
+    progressBar.snp.makeConstraints {
+      $0.top.equalToSuperview()
+      $0.width.equalTo((UIScreen.main.bounds.width / 3) - 30)
+      $0.leading.equalToSuperview().offset(15)
+      $0.trailing.equalToSuperview().offset(-15)
+      
+    }
+    
+    logoImageView.snp.makeConstraints {
+      $0.top.equalTo(progressBar.snp.bottom)
+//      $0.width.height.equalTo(100)
+      $0.width.equalTo(progressBar)
+
+    }
     
   }
   
-
 }
