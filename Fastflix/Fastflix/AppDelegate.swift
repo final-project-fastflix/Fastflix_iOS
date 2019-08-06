@@ -13,6 +13,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
   
   var window: UIWindow? 
   
+
   // false -> landscape || true -> portrait
   var shouldSupportAllOrientation = true
   
