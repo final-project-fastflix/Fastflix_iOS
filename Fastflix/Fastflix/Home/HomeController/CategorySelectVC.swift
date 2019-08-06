@@ -102,6 +102,11 @@ class CategorySelectVC: UIViewController {
     genreSelectTableView.allowsMultipleSelection = false
     genreSelectTableView.separatorColor = .clear
     genreSelectTableView.contentInset = UIEdgeInsets(top: 100,left: 0,bottom: 250, right: 0)
+  
+    let indexPath = IndexPath(row: 0, section: 0)
+    genreSelectTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+    
+    
   }
   
   @objc private func closeButtonDidTap() {
@@ -121,11 +126,6 @@ extension CategorySelectVC: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = genreSelectTableView.dequeueReusableCell(withIdentifier: "CategorySelectCell", for: indexPath) as! CategorySelectCell
     cell.genreLabel.text = categoryArray[indexPath.row]
-    
-    if cell.genreLabel.text == categoryArray[0] {
-      cell.isSelected = true
-      cell.setSelected(true, animated: true)
-    }
     
     return cell
   }
@@ -187,9 +187,6 @@ extension CategorySelectVC: UITableViewDelegate {
       print("checkData: ", data)
       self.delegate?.sendData(data: data, keys: keys)
     }
-    
-    //      mainMovieVC.loadView()
-    //      mainMovieVC.viewWillAppear(true)
     
     //      self.tabBarController?.viewControllers?[0] = mainMovieVC
 //    DispatchQueue.main.async {
