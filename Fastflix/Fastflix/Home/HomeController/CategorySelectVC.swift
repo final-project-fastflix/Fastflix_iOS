@@ -105,7 +105,7 @@ class CategorySelectVC: UIViewController {
   
     let indexPath = IndexPath(row: 0, section: 0)
     genreSelectTableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-    
+    genreSelectTableView.contentInsetAdjustmentBehavior = .automatic
     
   }
   

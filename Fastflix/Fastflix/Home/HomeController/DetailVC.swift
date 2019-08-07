@@ -87,19 +87,24 @@ extension DetailVC: UITableViewDataSource {
       cell.configureImage(imageURLString: movieDetailData?.verticalImage)
       
       // 나머지 영화정보들 전달하는 데이터 생성 및 전달
-      // 남은시간비율(Float)에 대한 계산 공식
-      let watchingRatio = movieDetailData!.toBeContinue / (movieDetailData!.toBeContinue + movieDetailData!.remainingTime)
+      // 슬라이더에 넣기 위한 비율 계산 (멈춘시간/전체시간) 예) 0.44344
+      let sliderFloat = Float(movieDetailData!.pausedMinute) / Float(movieDetailData!.totalMinute)
       
-      let sliderFloat = Float(watchingRatio)
+      // 남은시간(분)
+      let remainingMinute = movieDetailData!.totalMinute - movieDetailData!.pausedMinute
       
-      let remainingTimeHour = movieDetailData!.remainingTime / 60
-      let remainingTimeMinute = movieDetailData!.remainingTime % 60
+      // 남은시간(분)을 시간 기준으로 환산
+      let remainingTimeHour = remainingMinute / 60
+      let remainingTimeMinute = remainingMinute % 60
+      
+      // 남은시간 String값으로 만들어서 넘기기
       let remainingTime = "\(remainingTimeHour) 시간 \(remainingTimeMinute)분"
       
       let actor1 = movieDetailData?.actors[0].name ?? ""
       let actor2 = movieDetailData?.actors[1].name ?? ""
       let direc = movieDetailData?.directors[0].name ?? ""
       
+      // 등급기준 (긴글자 ======> 짧은 글자로 바꿔서 넘기기)
       let rate = ageSorting(rate: movieDetailData?.degree.name ?? "")
       
       let actors = "\(actor1), \(actor2)"
@@ -175,13 +180,12 @@ extension DetailVC: PlayButtonDelegate {
     let url = movieDetailData?.videoFile
     let title = movieDetailData?.name
     let id = movieDetailData?.id
-    let time = movieDetailData?.remainingTime
+    let time = movieDetailData?.pausedMinute
     
     player.configure(id: id, title: title, videoPath: url, seekTime: time)
     AppDelegate.instance.shouldSupportAllOrientation = false
     self.present(player, animated: true)
-    
-    
+
   }
 }
 
