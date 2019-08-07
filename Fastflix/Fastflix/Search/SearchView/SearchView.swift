@@ -17,16 +17,26 @@ class SearchView: UIView {
   
   weak var delegate: SearchViewDelegate?
   
+  lazy var imgPaths: [String] = []
+  lazy var movieIDArr: [Int] = []
+  
   var searchMovies: SearchMovie? {
-    didSet(new) {
+    willSet(new) {
       guard let data = new else { return }
-      data.firstMovie.forEach { self.imgPaths.append($0.verticalImage ?? "") }
-      data.otherMovie.forEach { self.imgPaths.append($0.verticalImage ?? "") }
-      collectionView.reloadData()
+      self.imgPaths = []
+      
+      
+      DispatchQueue.main.async {
+        data.firstMovie.forEach { self.imgPaths.append($0.verticalImage ?? "") }
+        data.otherMovie.forEach { self.imgPaths.append($0.verticalImage ?? "") }
+        data.firstMovie.forEach { self.movieIDArr.append($0.id) }
+        data.otherMovie.forEach { self.movieIDArr.append($0.id) }
+        print("checkPath: ", self.movieIDArr)
+        self.collectionView.reloadData()
+      }
+      
     }
   }
-  
-  lazy var imgPaths: [String] = []
   
   
   private let layout = UICollectionViewFlowLayout()
