@@ -51,9 +51,10 @@ struct MovieDetail: Codable {
   let degree: Degree
   let directors, actors, feature, author: [Actor]
   let genre: [Actor]
+  let matchRate: Int
+  let progressBar: Float
   let marked: Bool
-  let like, matchRate, totalMinute, toBeContinue: Int
-  let remainingTime: Int
+  let like, totalMinute, toBeContinue, pausedMinute: Int
   let canIStore: Bool
   let similarMovies: [SimilarMovie]
   
@@ -76,9 +77,10 @@ struct MovieDetail: Codable {
     case iosMainImage = "ios_main_image"
     case degree, directors, actors, feature, author, genre, marked, like
     case matchRate = "match_rate"
+    case progressBar = "progress_bar"
+    case pausedMinute = "paused_minute"
     case totalMinute = "total_minute"
     case toBeContinue = "to_be_continue"
-    case remainingTime = "remaining_time"
     case canIStore = "can_i_store"
     case similarMovies = "similar_movies"
   }

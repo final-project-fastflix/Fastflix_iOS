@@ -16,7 +16,7 @@ final class PlayerVC: UIViewController {
   
   private var player: AVPlayer?
   
-  private let playerView = PlayerView()
+  private let playerView = FastFilixPlayerView()
   
   private var timer: Timer?
   
@@ -76,7 +76,7 @@ final class PlayerVC: UIViewController {
   
   private func setupVideoPlayer() {
     
-    playerView.titleLabel.text = movieTitle ?? "No Title"
+    playerView.movieTitleLabel.text = movieTitle ?? "No Title"
     
     guard let url = URL(string: urlString ?? streamingUrl) else { return }
     

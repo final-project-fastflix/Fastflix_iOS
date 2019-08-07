@@ -9,18 +9,18 @@
 import UIKit
 import SnapKit
 
-protocol PlayerViewDelegate {
-  func didTapPlay()
-  func timeSeeking(value: Float64)
-  func jumpForward()
-  func jumpBackward()
-  func didTapScreen()
-  func didTapDismiss()
-}
+//protocol PlayerViewDelegate {
+//  func didTapPlay()
+//  func timeSeeking(value: Float64)
+//  func jumpForward()
+//  func jumpBackward()
+//  func didTapScreen()
+//  func didTapDismiss()
+//}
 
 class PlayerView: UIView {
   
-  var delegate: PlayerViewDelegate?
+  weak var delegate: PlayerViewDelegate?
   
   lazy var views = [playBtn, progressSlider, timeLabel, backwardBtn, forwardBtn, titleLabel, backLabel, backMovingLabel, forwardLabel, forwardMovingLabel, dismissBtn]
   
