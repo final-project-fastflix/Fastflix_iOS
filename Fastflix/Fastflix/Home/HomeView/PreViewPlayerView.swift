@@ -18,8 +18,8 @@ class PreViewPlayerView: UIView {
   var delegate: PreViewPlayerViewDelegate?
   
   //test
-  let img = ["test1", "test2", "test3", "test4", "test1", "test2", "test3", "test4"]
-  let logoImg = ["logoTest2", "preViewLogo", "logoTest2", "preViewLogo", "logoTest2", "preViewLogo", "logoTest2", "preViewLogo"]
+  let img = ["test1", "test2", "test3", "test4", "test1", "test2"]
+  let logoImg = ["logoTest2", "preViewLogo", "logoTest2", "preViewLogo", "logoTest2", "preViewLogo"]
   
   // MARK: - collectionView
   private let layout = UICollectionViewFlowLayout()
@@ -39,7 +39,7 @@ class PreViewPlayerView: UIView {
   lazy var logoPageController: UIPageControl = {
     let page = UIPageControl()
     //    page.currentPage = 0
-    page.numberOfPages = 4
+    page.numberOfPages = logoImg.count
     
     page.isHidden = true
     return page
@@ -48,7 +48,7 @@ class PreViewPlayerView: UIView {
   lazy var playPageController: UIPageControl = {
     let page = UIPageControl()
     //    page.currentPage = 0
-    page.numberOfPages = 4
+    page.numberOfPages = img.count
     page.isHidden = true
     return page
   }()
@@ -232,16 +232,6 @@ extension PreViewPlayerView : UICollectionViewDataSource {
       
       logoPageController.currentPage = indexPath.item
       
-      //      logoCollectionView.reloadData()
-      //      print("현재페이지:" ,logoPageController.currentPage = indexPath.item)
-      
-      
-      //      cell.logoImageView.tintColor = !isFocused ? .gray: .white
-      //      if isFocused {
-      //        cell.logoImageView.backgroundColor = .white
-      //      } else {
-      //        cell.logoImageView.backgroundColor = .gray
-      //      }
       return cell
       
     } else {
