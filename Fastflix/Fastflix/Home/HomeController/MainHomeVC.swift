@@ -83,6 +83,11 @@ class MainHomeVC: UIViewController {
     registerTableViewCell()
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    floatingView.movieBtn.setTitle("영화", for: .normal)
+  }
+  
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     setupSNP()
