@@ -151,7 +151,18 @@ extension SearchView: UISearchBarDelegate {
   // searchButton 클릭시 키보드 내려감
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     searchBar.resignFirstResponder()
+    
+    
   }
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    print("취소오?")
+    searchBar.resignFirstResponder()
+ 
+    collectionView.reloadData()
+   
+   
+  }
+  
 }
 
 
