@@ -100,14 +100,30 @@ extension DetailVC: UITableViewDataSource {
       // 남은시간 String값으로 만들어서 넘기기
       let remainingTime = "\(remainingTimeHour) 시간 \(remainingTimeMinute)분"
       
-      let actor1 = movieDetailData?.actors[0].name ?? ""
-      let actor2 = movieDetailData?.actors[1].name ?? ""
+      // 배우이름 여러개일때 대비해서 붙이기
+      var actorNum = movieDetailData!.actors.count - 1
+      
+      if actorNum >= 4 {
+        actorNum = 4
+      }
+      
+      var actors: String = ""
+      
+      for i in 0...actorNum {
+        let actor = movieDetailData!.actors[i].name
+        if i == 0 {
+          actors += actor
+        }else {
+          actors += ", \(actor)"
+         }
+      }
+      
+      // 감독이름
       let direc = movieDetailData?.directors[0].name ?? ""
       
       // 등급기준 (긴글자 ======> 짧은 글자로 바꿔서 넘기기)
       let rate = ageSorting(rate: movieDetailData?.degree.name ?? "")
       
-      let actors = "\(actor1), \(actor2)"
       let director = "\(direc)"
       
       // 무비아이디, 이미지 이외의 데이터를 표시하고 있는 디테일뷰의 테이블뷰에 전달
