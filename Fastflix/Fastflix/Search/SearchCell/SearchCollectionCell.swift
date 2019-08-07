@@ -22,7 +22,7 @@ class SearchCollectionCell: UICollectionViewCell {
   
   let searchImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.contentMode = .scaleAspectFill
+    imageView.contentMode = .scaleAspectFit
     return imageView
   }()
   
@@ -36,6 +36,7 @@ class SearchCollectionCell: UICollectionViewCell {
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     delegate?.resignKeyboard()
     self.contentView.endEditing(true)
+    print("touchesBegan")
   }
   
   

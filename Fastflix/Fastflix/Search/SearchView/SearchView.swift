@@ -88,12 +88,16 @@ class SearchView: UIView {
     collectionView.dataSource = self
     collectionView.delegate = self
     layout.scrollDirection = .vertical
-    collectionView.backgroundColor = .clear
+    collectionView.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     self.collectionView.collectionViewLayout = layout
-    layout.sectionInset = UIEdgeInsets(top: 10, left: 20, bottom: 0, right: 20)
-    layout.minimumLineSpacing = 10
-    layout.minimumInteritemSpacing = 20
-    layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 4.3, height: UIScreen.main.bounds.height / 4)
+    layout.sectionInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+    layout.minimumLineSpacing = 12
+    layout.minimumInteritemSpacing = 14
+    
+    let width = (UIScreen.main.bounds.width - 44)/3
+    let height = width * 1.4
+    
+    layout.itemSize = CGSize(width: width, height: height)
     layout.sectionHeadersPinToVisibleBounds = true
     collectionView.showsHorizontalScrollIndicator = false
   }
@@ -143,7 +147,20 @@ extension SearchView: UISearchBarDelegate {
       }
     }
     
+  }
+  // searchButton 클릭시 키보드 내려감
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
     
+    
+  }
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    print("취소오?")
+    searchBar.resignFirstResponder()
+ 
+    collectionView.reloadData()
+   
+   
   }
   
 }
