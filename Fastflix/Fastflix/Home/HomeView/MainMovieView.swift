@@ -9,8 +9,15 @@
 import UIKit
 import SnapKit
 import Kingfisher
+import AVKit
+
+protocol MainMovieViewDelegate: class {
+  func didTapPreview(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?)
+}
 
 final class MainMovieView: UIView {
+  
+  weak var myDelegate: MainMovieViewDelegate?
   
   var receiveData: RequestMovie? = nil
   var receiveKeys: [String]? = nil
@@ -144,8 +151,7 @@ extension MainMovieView: UITableViewDataSource {
       }
 //      print("check: ", logoURLs)
       cell.configure(idArr: idArr.reversed(), mainURLs: mainURLs.reversed(), logoURLs: logoURLs.reversed(), videos: videoPathArr.reversed())
-//      cell.configure(mainURLs: mainURLs, logoURLs: logoURLs)
-//      cell.delegate = self
+      cell.delegate = self
       cell.selectionStyle = .none
       cell.layoutIfNeeded()
       return cell
@@ -235,14 +241,11 @@ extension MainMovieView: UITableViewDelegate {
 }
 
 
-//extension MainMovieView: PreviewTableCellDelegate {
-//  func didSelectItemAt(indexPath: IndexPath) {
-//    print("didSelectItemAt")
-//
-//
-//
-//  }
-//}
+extension MainMovieView: PreviewTableCellDelegate {
+  func didSelectItemAt(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
+    myDelegate?.didTapPreview(indexPath: indexPath, logoArr: logoArr, videoItems: videoItems, idArr: idArr)
+  }
+}
 
 extension MainMovieView: SubTableCellDelegate {
   func didSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
