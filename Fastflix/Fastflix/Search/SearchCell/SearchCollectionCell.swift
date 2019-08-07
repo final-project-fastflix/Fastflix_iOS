@@ -22,7 +22,7 @@ class SearchCollectionCell: UICollectionViewCell {
   
   let searchImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.contentMode = .scaleAspectFit
+    imageView.contentMode = .scaleAspectFill
     return imageView
   }()
   
@@ -54,7 +54,8 @@ class SearchCollectionCell: UICollectionViewCell {
   }
   
   func configure(imageUrlString: String) {
-    searchImageView.kf.setImage(with: URL(string: imageUrlString), options: [.processor(CroppingImageProcessor(size: CGSize(width: 150, height: 200))), .scaleFactor(UIScreen.main.scale)])
+//    searchImageView.kf.setImage(with: URL(string: imageUrlString), options: [.processor(CroppingImageProcessor(size: CGSize(width: 150, height: 200))), .scaleFactor(UIScreen.main.scale)])
+    searchImageView.kf.setImage(with: URL(string: imageUrlString), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 200))), .cacheOriginalImage])
   }
   
   
