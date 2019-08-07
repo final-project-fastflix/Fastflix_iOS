@@ -34,6 +34,7 @@ final class PreViewPlayerVC: UIViewController {
   
   override func loadView() {
     let preViewPlayerView = PreViewPlayerView()
+    preViewPlayerView.delegate = self
     preViewPlayerView.logoURLs = logoURLs
     preViewPlayerView.playerItems = playerItems
     preViewPlayerView.idArr = idArr
@@ -70,6 +71,7 @@ final class PreViewPlayerVC: UIViewController {
   
   @objc func dismissBtnDidTap(_ sender: UIButton) {
     delegate?.finishVideo()
+    
   }
   
   private func setupSNP() {
@@ -78,6 +80,15 @@ final class PreViewPlayerVC: UIViewController {
   
   @objc func didFinishVideo(_ sender: NSNotification) {
     dismiss(animated: true)
+  }
+  
+  
+}
+
+
+extension PreViewPlayerVC: PreViewPlayerViewDelegate {
+  func dismissBtnDidTap() {
+    self.dismiss(animated: true)
   }
   
   
