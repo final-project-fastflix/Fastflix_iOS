@@ -7,33 +7,22 @@
 //
 
 import UIKit
+import AVKit
 
 class PlayCollectionViewCell: UICollectionViewCell {
-
-    
-    static let identifier = "PlayCollectionViewCell"
-    
-    var playView: UIImageView = {
-      let view = UIImageView()
-      //    view.backgroundColor = .red
-      return view
-    }()
-    
-    override func didMoveToSuperview() {
-      super.didMoveToSuperview()
-      addSubViews()
-      setupSNP()
-    }
-    
-    private func addSubViews() {
-      [playView].forEach { self.addSubview($0) }
-    }
-    
-    private func setupSNP() {
-      playView.snp.makeConstraints {
-        $0.top.leading.trailing.bottom.equalToSuperview()
-      }
-    }
   
-
+  static let identifier = "PlayCollectionViewCell"
+  
+  var playerItem: AVPlayerItem?
+  lazy var player = AVPlayer(playerItem: playerItem)
+  
+  private func setupPlayer() {
+    let playerLayer = AVPlayerLayer(player: player)
+    playerLayer.frame = UIScreen.main.bounds
+    self.layer.addSublayer(playerLayer)
+    player.play()
+    
+  }
+  
+  
 }
