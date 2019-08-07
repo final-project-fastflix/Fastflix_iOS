@@ -41,6 +41,7 @@ class MainMovieVC: UIViewController {
     categoryVC.delegate = self
 //    self.view = mainMovieView
     view.addSubview(mainMovieView)
+    mainMovieView.delegate = self
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -53,12 +54,6 @@ class MainMovieVC: UIViewController {
       $0.top.leading.bottom.trailing.equalToSuperview()
     }
   }
-  
-  // 카테고리 선택했을때 메인 영화정보를 바꾸기 위해서 데이터리로드
-//  override func viewWillAppear(_ animated: Bool) {
-//    super.viewWillAppear(animated)
-//    mainMovieView.tableView.reloadData()
-//  }
 
 }
 
@@ -85,10 +80,7 @@ extension MainMovieVC: FloatingViewDelegate {
   }
   
   
-  
   func didTapGenreCategory() {
-    
-    
     UIView.animate(withDuration: 0.7) {
       self.present(self.categoryVC, animated: false)
     }
@@ -105,6 +97,22 @@ extension MainMovieVC: CategorySelectVCDelegate {
     mainMovieView.tableView.reloadData()
     categoryVC.dismiss(animated: true)
   }
+}
+
+extension MainMovieVC: SubTableCellDelegate {
+  func didSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
+    // 영화 화면에서 디테일뷰 띄우기
+    DispatchQueue.main.async {
+      print("영화정보 디테일: ", movieId, movieInfo.name)
+      let detailVC = DetailVC()
+      detailVC.movieId = movieId
+      detailVC.movieDetailData = movieInfo
+      
+      self.present(detailVC, animated: true)
+    }
+  }
   
-  
+  func errOccurSendingAlert(message: String, okMessage: String) {
+    self.oneAlert(title: "영화데이터 오류", message: message, okButton: okMessage)
+  }
 }

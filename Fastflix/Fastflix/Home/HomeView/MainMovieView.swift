@@ -37,6 +37,7 @@ final class MainMovieView: UIView {
   
   let tableView = UITableView()
   
+  weak var delegate: SubTableCellDelegate?
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
@@ -131,6 +132,7 @@ extension MainMovieView: UITableViewDataSource {
     print("count: ", mainImgUrl)
     let cell = SubCell()
     cell.configure(url: mainImgUrl, title: key, movieIDs: movieIDArr)
+    cell.delegate = self
     return cell
     }
   }
@@ -203,7 +205,22 @@ extension MainMovieView: UITableViewDelegate {
 extension MainMovieView: PreviewTableCellDelegate {
   func didSelectItemAt(indexPath: IndexPath) {
     print("didSelectItemAt")
+    
+    
+    
   }
+}
+
+extension MainMovieView: SubTableCellDelegate {
+  func didSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
+    delegate?.didSelectItemAt(movieId: movieId, movieInfo: movieInfo)
+  }
+  
+  func errOccurSendingAlert(message: String, okMessage: String) {
+    delegate?.errOccurSendingAlert(message: message, okMessage: okMessage)
+  }
+  
+  
   
   
 }
