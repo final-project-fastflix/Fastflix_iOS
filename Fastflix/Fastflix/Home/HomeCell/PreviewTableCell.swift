@@ -85,9 +85,6 @@ final class PreviewTableCell: UITableViewCell {
     
     }
     sectionHeaderlabel.snp.makeConstraints {
-//      $0.top.trailing.equalToSuperview().offset(10)
-//      $0.leading.equalTo(10)
-//      $0.height.equalTo(5)
       $0.leading.equalToSuperview().offset(10)
       $0.top.equalToSuperview().offset(10)
     }
@@ -115,7 +112,7 @@ extension PreviewTableCell: UICollectionViewDataSource {
 
 extension PreviewTableCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    print("indexPath.row: ", indexPath.row)
+//    print("indexPath.row: ", indexPath.row)
     delegate?.didSelectItemAt(indexPath: indexPath)
   }
 }

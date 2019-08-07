@@ -51,9 +51,9 @@
 		C143560822DCAA98005189E9 /* OriginalCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C143560722DCAA98005189E9 /* OriginalCollectionCell.swift */; };
 		C143560A22DCAAD5005189E9 /* OriginalTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C143560922DCAAD5005189E9 /* OriginalTableCell.swift */; };
 		C143560C22DCD16E005189E9 /* DoNotUse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C143560B22DCD16E005189E9 /* DoNotUse.swift */; };
-		C17A3C1E22F8072C00C4C29B /* PlayCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17A3C1D22F8072C00C4C29B /* PlayCollectionCell.swift */; };
 		C17A3C2222F81DBE00C4C29B /* PreViewPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17A3C2122F81DBE00C4C29B /* PreViewPlayerView.swift */; };
 		C17A3C2422F8204800C4C29B /* LogoCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17A3C2322F8204800C4C29B /* LogoCollectionCell.swift */; };
+		C17A3C2822F9524300C4C29B /* PlayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17A3C2722F9524300C4C29B /* PlayCollectionViewCell.swift */; };
 		C1C522F822F4AEBA00B34866 /* LoadingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C522F722F4AEBA00B34866 /* LoadingVC.swift */; };
 		C1C522FA22F4AECB00B34866 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C522F922F4AECB00B34866 /* LoadingView.swift */; };
 		C1CA09C422E0A087009B1296 /* SeeMoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CA09C322E0A087009B1296 /* SeeMoreVC.swift */; };
@@ -134,9 +134,9 @@
 		C143560922DCAAD5005189E9 /* OriginalTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalTableCell.swift; sourceTree = "<group>"; };
 		C143560B22DCD16E005189E9 /* DoNotUse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoNotUse.swift; sourceTree = "<group>"; };
 		C143561B22DE1D9B005189E9 /* LaunchScreenVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreenVC.swift; sourceTree = "<group>"; };
-		C17A3C1D22F8072C00C4C29B /* PlayCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayCollectionCell.swift; sourceTree = "<group>"; };
 		C17A3C2122F81DBE00C4C29B /* PreViewPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreViewPlayerView.swift; sourceTree = "<group>"; };
 		C17A3C2322F8204800C4C29B /* LogoCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoCollectionCell.swift; sourceTree = "<group>"; };
+		C17A3C2722F9524300C4C29B /* PlayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayCollectionViewCell.swift; sourceTree = "<group>"; };
 		C1C522F722F4AEBA00B34866 /* LoadingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingVC.swift; sourceTree = "<group>"; };
 		C1C522F922F4AECB00B34866 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		C1CA09C322E0A087009B1296 /* SeeMoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeeMoreVC.swift; sourceTree = "<group>"; };
@@ -354,8 +354,8 @@
 				47FF9DC622DE3CC4005C7BAD /* DetailViewBelowCollectionViewCell.swift */,
 				C1FC3F8D22F2FD0C008E1FE9 /* WatchingMoviesTableCell.swift */,
 				C1FC3F8B22F2FC83008E1FE9 /* WatchingMoviesCollectionCell.swift */,
-				C17A3C1D22F8072C00C4C29B /* PlayCollectionCell.swift */,
 				C17A3C2322F8204800C4C29B /* LogoCollectionCell.swift */,
+				C17A3C2722F9524300C4C29B /* PlayCollectionViewCell.swift */,
 				47A8040C22F997C500E14450 /* CategorySelectCell.swift */,
 			);
 			path = HomeCell;
@@ -660,6 +660,7 @@
 				47A8040B22F98E7900E14450 /* CategorySelectVC.swift in Sources */,
 				C1FC3F3C22E97548008E1FE9 /* SeeMoreView.swift in Sources */,
 				C14355F822DB0E22005189E9 /* MainImageTableCell.swift in Sources */,
+				C17A3C2822F9524300C4C29B /* PlayCollectionViewCell.swift in Sources */,
 				47AC179922E2343800D6AACD /* LoginVC.swift in Sources */,
 				C143560C22DCD16E005189E9 /* DoNotUse.swift in Sources */,
 				47FF9DC322DE3C51005C7BAD /* DetailViewUpperCell.swift in Sources */,

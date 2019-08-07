@@ -235,18 +235,24 @@ extension MainHomeVC: UITableViewDataSource {
   
 }
 
-
+// 미리보기
 extension MainHomeVC: PreviewTableCellDelegate {
   func didSelectItemAt(indexPath: IndexPath) {
-    let url = URL(string: "https://firebasestorage.googleapis.com/v0/b/test-64199.appspot.com/o/%E1%84%82%E1%85%A6%E1%86%BA%E1%84%91%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%86%A8%E1%84%89%E1%85%B3%E1%84%86%E1%85%B5%E1%84%85%E1%85%B5%E1%84%87%E1%85%A9%E1%84%80%E1%85%B5%E1%84%80%E1%85%A1%E1%84%8B%E1%85%A9%E1%84%80%E1%85%A2%E1%86%AF2.mp4?alt=media&token=96a3f3ef-3ff9-4f05-9675-2f13232a72cf")!
+//    let url = URL(string: "https://firebasestorage.googleapis.com/v0/b/test-64199.appspot.com/o/%E1%84%82%E1%85%A6%E1%86%BA%E1%84%91%E1%85%B3%E1%86%AF%E1%84%85%E1%85%B5%E1%86%A8%E1%84%89%E1%85%B3%E1%84%86%E1%85%B5%E1%84%85%E1%85%B5%E1%84%87%E1%85%A9%E1%84%80%E1%85%B5%E1%84%80%E1%85%A1%E1%84%8B%E1%85%A9%E1%84%80%E1%85%A2%E1%86%AF2.mp4?alt=media&token=96a3f3ef-3ff9-4f05-9675-2f13232a72cf")!
+//
+//    let playerVC = AVPlayerViewController()
+//    let player = AVPlayer(url: url)
+//    playerVC.player = player
+//
+//    present(playerVC, animated: true) {
+//      playerVC.player?.play()
+//    }
+    print("프리뷰우")
+    let preViewPlayerVC = PreViewPlayerVC()
+    present(preViewPlayerVC, animated: true)
     
-    let playerVC = AVPlayerViewController()
-    let player = AVPlayer(url: url)
-    playerVC.player = player
     
-    present(playerVC, animated: true) {
-      playerVC.player?.play()
-    }
+    
   }
   
 }
