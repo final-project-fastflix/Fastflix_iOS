@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import AVKit
+import Kingfisher
 
 protocol PreViewPlayerViewDelegate {
   func dismissBtnDidTap()
@@ -18,12 +20,18 @@ class PreViewPlayerView: UIView {
   var delegate: PreViewPlayerViewDelegate?
   
   //test
-  let img = ["test1", "test2", "test3", "test4", "test1", "test2", "test3", "test4"]
-  let logoImg = ["logoTest2", "preViewLogo", "logoTest2", "preViewLogo", "logoTest2", "preViewLogo", "logoTest2", "preViewLogo"]
+  let img = ["test1", "test2", "test3", "test4", "test1", "test2"]
+  let logoImg = ["logoTest2", "preViewLogo", "logoTest2", "preViewLogo", "logoTest2", "preViewLogo"]
+  
+  var mainURLs: [URL?]?
+  var logoURLs: [URL?]?
+  var idArr: [Int?]?
+  var playerItems: [AVPlayerItem]?
   
   // MARK: - collectionView
   private let layout = UICollectionViewFlowLayout()
   private let logoLyaout = UICollectionViewFlowLayout()
+  
   
   lazy var logoCollectionView: UICollectionView = {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: logoLyaout)
@@ -39,7 +47,7 @@ class PreViewPlayerView: UIView {
   lazy var logoPageController: UIPageControl = {
     let page = UIPageControl()
     //    page.currentPage = 0
-    page.numberOfPages = 4
+    page.numberOfPages = logoImg.count
     
     page.isHidden = true
     return page
@@ -48,7 +56,7 @@ class PreViewPlayerView: UIView {
   lazy var playPageController: UIPageControl = {
     let page = UIPageControl()
     //    page.currentPage = 0
-    page.numberOfPages = 4
+    page.numberOfPages = img.count
     page.isHidden = true
     return page
   }()
@@ -120,7 +128,7 @@ class PreViewPlayerView: UIView {
     }
     
     logoCollectionView.snp.makeConstraints {
-      $0.top.equalToSuperview()
+      $0.top.equalToSuperview().offset(20)
       $0.leading.trailing.equalToSuperview()
       $0.width.equalTo(UIScreen.main.bounds.width)
       $0.height.equalTo(UIScreen.main.bounds.height * 0.2)
@@ -129,11 +137,9 @@ class PreViewPlayerView: UIView {
     
     dismissBtn.snp.makeConstraints {
       $0.top.equalToSuperview().offset(topPadding)
-      $0.leading.equalTo(logoCollectionView.snp.trailing).offset(20)
-      $0.trailing.equalToSuperview().offset(-5)
+//      $0.leading.equalTo(logoCollectionView.snp.trailing)
+      $0.trailing.equalToSuperview().offset(-10)
     }
-    
-    
     
   }
   
@@ -159,7 +165,6 @@ class PreViewPlayerView: UIView {
     logoLyaout.sectionInset = UIEdgeInsets(top:0, left: 0, bottom: 0, right: 0)
     logoLyaout.minimumLineSpacing = 0
     logoLyaout.minimumInteritemSpacing = 0
-    
     let w = (UIScreen.main.bounds.width)/3
     let h = w * 0.8
     // 컬렉션뷰의 각 한개의 아이템 사이즈 설정
@@ -217,9 +222,9 @@ class PreViewPlayerView: UIView {
 extension PreViewPlayerView : UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     if collectionView == self.logoCollectionView {
-      return logoImg.count
+      return logoURLs?.count ?? 0
     } else {
-      return img.count
+      return playerItems?.count ?? 0
     }
     
   }
@@ -228,26 +233,17 @@ extension PreViewPlayerView : UICollectionViewDataSource {
     
     if collectionView == self.logoCollectionView {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LogoCollectionCell.identifier, for: indexPath) as! LogoCollectionCell
-      cell.logoImageView.image = UIImage(named: logoImg[indexPath.row])
+      // 이미지 넣어주세요
+//      cell.logoImageView.image = UIImage(named: logoImg[indexPath.row])
       
       logoPageController.currentPage = indexPath.item
       
-      //      logoCollectionView.reloadData()
-      //      print("현재페이지:" ,logoPageController.currentPage = indexPath.item)
-      
-      
-      //      cell.logoImageView.tintColor = !isFocused ? .gray: .white
-      //      if isFocused {
-      //        cell.logoImageView.backgroundColor = .white
-      //      } else {
-      //        cell.logoImageView.backgroundColor = .gray
-      //      }
       return cell
       
     } else {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlayCollectionViewCell.identifier, for: indexPath) as! PlayCollectionViewCell
       
-      cell.playView.image = UIImage(named: img[indexPath.row])
+      cell.playerItem = playerItems?[indexPath.row]
       return cell
     }
     

@@ -111,8 +111,8 @@ extension MainMovieView: UITableViewDataSource {
         }
       }
       print("check: ", logoURLs)
-      cell.configure(mainURLs: mainURLs, logoURLs: logoURLs)
-      cell.delegate = self
+//      cell.configure(mainURLs: mainURLs, logoURLs: logoURLs)
+//      cell.delegate = self
       cell.selectionStyle = .none
       cell.layoutIfNeeded()
       return cell
@@ -202,14 +202,14 @@ extension MainMovieView: UITableViewDelegate {
 }
 
 
-extension MainMovieView: PreviewTableCellDelegate {
-  func didSelectItemAt(indexPath: IndexPath) {
-    print("didSelectItemAt")
-    
-    
-    
-  }
-}
+//extension MainMovieView: PreviewTableCellDelegate {
+//  func didSelectItemAt(indexPath: IndexPath) {
+//    print("didSelectItemAt")
+//
+//
+//
+//  }
+//}
 
 extension MainMovieView: SubTableCellDelegate {
   func didSelectItemAt(movieId: Int, movieInfo: MovieDetail) {

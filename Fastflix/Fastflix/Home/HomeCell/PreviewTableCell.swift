@@ -9,17 +9,21 @@
 import UIKit
 import SnapKit
 import Kingfisher
+import AVKit
 
 protocol PreviewTableCellDelegate: class {
-  func didSelectItemAt(indexPath: IndexPath)
+  func didSelectItemAt(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?)
 }
 
 final class PreviewTableCell: UITableViewCell {
   
   static let identifier = "PreviewTableCell"
   
-  private var mainURLs: [URL?]?
-  private var logoURLs: [URL?]?
+  var mainURLs: [URL?]?
+  var logoURLs: [URL?]?
+  var videoPaths: [URL?]?
+  var idArr: [Int]?
+  var playerItems: [AVPlayerItem]?
   
   private let layout = UICollectionViewFlowLayout()
   
@@ -47,12 +51,17 @@ final class PreviewTableCell: UITableViewCell {
     setupCollectionView()
   }
   
-  func configure(mainURLs: [String]?, logoURLs: [String]?) {
-    let mainArr = mainURLs ?? imageUrls
-    let logoArr = logoURLs ?? imageUrls
+  func configure(idArr: [Int], mainURLs: [String], logoURLs: [String], videos: [String]) {
+    let mainArr = mainURLs
+    let logoArr = logoURLs
+    let videoArr = videos
     
     self.mainURLs = mainArr.map { URL(string: $0) }
     self.logoURLs = logoArr.map { URL(string: $0) }
+    self.videoPaths = videoArr.map { URL(string: $0) }
+    self.idArr = idArr
+    guard let path = videoPaths else { return }
+    self.playerItems = path.map { AVPlayerItem(url: $0!) }
   }
   
   // MARK: - addSubViews
@@ -113,6 +122,6 @@ extension PreviewTableCell: UICollectionViewDataSource {
 extension PreviewTableCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //    print("indexPath.row: ", indexPath.row)
-    delegate?.didSelectItemAt(indexPath: indexPath)
+    delegate?.didSelectItemAt(indexPath: indexPath, logoArr: logoURLs!, videoItems: playerItems!, idArr: idArr!)
   }
 }
