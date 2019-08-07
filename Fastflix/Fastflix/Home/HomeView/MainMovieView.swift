@@ -100,6 +100,19 @@ extension MainMovieView: UITableViewDataSource {
     switch indexPath.row {
     case 0:
       let cell = tableView.dequeueReusableCell(withIdentifier: MainImageTableCell.identifier, for: indexPath) as! MainImageTableCell
+      
+      var text = ""
+      
+      if let data = mainData?.mainMovie.genre {
+        for idx in 0...data.count {
+          if idx < 3 {
+            text += (data[idx].name + "･")
+          }
+        }
+      }
+      
+      let lastText = String(text.dropLast())
+      
       cell.selectionStyle = .none
       
       let id = mainData?.mainMovie.id
@@ -109,21 +122,28 @@ extension MainMovieView: UITableViewDataSource {
       self.mainMovieId = id
 //      cell.mainMovie = mainData?.mainMovie
       cell.configure(imageURLString: mainData?.mainMovie.bigImagePath, logoImageURLString: mainData?.mainMovie.logoImagePath)
-      cell.movieDetailLabel.text = " 음악 ･ 마법을 걸어요 ･ 동화 ･ 사랑 ･ 걸파워 ･ 할리우드 영화 "
+      cell.movieDetailLabel.text = lastText
       return cell
       
     case 1:
       let cell = tableView.dequeueReusableCell(withIdentifier: PreviewTableCell.identifier, for: indexPath) as! PreviewTableCell
       let path = DataCenter.shared
+      
       var mainURLs: [String] = []
       var logoURLs: [String] = []
+      var idArr: [Int] = []
+      var videoPathArr: [String] = []
+      
       if let data = path.preViewCellData {
         for index in data {
           mainURLs.append(index.circleImage)
           logoURLs.append(index.logoImagePath)
+          idArr.append(index.id)
+          videoPathArr.append(index.verticalSampleVideoFile ?? "")
         }
       }
-      print("check: ", logoURLs)
+//      print("check: ", logoURLs)
+      cell.configure(idArr: idArr.reversed(), mainURLs: mainURLs.reversed(), logoURLs: logoURLs.reversed(), videos: videoPathArr.reversed())
 //      cell.configure(mainURLs: mainURLs, logoURLs: logoURLs)
 //      cell.delegate = self
       cell.selectionStyle = .none
