@@ -127,11 +127,13 @@ struct Search: Codable {
   let name: String
   let horizontalImagePath: String
   let verticalImage: String?
+  let iosMainImage: String?
   
   enum CodingKeys: String, CodingKey {
     case id, name
     case horizontalImagePath = "horizontal_image_path"
     case verticalImage = "vertical_image"
+    case iosMainImage = "ios_main_image"
   }
 }
 

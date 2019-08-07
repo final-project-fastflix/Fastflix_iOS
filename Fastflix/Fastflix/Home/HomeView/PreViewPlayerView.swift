@@ -114,6 +114,7 @@ class PreViewPlayerView: UIView {
     //    [logoCollectionView].forEach { playCollectionView.addSubview($0) }
     self.bringSubviewToFront(logoCollectionView)
     self.bringSubviewToFront(stackView)
+    self.bringSubviewToFront(dismissBtn)
   }
   
   private func setupSNP() {
