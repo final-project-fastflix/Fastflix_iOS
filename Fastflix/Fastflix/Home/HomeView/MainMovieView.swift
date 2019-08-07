@@ -32,6 +32,7 @@ final class MainMovieView: UIView {
   
   let floatingView: FloatingView = {
     let view = FloatingView()
+    view.movieBtn.setTitle("장르", for: .normal)
     return view
   }()
   
