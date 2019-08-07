@@ -80,17 +80,14 @@ class FloatingView: UIView {
   }
   
   @objc func homeBtnDidTap(_ sender: UIButton) {
-    print("homeBtnDidTap")
     delegate?.didTapHome()
   }
   
   @objc func movieBtnDidTap(_ sender: UIButton) {
-    print("movieBtnDidTap")
     delegate?.didTapMovie()
   }
   
   @objc func pokeBtnDidTap(_ sender: UIButton) {
-    print("pokeBtnDidTap")
     delegate?.didTapPoke()
   }
   
