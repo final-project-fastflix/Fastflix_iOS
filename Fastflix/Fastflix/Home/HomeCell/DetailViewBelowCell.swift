@@ -15,6 +15,8 @@ protocol SimilarMoviesDetailViewCellDelegate: class {
 final class DetailViewBelowCell: UITableViewCell {
   
   var movieId: Int?
+  
+  // 비슷한 콘텐츠 영화들 정보 담아놓기 위한 배열
   var similarMoviesData = [SimilarMovie]()
   
   private let firstBlackLine: UIView = {
@@ -39,11 +41,14 @@ final class DetailViewBelowCell: UITableViewCell {
   
   private let cellWidth = (UIScreen.main.bounds.width - 40)/3
   
+  // 넓이에 대한 높이의 비율은 일정하다는 것을 가정
   private lazy var cellHeight = cellWidth * 1.447064
   
   private let collectionView: UICollectionView = {
     let cellWidth = (UIScreen.main.bounds.width - 40)/3
     let cellHeight = cellWidth * 1.447064
+    
+    // 컬렉션뷰의 레이아웃 설정
     let layout = UICollectionViewFlowLayout()
     layout.sectionInset = UIEdgeInsets(top: 12, left: 8, bottom: 12, right: 8)
     layout.itemSize = CGSize(width: cellWidth, height: cellHeight)
@@ -53,6 +58,7 @@ final class DetailViewBelowCell: UITableViewCell {
     return collectionView
   }()
   
+  // 하단의 비슷한 콘텐츠 클릭했을때 뷰 띄우기위한 델리게이트
   weak var delegate: SimilarMoviesDetailViewCellDelegate?
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -117,11 +123,11 @@ extension DetailViewBelowCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     
     // 비슷한 콘텐츠가 6개 이상이면 6개만 생성 나머지는 버림
-//    if similarMoviesData.count > 6 {
-//      return 6
-//    }else {
+    if similarMoviesData.count > 6 {
+      return 6
+    }else {
       return similarMoviesData.count
-//    }
+    }
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -138,6 +144,7 @@ extension DetailViewBelowCell: UICollectionViewDataSource {
 // (비슷한 콘텐츠)에서 한가지 눌렀을때의 동작 (델리게이트)
 extension DetailViewBelowCell: UICollectionViewDelegate {
   
+  // 하단의 비슷한콘텐츠를 클릭했을때 델리게이트를 통해서 어떤 영화가 클릭되었는지 뷰컨트롤러에 전달(==>뷰컨에서 프리젠트)
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
     let movieNum = similarMoviesData[indexPath.item].id

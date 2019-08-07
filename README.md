@@ -103,6 +103,12 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 
 19.08.06  feat: tass - add Player, need to bind
 
+19.08.06 feat: allen - detailVC
+
 19.08.06  feat: tass - on player, only landscapeMode
 
-19.08.06  feat: allen - detailVC
+19.08.06 feat: allen - detailVC's poked button feature.
+
+19.08.06  feat: tass - can play Video
+
+19.08.07 feat: allen - CategorySelectVC in MainMovie, detailVC for movie page.

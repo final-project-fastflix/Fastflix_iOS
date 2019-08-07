@@ -15,21 +15,28 @@ protocol PlayerViewDelegate {
   func jumpForward()
   func jumpBackward()
   func didTapScreen()
+  func didTapDismiss()
 }
 
 class PlayerView: UIView {
   
   var delegate: PlayerViewDelegate?
   
-  lazy var views = [playBtn, progressSlider, timeLabel, backwardBtn, forwardBtn, titleLabel, backLabel, backMovingLabel, forwardLabel, forwardMovingLabel]
+  lazy var views = [playBtn, progressSlider, timeLabel, backwardBtn, forwardBtn, titleLabel, backLabel, backMovingLabel, forwardLabel, forwardMovingLabel, dismissBtn]
   
-  
+  private let dismissBtn: UIButton = {
+    let btn = UIButton()
+    btn.tag = 4
+    btn.setTitle("X", for: .normal)
+    btn.addTarget(self, action: #selector(didTapBtns), for: .touchUpInside)
+    return btn
+  }()
   
   private let playBtn: UIButton = {
     let btn = UIButton()
     btn.tag = 1
-    btn.setImage(UIImage(named: "pause"), for: .normal)
-    btn.setImage(UIImage(named: "play"), for: .selected)
+    btn.setImage(UIImage(named: "pauseVideo"), for: .normal)
+    btn.setImage(UIImage(named: "playVideo"), for: .selected)
     btn.addTarget(self, action: #selector(didTapBtns), for: .touchUpInside)
     return btn
   }()
@@ -65,7 +72,7 @@ class PlayerView: UIView {
     return label
   }()
   
-  private let titleLabel: UILabel = {
+  let titleLabel: UILabel = {
     let label = UILabel()
     label.text = "Worlds Of The Last Jedi"
     label.textColor = .white
@@ -100,6 +107,7 @@ class PlayerView: UIView {
     label.textAlignment = .center
     return label
   }()
+  
   let backMovingLabel: UILabel = {
     let label = UILabel()
     label.text = "-10"
@@ -149,6 +157,8 @@ class PlayerView: UIView {
       delegate?.jumpForward()
     case 3:
       delegate?.jumpBackward()
+    case 4:
+      delegate?.didTapDismiss()
     default:
       break
     }
@@ -223,6 +233,12 @@ class PlayerView: UIView {
     forwardMovingLabel.snp.makeConstraints {
       $0.centerY.equalToSuperview()
       $0.centerX.equalToSuperview().multipliedBy(1.5)
+    }
+    
+    dismissBtn.snp.makeConstraints {
+      $0.trailing.equalToSuperview().offset(-topPadding)
+      $0.top.equalToSuperview().offset(topPadding)
+      $0.height.width.equalTo(20)
     }
     
   }

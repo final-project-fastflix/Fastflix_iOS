@@ -45,6 +45,39 @@ class APICenter {
   }
   
   
+  func postPauseTime(movieID: Int?, time: Int?, completion: @escaping (Result<Bool>) -> ()) {
+    let header = [
+      "Authorization": "Token \(getToken())",
+      "Content-Type": "application/json"
+    ]
+    
+    let url = RequestString.postPauseTimeMovieURL.rawValue
+    
+    let body = """
+      {
+      "sub_user_id": \(getSubUserID()),
+      "movie_id": "\(movieID ?? 0)",
+      "paused_time": \(time ?? 0)
+      }
+      """.data(using: .utf8)
+    
+    Alamofire.upload(body!, to: url, method: .post, headers: header)
+      .responseJSON(queue: .global()) { (result) in
+        switch result.result {
+        case .success(let value):
+          guard let dict = value as? [String: Bool], let result = dict["saved"] else {
+            completion(.failure(ErrorType.FailToParsing))
+            return
+          }
+          completion(.success(result))
+        case .failure(let err):
+          dump(err)
+          completion(.failure(ErrorType.networkError))
+        }
+    }
+  }
+  
+  
   func getDetailData(id: Int, completion: @escaping (Result<MovieDetail>) -> ()) {
     let header = getHeader(needSubuser: true)
     let fullURL = RequestString.getDetailURL.rawValue + "\(id)/"
@@ -678,4 +711,29 @@ class APICenter {
     }
   }
   
+  // 장르를 선택하면 보여줄 영화리스트
+  func getListByGenreData(genre: String, completion: @escaping (Result<RequestListByGenre>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    let fullURL = RequestString.getListByGenre.rawValue + "\(genre)/"
+    
+    let encoding = fullURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+    
+    let apiURL = URL(string: encoding)!
+    
+    Alamofire.request(apiURL, method: .get, headers: header)
+      .responseData(queue: .global()) { (result) in
+        switch result.result {
+        case .success(let value):
+          guard let result = try? JSONDecoder().decode(RequestListByGenre.self, from: value) else {
+            completion(.failure(ErrorType.FailToParsing))
+            return
+          }
+          completion(.success(result))
+        case .failure(let err):
+          dump(err)
+          completion(.failure(ErrorType.networkError))
+        }
+    }
+  }
+
 }
