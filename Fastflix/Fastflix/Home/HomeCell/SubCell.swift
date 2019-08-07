@@ -113,6 +113,7 @@ extension SubCell: UICollectionViewDataSource {
 extension SubCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let id = movieIDs[indexPath.row]
+    print("아이디 출력해보기", id)
     APICenter.shared.getDetailData(id: id) { (result) in
       switch result {
       case .success(let movie):
