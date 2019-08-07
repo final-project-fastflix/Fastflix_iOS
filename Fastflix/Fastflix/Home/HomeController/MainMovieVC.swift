@@ -10,6 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 import Alamofire
+import AVKit
 
 class MainMovieVC: UIViewController {
   
@@ -39,9 +40,10 @@ class MainMovieVC: UIViewController {
     mainMovieView.receiveData = receiveData
     mainMovieView.floatingView.delegate = self
     categoryVC.delegate = self
-//    self.view = mainMovieView
+    
     view.addSubview(mainMovieView)
     mainMovieView.delegate = self
+    mainMovieView.myDelegate = self
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -89,6 +91,12 @@ extension MainMovieVC: FloatingViewDelegate {
 }
 
 extension MainMovieVC: CategorySelectVCDelegate {
+  func sendText(text: String?) {
+    DispatchQueue.main.async {
+      self.mainMovieView.floatingView.movieBtn.setTitle(text, for: .normal)
+    }
+  }
+  
   func sendData(data: [RequestMovieElement], keys: [String]) {
 //    let view = self.view as! MainMovieView
     print("runrun")
@@ -115,4 +123,16 @@ extension MainMovieVC: SubTableCellDelegate {
   func errOccurSendingAlert(message: String, okMessage: String) {
     self.oneAlert(title: "영화데이터 오류", message: message, okButton: okMessage)
   }
+}
+
+extension MainMovieVC: MainMovieViewDelegate {
+  func didTapPreview(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
+    let preViewPlayerVC = PreViewPlayerVC()
+    preViewPlayerVC.logoURLs = logoArr
+    preViewPlayerVC.playerItems = videoItems
+    preViewPlayerVC.idArr = idArr
+    present(preViewPlayerVC, animated: true)
+  }
+  
+  
 }
