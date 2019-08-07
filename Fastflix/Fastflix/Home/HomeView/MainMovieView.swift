@@ -34,7 +34,6 @@ final class MainMovieView: UIView {
     }
     set {
       guard newValue >= -floatingView.frame.height || newValue <= 0 else { return }
-      //      print("newValue", floatingView.frame)
       floatingView.frame.origin.y = newValue
     }
   }
@@ -86,8 +85,9 @@ final class MainMovieView: UIView {
     }
     
     floatingView.snp.makeConstraints {
-      $0.leading.trailing.top.equalToSuperview()
+      $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(50 + topPadding)
+      $0.top.equalToSuperview().offset(-10)
     }
   }
   
@@ -189,8 +189,6 @@ extension MainMovieView: UITableViewDelegate {
     
     let fixValue = floatingView.frame.size.height
     
-    var compareValue: CGFloat = 0
-    
     var floatValue: CGFloat {
       get {
         return originValue
@@ -208,13 +206,14 @@ extension MainMovieView: UITableViewDelegate {
     }
     
     
+    
     if compareArr.count > 1 {
       compareArr.remove(at: 0)
     }
     compareArr.append(offset)
     
     if offset <= -topPadding {
-      floatingView.frame.origin.y = 0
+      floatingView.frame.origin.y = -10
       return
     }
     
@@ -223,13 +222,13 @@ extension MainMovieView: UITableViewDelegate {
         // show
         let addtionalValue = compareArr[1] - compareArr[0]
         floatValue += -addtionalValue
-        originY = floatValue
+        originY = floatValue - 10
         return
       } else if compareArr[0] < compareArr[1] {
         // hide
         let addtionalValue = compareArr[1] - compareArr[0]
         floatValue += -addtionalValue
-        originY = floatValue
+        originY = floatValue - 10
         return
       } else {
         return
