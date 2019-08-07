@@ -26,6 +26,8 @@ final class MainMovieView: UIView {
   
   private var compareArr: [CGFloat] = []
   
+  var mainMovieId: Int?
+  
   private var originY: CGFloat {
     get {
       return floatingView.frame.origin.y
@@ -46,6 +48,8 @@ final class MainMovieView: UIView {
   let tableView = UITableView()
   
   weak var delegate: SubTableCellDelegate?
+  
+  weak var mainDelegate: MainImageTableCellDelegate?
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
@@ -117,9 +121,17 @@ extension MainMovieView: UITableViewDataSource {
       let lastText = String(text.dropLast())
       
       cell.selectionStyle = .none
+      
+      let id = mainData?.mainMovie.id
+      
+      cell.delegate = self
+      cell.movieId = id
+      self.mainMovieId = id
+//      cell.mainMovie = mainData?.mainMovie
       cell.configure(imageURLString: mainData?.mainMovie.bigImagePath, logoImageURLString: mainData?.mainMovie.logoImagePath)
       cell.movieDetailLabel.text = lastText
       return cell
+      
     case 1:
       let cell = tableView.dequeueReusableCell(withIdentifier: PreviewTableCell.identifier, for: indexPath) as! PreviewTableCell
       let path = DataCenter.shared
@@ -243,8 +255,16 @@ extension MainMovieView: SubTableCellDelegate {
   func errOccurSendingAlert(message: String, okMessage: String) {
     delegate?.errOccurSendingAlert(message: message, okMessage: okMessage)
   }
+}
+
+
+extension MainMovieView: MainImageTableCellDelegate {
+  func playVideo(id: Int) {
+    mainDelegate?.playVideo(id: mainMovieId!)
+  }
   
-  
-  
+  func mainImageCelltoDetailVC(id: Int) {
+    mainDelegate?.mainImageCelltoDetailVC(id: mainMovieId!)
+  }
   
 }
