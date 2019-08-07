@@ -11,7 +11,8 @@ import SnapKit
 import Kingfisher
 
 protocol MainImageTableCellDelegate: class {
-  func playVideo()
+  func playVideo(id: Int)
+  func mainImageCelltoDetailVC(id: Int)
 }
 
 final class MainImageTableCell: UITableViewCell {
@@ -22,6 +23,15 @@ final class MainImageTableCell: UITableViewCell {
   
   private var stackView = UIStackView()
   private var textStackView = UIStackView()
+  
+  var movieId: Int?
+  
+  // 찜되어있는 영화인지 여부
+  var isPoked: Bool = false {
+    didSet {
+      pokeButtonSetting()
+    }
+  }
   
   private let mainImage: UIImageView = {
     let image = UIImageView()
@@ -46,7 +56,7 @@ final class MainImageTableCell: UITableViewCell {
   private lazy var pokeButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "add"), for: .normal)
-    button.setImage(UIImage(named: "poke"), for: .selected)
+//    button.setImage(UIImage(named: "poke"), for: .selected)
     button.addTarget(self, action: #selector(pokeBtnDidTap(_:)), for: .touchUpInside)
     return button
   }()
@@ -58,10 +68,11 @@ final class MainImageTableCell: UITableViewCell {
     return button
   }()
   
-  private let infoButton: UIButton = {
+  private lazy var infoButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "info"), for: .normal)
     button.tintColor = .white
+    button.addTarget(self, action: #selector(didTapToInfo), for: .touchUpInside)
     return button
   }()
   
@@ -91,10 +102,12 @@ final class MainImageTableCell: UITableViewCell {
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+    
     self.backgroundColor = .clear
     setupStackView()
     addSubViews()
     setupSNP()
+    pokeButtonSetting()
   }
   
   func configure(imageURLString: String?, logoImageURLString: String?) {
@@ -115,7 +128,7 @@ final class MainImageTableCell: UITableViewCell {
   }
   
   @objc private func didTapPlayBtn(_ sender: UIButton) {
-    delegate?.playVideo()
+    delegate?.playVideo(id: movieId!)
   }
   
   private func setupStackView() {
@@ -178,14 +191,48 @@ final class MainImageTableCell: UITableViewCell {
   }
   
   @objc func pokeBtnDidTap(_ sender: UIButton) {
+    print("포크버튼 눌렀습니다용")
+    
+    // 포크버튼 애니메이션
     UIView.animate(withDuration: 0.3) {
       self.pokeButton.alpha = 0
     }
-    sender.isSelected.toggle()
+//    sender.isSelected.toggle()
     UIView.animate(withDuration: 0.3) {
       self.pokeButton.alpha = 1
     }
+    
+    APICenter.shared.toggleForkMovie(movieID: movieId!) {
+      switch $0 {
+      case .success(let success):
+        print("메인무비 영화찜하기 성공: ", success)
+        DispatchQueue.main.async {
+          if success == 1 {
+            self.isPoked = true
+          }else {
+            self.isPoked = false
+          }
+        }
+      case .failure(let err):
+        print("reason: ", err)
+      }
+    }
+    pokeButtonSetting()
   }
+  
+  private func pokeButtonSetting() {
+    if isPoked {
+      pokeButton.setImage(UIImage(named: "poke"), for: .normal)
+    }else {
+      pokeButton.setImage(UIImage(named: "add"), for: .normal)
+    }
+  }
+  
+  @objc private func didTapToInfo() {
+    delegate?.mainImageCelltoDetailVC(id: movieId!)
+    print("셀에서 버튼누르기")
+  }
+  
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")

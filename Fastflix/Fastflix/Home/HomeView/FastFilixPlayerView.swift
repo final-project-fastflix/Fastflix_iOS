@@ -22,7 +22,7 @@ final class FastFilixPlayerView: UIView {
 
   weak var delegate: PlayerViewDelegate?
 
-  lazy var views = [movieTitleLabel, closeButton, backWardButton, backLabel, backMovingLabel, pausePlayButton, forwardButton, forwardLabel, forwardMovingLabel, sliderStackView, subtitleStackView]
+  lazy var views = [movieTitleLabel, closeButton, bigCloseButton, backWardButton, backLabel, backMovingLabel, pausePlayButton, forwardButton, forwardLabel, forwardMovingLabel, sliderStackView, subtitleStackView]
 
   // 🔸상단 타이틀 및 닫기
   let movieTitleLabel: UILabel = {
@@ -33,11 +33,21 @@ final class FastFilixPlayerView: UIView {
     return label
   }()
 
-  let closeButton: UIButton = {
+  lazy var closeButton: UIButton = {
     let button = UIButton(type: .system)
     button.tintColor = .white
     let image = UIImage(named: "close")
     button.setImage(image, for: .normal)
+    button.addTarget(self, action: #selector(didTapBtns), for: .touchUpInside)
+    button.tag = 4
+    button.addSubview(bigCloseButton)
+    return button
+  }()
+  
+  // 닫기버튼 잘 안눌려서 그 위에 조금 큰 버튼 달기
+  let bigCloseButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.backgroundColor = .clear
     button.addTarget(self, action: #selector(didTapBtns), for: .touchUpInside)
     button.tag = 4
     return button
@@ -248,6 +258,12 @@ final class FastFilixPlayerView: UIView {
       $0.top.equalTo(35)
       $0.trailing.equalTo(-60)
     }
+    
+    // 닫기버튼위에 잘 눌리는 큰 버튼 달기
+    bigCloseButton.snp.makeConstraints {
+      $0.width.height.equalTo(40)
+      $0.centerX.centerY.equalToSuperview()
+    }
 
     // 뒤로가기 관련
     backWardButton.snp.makeConstraints {
@@ -364,13 +380,6 @@ final class FastFilixPlayerView: UIView {
     views.forEach { $0.isHidden = true }
   }
 
-
-
-  // 🔸닫기버튼 눌렀을때
-//  @objc private func closeButtonDidTap(_ sender: UIButton) {
-//
-//  }
-
   // 🔸자막 및 음성 버튼 눌렀을때
   @objc private func subtitleButtonDidTap(_ sender: UIButton) {
 
@@ -401,8 +410,6 @@ final class FastFilixPlayerView: UIView {
     }
     isPlaying = !isPlaying
   }
-
-
 
   // 🔸 버튼 애니메이션 효과
   private func backwardButtonAnimation() {
