@@ -140,8 +140,10 @@ extension MainHomeVC: UITableViewDataSource {
       cell.delegate = self
       cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
       if let data = path.mainImageCellData?.mainMovie?.genre {
-        for idx in data {
-          text += (idx.name + "･")
+        for idx in 0...data.count {
+          if idx < 3 {
+            text += (data[idx].name + "･")
+          }
         }
       }
       let lastText = String(text.dropLast())
