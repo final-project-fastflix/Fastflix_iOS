@@ -21,7 +21,7 @@ class LogoCollectionCell: UICollectionViewCell {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "preViewLogo")
     imageView.backgroundColor = .clear
-    imageView.contentMode = .scaleAspectFit
+    imageView.contentMode = .scaleAspectFill
     return imageView
   }()
   
@@ -30,7 +30,6 @@ class LogoCollectionCell: UICollectionViewCell {
     slider.tintColor = .white
     slider.thumbTintColor = .clear
     return slider
-    
   }()
   
 
@@ -51,9 +50,10 @@ class LogoCollectionCell: UICollectionViewCell {
   private func setupSNP() {
     progressBar.snp.makeConstraints {
       $0.top.equalToSuperview()
-      $0.width.equalTo((UIScreen.main.bounds.width / 3) - 30)
-      $0.leading.equalToSuperview().offset(15)
-      $0.trailing.equalToSuperview().offset(-15)
+      $0.width.equalTo((UIScreen.main.bounds.width / 3) - 40)
+      $0.leading.equalToSuperview().offset(20)
+//      $0.trailing.equalToSuperview().offset(-15)
+      $0.trailing.equalToSuperview().offset(-20)
       
     }
     
@@ -61,6 +61,7 @@ class LogoCollectionCell: UICollectionViewCell {
       $0.top.equalTo(progressBar.snp.bottom)
 //      $0.width.height.equalTo(100)
       $0.width.equalTo(progressBar)
+      $0.leading.trailing.equalTo(progressBar)
 
     }
     

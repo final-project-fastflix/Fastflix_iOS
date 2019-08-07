@@ -18,7 +18,10 @@ final class PreViewPlayerVC: UIViewController {
   
   private weak var delegate: PreViewPlayerVCDelegate?
   
-  
+  var mainURLs: [URL?]?
+  var logoURLs: [URL?]?
+  var idArr: [Int?]?
+  var playerItems: [AVPlayerItem]?
   
 //  private let url = URL(string: preViewUrl)!
   
@@ -31,6 +34,9 @@ final class PreViewPlayerVC: UIViewController {
   
   override func loadView() {
     let preViewPlayerView = PreViewPlayerView()
+    preViewPlayerView.logoURLs = logoURLs
+    preViewPlayerView.playerItems = playerItems
+    preViewPlayerView.idArr = idArr
     self.view = preViewPlayerView
     view.backgroundColor = .white
   }
