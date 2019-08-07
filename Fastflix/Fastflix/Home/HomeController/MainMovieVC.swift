@@ -26,13 +26,13 @@ class MainMovieVC: UIViewController {
   
   lazy var receiveKeys: [String]? = nil
   
-//  override func loadView() {
-//    mainMovieView.receiveKeys = receiveKeys
-//    mainMovieView.receiveData = receiveData
-//    mainMovieView.floatingView.delegate = self
-//    categoryVC.delegate = self
-//    self.view = mainMovieView
-//  }
+  //  override func loadView() {
+  //    mainMovieView.receiveKeys = receiveKeys
+  //    mainMovieView.receiveData = receiveData
+  //    mainMovieView.floatingView.delegate = self
+  //    categoryVC.delegate = self
+  //    self.view = mainMovieView
+  //  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -58,7 +58,7 @@ class MainMovieVC: UIViewController {
       $0.top.leading.bottom.trailing.equalToSuperview()
     }
   }
-
+  
 }
 
 extension MainMovieVC: FloatingViewDelegate {
@@ -67,9 +67,9 @@ extension MainMovieVC: FloatingViewDelegate {
   }
   
   func didTapMovie() {
-//    let mainMovieVC = self
-//    mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
-//    tabBarController?.viewControllers?[0] = mainMovieVC
+    //    let mainMovieVC = self
+    //    mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
+    //    tabBarController?.viewControllers?[0] = mainMovieVC
     
     categoryVC.modalPresentationStyle = .overCurrentContext
     UIView.animate(withDuration: 0.7) {
@@ -100,7 +100,7 @@ extension MainMovieVC: CategorySelectVCDelegate {
   }
   
   func sendData(data: [RequestMovieElement], keys: [String]) {
-//    let view = self.view as! MainMovieView
+    //    let view = self.view as! MainMovieView
     print("runrun")
     mainMovieView.receiveData = data
     mainMovieView.receiveKeys = keys
@@ -135,7 +135,8 @@ extension MainMovieVC: MainMovieViewDelegate {
     preViewPlayerVC.idArr = idArr
     present(preViewPlayerVC, animated: true)
   }
-  
+}
+
 extension MainMovieVC: MainImageTableCellDelegate {
   func mainImageCelltoDetailVC(id: Int) {
     
@@ -198,16 +199,6 @@ extension MainMovieVC: MainImageTableCellDelegate {
         }
       }
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-  
   }
-  
 }
+
