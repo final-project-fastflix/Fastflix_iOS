@@ -391,6 +391,8 @@ extension MainHomeVC: PreviewTableCellDelegate {
 
 
 extension MainHomeVC: OriginalTableCellDelegate {
+  
+  
   func originalDidSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
     
     // 오리지널 눌렀을때
