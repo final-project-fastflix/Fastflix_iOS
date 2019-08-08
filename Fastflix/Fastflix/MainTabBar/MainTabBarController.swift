@@ -20,6 +20,8 @@ final class MainTabBarController: UITabBarController {
   private let searchVC = SearchVC()
   
   private let faceRecogVC = FaceRecognitionVC()
+  private let faceResultVC = FaceResultVC()
+  
   
   private lazy var navi: UINavigationController = {
     let navi = UINavigationController(rootViewController: seeMoreVC)
@@ -50,7 +52,7 @@ final class MainTabBarController: UITabBarController {
     tabBar.tintColor = .white
     tabBar.backgroundImage = UIImage(named: "black")
     
-    self.viewControllers = [mainHomeVC, searchVC, faceRecogVC, navi]
+    self.viewControllers = [mainHomeVC, searchVC, faceResultVC, navi]
   }
   
   private func installTabBarItems() {
@@ -64,7 +66,7 @@ final class MainTabBarController: UITabBarController {
     
     mainHomeVC.tabBarItem = homeVCItem
     searchVC.tabBarItem = searchVCItem
-    faceRecogVC.tabBarItem = downloadVCItem
+    faceResultVC.tabBarItem = downloadVCItem
     navi.tabBarItem = seeMoreVCItem
 
   }
