@@ -28,6 +28,10 @@ class PlayCollectionViewCell: UICollectionViewCell {
     
   }
   
+  deinit {
+    player.pause()
+  }
+  
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     setupPlayer()
