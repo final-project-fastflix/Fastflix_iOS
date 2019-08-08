@@ -78,9 +78,42 @@ extension MainMovieVC: FloatingViewDelegate {
   }
   
   func didTapPoke() {
+    
+    print("일단 눌러는 지는 겁니까????")
+
     let mainPokeVC = MainPokeVC()
-    mainPokeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
-    tabBarController?.viewControllers?[0] = mainPokeVC
+    
+    var imgPaths: [String] = []
+    var movieIDArr: [Int] = []
+    
+    APICenter.shared.getListOfFork {
+      switch $0 {
+      case .success(let list):
+        
+        for i in 0...list.count - 1 {
+          imgPaths.append(list[i].verticalImage)
+          movieIDArr.append(list[i].id)
+        }
+        DispatchQueue.main.async {
+          mainPokeVC.mainPokeView.configure(url: imgPaths, movieIDs: movieIDArr)
+          //          self.navigationController?.show(mainPokeVC, sender: nil)
+          
+          mainPokeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
+          self.tabBarController?.viewControllers?[0] = mainPokeVC
+          
+        }
+        
+      case .failure(let err):
+        print("fail to parsing, reason: ", err)
+        let message = """
+          죄송합니다. 찜 정보를 가져오는데
+          실패했습니다.
+          다시 시도하세요.
+          """
+        self.oneAlert(title: "실패", message: message, okButton: "찜 목록 다시 확인하기")
+      }
+    }
+  
   }
   
   

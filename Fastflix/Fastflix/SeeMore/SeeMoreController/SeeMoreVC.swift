@@ -97,11 +97,39 @@ extension SeeMoreVC: SeeMoreViewDelegate {
     case IndexPath(row: 0, section: 1):
   
       let mycontentVC = MyContentVC()
-      navigationController?.show(mycontentVC, sender: nil)
+      
+      var imgPaths: [String] = []
+      var movieIDArr: [Int] = []
+      
+      APICenter.shared.getListOfFork {
+        switch $0 {
+        case .success(let list):
+          
+          for i in 0...list.count - 1 {
+            imgPaths.append(list[i].verticalImage)
+            movieIDArr.append(list[i].id)
+          }
+          DispatchQueue.main.async {
+            mycontentVC.myContentView.configure(url: imgPaths, movieIDs: movieIDArr)
+            self.navigationController?.show(mycontentVC, sender: nil)
+
+          }
+          
+        case .failure(let err):
+          print("fail to parsing, reason: ", err)
+          let message = """
+          죄송합니다. 찜 정보를 가져오는데
+          실패했습니다.
+          다시 시도하세요.
+          """
+          self.oneAlert(title: "실패", message: message, okButton: "찜 목록 다시 확인하기")
+        }
+      }
     case IndexPath(row: 1, section: 2):
       
       let iconVC = IconVC()
       navigationController?.show(iconVC, sender: nil)
+      
     case IndexPath(row: 2, section: 2):
       
       
@@ -116,7 +144,7 @@ extension SeeMoreVC: SeeMoreViewDelegate {
       
       let customerCVC = CustomerCenterVC()
       navigationController?.show(customerCVC, sender: nil)
-      navigationItem.setHidesBackButton(true, animated: true)
+//      navigationItem.setHidesBackButton(true, animated: true)
       
     case IndexPath(row: 4, section: 2):
       self.alert(title: "로그아웃", message: "로그아웃하시겠어요?") {
