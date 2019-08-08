@@ -198,6 +198,7 @@ class CustomerCenterVC: UIViewController {
   
   @objc private func backButtonTapped(_ sender: UIButton) {
     dismiss(animated: true)
+    navigationController?.popViewController(animated: true)
   }
   
   
