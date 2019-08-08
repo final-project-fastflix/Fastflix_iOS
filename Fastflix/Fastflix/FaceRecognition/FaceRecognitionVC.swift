@@ -8,10 +8,15 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 
 
 class FaceRecognitionVC: UIViewController {
+  
+ 
+  
+  
   
   let topView: UIView = {
     let view = UIView()
@@ -62,7 +67,7 @@ class FaceRecognitionVC: UIViewController {
   }()
   
   //camera
-  lazy var cameraImg: UIImageView = {
+  lazy var faceImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFit
     imageView.image = UIImage(named: "camera")
@@ -109,11 +114,11 @@ class FaceRecognitionVC: UIViewController {
     }
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-//    cameraImg.image = nil
+    
   }
   
   private func addSubViews() {
-    [topView, cameraImg, resultBtn]
+    [topView, faceImageView, resultBtn]
       .forEach { view.addSubview($0) }
     [lineBtn, titleLabel, line1, fastLogo, line2, infoLabel, imageSelectLabel, ]
       .forEach { topView.addSubview($0) }
@@ -155,19 +160,19 @@ class FaceRecognitionVC: UIViewController {
       $0.centerX.equalToSuperview()
     }
     
-    cameraImg.snp.makeConstraints {
+    faceImageView.snp.makeConstraints {
       $0.top.equalTo(imageSelectLabel.snp.bottom).offset(20)
       $0.centerX.equalToSuperview()
       $0.height.equalTo(UIScreen.main.bounds.height * 0.25)
       $0.width.equalTo(330)
     }
     resultBtn.snp.makeConstraints {
-      $0.top.equalTo(cameraImg.snp.bottom).offset(15)
+      $0.top.equalTo(faceImageView.snp.bottom).offset(15)
       $0.centerX.equalToSuperview()
     }
     
   }
-  
+  // photo
   @objc func imageAddGesture(_ sender: UITapGestureRecognizer) {
     let imagePickerActionSheet = UIAlertController(title: "Snap/Upload Image",
                                                    message: nil, preferredStyle: .actionSheet)
@@ -196,9 +201,30 @@ class FaceRecognitionVC: UIViewController {
     present(imagePickerActionSheet, animated: true)
     
   }
+  
+  
+  
+  // 분석하기버튼
   @objc func resultBtnDidTap(_ sender: UIButton) {
-    let faceResultVC = FaceResultVC()
-    present(faceResultVC, animated: true)
+    guard let image = faceImageView.image else {
+      self.oneAlert(title: "경고", message: "이미지가 없습니다.", okButton: "확인")
+      return }
+    APICenter.shared.rekoMovie(image: image) { (result) in
+      switch result {
+      case .success(let value):
+        print("Test", value)
+        let faceResultVC = FaceResultVC()
+        faceResultVC.configure(imageUrlString: value.response.verticalImage, movieName: value.response.name, movieId: value.response.id)
+        
+        self.present(faceResultVC, animated: true)
+        
+      case .failure(let err):
+        dump(err)
+        self.oneAlert(title: "오류", message: "얼굴이 인식되지 않아요!", okButton: "확인")
+      }
+    }
+
+    
   }
 
 }
@@ -206,7 +232,7 @@ class FaceRecognitionVC: UIViewController {
 extension FaceRecognitionVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
     let image = info[.originalImage] as? UIImage
-    self.cameraImg.image = image
+    self.faceImageView.image = image
     picker.dismiss(animated: true)
   }
 }

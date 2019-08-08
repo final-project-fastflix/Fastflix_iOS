@@ -29,7 +29,6 @@ class SearchVC: UIViewController {
 
 extension SearchVC: SearchViewDelegate {
   func searchMovies(key: String, completion: @escaping (Result<SearchMovie, ErrorType>) -> ()) {
-    print("서치함")
     APICenter.shared.searchMovie(searchKey: key) { (result) in
       switch result {
       case .success(let value):
