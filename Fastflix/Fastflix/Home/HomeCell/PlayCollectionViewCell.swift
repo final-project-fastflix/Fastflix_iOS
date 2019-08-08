@@ -18,10 +18,19 @@ class PlayCollectionViewCell: UICollectionViewCell {
   
   private func setupPlayer() {
     let playerLayer = AVPlayerLayer(player: player)
+    playerLayer.masksToBounds = true
+    playerLayer.contentsGravity = .resizeAspectFill
     playerLayer.frame = UIScreen.main.bounds
+    
+    
     self.layer.addSublayer(playerLayer)
     player.play()
     
+  }
+  
+  override func didMoveToSuperview() {
+    super.didMoveToSuperview()
+    setupPlayer()
   }
   
   
