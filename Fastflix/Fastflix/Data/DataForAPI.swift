@@ -28,10 +28,11 @@ enum RequestString: String {
   case changeProfileInfoURL = "http://www.api.fastflix.co.kr/accounts/change_sub_user/"
   case deleteProfileInfoURL = "http://www.api.fastflix.co.kr/accounts/delete_sub_user/"
   case getGoldenMovieURL = "http://www.api.fastflix.co.kr/movies/big_size_video/"
-  case searchMovieURL = "http://www.api.fastflix.co.kr//movies/search/?search_key="
+  case searchMovieURL = "http://www.api.fastflix.co.kr/movies/search/?search_key="
   case getDetailURL = "http://www.api.fastflix.co.kr/movies/"
-  case getMovieGenre = "http://www.api.fastflix.co.kr//movies/genre/list/"
-  case getListByGenre = "http://www.api.fastflix.co.kr//movies/list_by_genre/"
+  case getMovieGenre = "http://www.api.fastflix.co.kr/movies/genre/list/"
+  case getListByGenre = "http://www.api.fastflix.co.kr/movies/list_by_genre/"
+  case postRekoMovie = "http://www.api.fastflix.co.kr/face_reko/"
 }
 
 
@@ -118,6 +119,29 @@ struct SearchMovie: Codable {
     case contents
     case firstMovie = "first_movie"
     case otherMovie = "other_movie"
+  }
+}
+
+// MARK: - RekoMovie
+struct RekoMovie: Codable {
+  let response: Response
+}
+
+// MARK: - Response
+struct Response: Codable {
+  let id: Int
+  let name: String
+  let horizontalImagePath: String
+  let verticalImage: String
+  let iosMainImage: String
+  let sampleVideoFile: String
+  
+  enum CodingKeys: String, CodingKey {
+    case id, name
+    case horizontalImagePath = "horizontal_image_path"
+    case verticalImage = "vertical_image"
+    case iosMainImage = "ios_main_image"
+    case sampleVideoFile = "sample_video_file"
   }
 }
 
