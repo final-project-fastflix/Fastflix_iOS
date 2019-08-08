@@ -166,12 +166,13 @@ struct GoldenMovie: Codable {
 // MARK: - FollowUpElement
 struct FollowUpElement: Codable {
   let movie: Movie
-  let toBeContinue, progressBar: Int
+  let toBeContinue, progressBar, totalMinute: Int
   
   enum CodingKeys: String, CodingKey {
     case movie
     case toBeContinue = "to_be_continue"
     case progressBar = "progress_bar"
+    case totalMinute = "total_minute"
   }
 }
 

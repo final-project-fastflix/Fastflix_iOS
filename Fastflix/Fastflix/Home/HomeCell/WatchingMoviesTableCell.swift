@@ -155,7 +155,7 @@ extension WatchingMoviesTableCell: UICollectionViewDataSource {
     if let data = baseData?[indexPath.row] {
       
       print("시청중인 콘텐츠",data)
-      cell.configure(imageUrl: data.movie.verticalImage, id: data.movie.id, video: data.movie.videoFile ?? "", runningTime: data.movie.realRunningTime, progress: data.progressBar, toBe: data.toBeContinue)
+      cell.configure(imageUrl: data.movie.verticalImage, id: data.movie.id, video: data.movie.videoFile ?? "", runningTime: data.totalMinute, progress: data.progressBar, toBe: data.toBeContinue)
 //      cell.playBtn.addTarget(self, action: #selector(self.collectionView(_:didSelectItemAt:)), for: .touchUpInside)
     }
 
