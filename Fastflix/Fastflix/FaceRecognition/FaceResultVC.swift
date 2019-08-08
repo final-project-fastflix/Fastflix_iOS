@@ -8,18 +8,18 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
+
 
 class FaceResultVC: UIViewController {
   
-//  var blurImageView: UIImageView = {
-//    let img = UIImageView()
-//    img.image = UIImage(named: "blur22")
-//    return img
-//  }()
+   var movieId: Int? = nil
+
   
   var blurImageView: UIImageView = {
     let img = UIImageView()
-    img.image = UIImage(named: "blurzzz")
+    img.image = UIImage(named: "fastblur")
+    img.contentMode = .scaleAspectFit
     return img
   }()
   
@@ -41,7 +41,7 @@ class FaceResultVC: UIViewController {
   }()
   
   
-  let movieId: UILabel = {
+  let movieTitle: UILabel = {
     let label = UILabel()
     label.text = " 미녀와 야수 "
     label.textColor = .lightGray
@@ -58,7 +58,7 @@ class FaceResultVC: UIViewController {
   }()
   
   
-  let movieImg: UIImageView = {
+  let movieImageView: UIImageView = {
     let movieImg = UIImageView()
     movieImg.image = UIImage(named: "283")
     movieImg.contentMode = .scaleAspectFit
@@ -68,7 +68,7 @@ class FaceResultVC: UIViewController {
   let dismissBtn: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("뒤로가기", for: .normal)
-    button.setTitleColor(.lightGray, for: .normal)
+    button.setTitleColor(#colorLiteral(red: 0.7380829632, green: 0.1894473448, blue: 0.07327392331, alpha: 1), for: .normal)
     button.addTarget(self, action: #selector(dismissBtnDidTap(_:)), for: .touchUpInside)
     button.layer.borderWidth = 0.8
     button.layer.borderColor = UIColor.gray.cgColor
@@ -89,10 +89,19 @@ class FaceResultVC: UIViewController {
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
+  
+  
+  func configure(imageUrlString: String, movieName: String, movieId: Int) {
+    
+    movieTitle.text = movieName
+    self.movieId = movieId
+    
+    movieImageView.kf.setImage(with: URL(string: imageUrlString), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 200))), .cacheOriginalImage])
+  }
 
   
   private func addSubViews() {
-    [blurImageView, resultLabel, movieId, line1, movieImg, dismissBtn]
+    [blurImageView, resultLabel, movieTitle, line1, movieImageView, dismissBtn]
       .forEach { view.addSubview($0) }
     [blurView]
       .forEach { blurImageView.addSubview($0) }
@@ -116,26 +125,26 @@ class FaceResultVC: UIViewController {
       $0.width.equalTo(280)
     }
     
-    movieId.snp.makeConstraints {
+    movieTitle.snp.makeConstraints {
       $0.top.equalTo(resultLabel.snp.bottom).offset(30)
       $0.centerX.equalToSuperview()
     }
     
     line1.snp.makeConstraints {
-      $0.top.equalTo(movieId.snp.bottom).offset(20)
+      $0.top.equalTo(movieTitle.snp.bottom).offset(20)
       $0.leading.trailing.equalToSuperview().inset(10)
       $0.height.equalTo(1)
     }
     
-    movieImg.snp.makeConstraints {
+    movieImageView.snp.makeConstraints {
       $0.top.equalTo(line1.snp.bottom).offset(40)
-      $0.height.equalTo(UIScreen.main.bounds.height * 0.3)
-      $0.width.equalTo(200)
+      $0.height.equalTo(UIScreen.main.bounds.height * 0.35)
+      $0.width.equalTo(250)
       $0.centerX.equalToSuperview()
     }
     
     dismissBtn.snp.makeConstraints {
-      $0.top.equalTo(movieImg.snp.bottom).offset(40)
+      $0.top.equalTo(movieImageView.snp.bottom).offset(50)
       $0.height.equalTo(40)
       $0.width.equalTo(150)
       $0.centerX.equalToSuperview()
