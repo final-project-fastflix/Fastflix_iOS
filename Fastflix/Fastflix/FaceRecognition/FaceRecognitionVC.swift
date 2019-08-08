@@ -126,15 +126,15 @@ class FaceRecognitionVC: UIViewController {
       $0.height.equalTo(UIScreen.main.bounds.height * 0.47)
     }
     fastLogo.snp.makeConstraints {
-      $0.top.equalToSuperview().offset(80)
+      $0.top.equalTo(UIScreen.main.bounds.height * 0.10)
       $0.centerX.equalToSuperview()
     }
     lineBtn.snp.makeConstraints {
-      $0.top.equalTo(fastLogo.snp.bottom).offset(40)
+      $0.top.equalTo(fastLogo.snp.bottom).offset(20)
       $0.centerX.equalToSuperview()
     }
     titleLabel.snp.makeConstraints {
-      $0.top.equalTo(lineBtn.snp.bottom).offset(20)
+      $0.top.equalTo(lineBtn.snp.bottom)
       $0.centerX.equalToSuperview()
     }
     
@@ -151,7 +151,7 @@ class FaceRecognitionVC: UIViewController {
     }
     
     imageSelectLabel.snp.makeConstraints {
-      $0.top.equalTo(infoLabel.snp.bottom)
+      $0.top.equalTo(infoLabel.snp.bottom).offset(-20)
       $0.centerX.equalToSuperview()
     }
     
