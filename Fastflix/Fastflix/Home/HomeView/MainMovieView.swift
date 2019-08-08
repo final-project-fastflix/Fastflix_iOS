@@ -9,8 +9,15 @@
 import UIKit
 import SnapKit
 import Kingfisher
+import AVKit
+
+protocol MainMovieViewDelegate: class {
+  func didTapPreview(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?)
+}
 
 final class MainMovieView: UIView {
+  
+  weak var myDelegate: MainMovieViewDelegate?
   
   var receiveData: RequestMovie? = nil
   var receiveKeys: [String]? = nil
@@ -19,25 +26,29 @@ final class MainMovieView: UIView {
   
   private var compareArr: [CGFloat] = []
   
+  var mainMovieId: Int?
+  
   private var originY: CGFloat {
     get {
       return floatingView.frame.origin.y
     }
     set {
       guard newValue >= -floatingView.frame.height || newValue <= 0 else { return }
-      //      print("newValue", floatingView.frame)
       floatingView.frame.origin.y = newValue
     }
   }
   
   let floatingView: FloatingView = {
     let view = FloatingView()
+    view.movieBtn.setTitle("장르", for: .normal)
     return view
   }()
   
   let tableView = UITableView()
   
   weak var delegate: SubTableCellDelegate?
+  
+  weak var mainDelegate: MainImageTableCellDelegate?
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
@@ -74,8 +85,9 @@ final class MainMovieView: UIView {
     }
     
     floatingView.snp.makeConstraints {
-      $0.leading.trailing.top.equalToSuperview()
+      $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(50 + topPadding)
+      $0.top.equalToSuperview().offset(-10)
     }
   }
   
@@ -95,24 +107,51 @@ extension MainMovieView: UITableViewDataSource {
     switch indexPath.row {
     case 0:
       let cell = tableView.dequeueReusableCell(withIdentifier: MainImageTableCell.identifier, for: indexPath) as! MainImageTableCell
+      
+      var text = ""
+      
+      if let data = mainData?.mainMovie.genre {
+        for idx in 0...data.count {
+          if idx < 3 {
+            text += (data[idx].name + "･")
+          }
+        }
+      }
+      
+      let lastText = String(text.dropLast())
+      
       cell.selectionStyle = .none
+      
+      let id = mainData?.mainMovie.id
+      
+      cell.delegate = self
+      cell.movieId = id
+      self.mainMovieId = id
+//      cell.mainMovie = mainData?.mainMovie
       cell.configure(imageURLString: mainData?.mainMovie.bigImagePath, logoImageURLString: mainData?.mainMovie.logoImagePath)
-      cell.movieDetailLabel.text = " 음악 ･ 마법을 걸어요 ･ 동화 ･ 사랑 ･ 걸파워 ･ 할리우드 영화 "
+      cell.movieDetailLabel.text = lastText
       return cell
+      
     case 1:
       let cell = tableView.dequeueReusableCell(withIdentifier: PreviewTableCell.identifier, for: indexPath) as! PreviewTableCell
       let path = DataCenter.shared
+      
       var mainURLs: [String] = []
       var logoURLs: [String] = []
+      var idArr: [Int] = []
+      var videoPathArr: [String] = []
+      
       if let data = path.preViewCellData {
         for index in data {
           mainURLs.append(index.circleImage)
           logoURLs.append(index.logoImagePath)
+          idArr.append(index.id)
+          videoPathArr.append(index.verticalSampleVideoFile ?? "")
         }
       }
-      print("check: ", logoURLs)
-//      cell.configure(mainURLs: mainURLs, logoURLs: logoURLs)
-//      cell.delegate = self
+//      print("check: ", logoURLs)
+      cell.configure(idArr: idArr.reversed(), mainURLs: mainURLs.reversed(), logoURLs: logoURLs.reversed(), videos: videoPathArr.reversed())
+      cell.delegate = self
       cell.selectionStyle = .none
       cell.layoutIfNeeded()
       return cell
@@ -150,8 +189,6 @@ extension MainMovieView: UITableViewDelegate {
     
     let fixValue = floatingView.frame.size.height
     
-    var compareValue: CGFloat = 0
-    
     var floatValue: CGFloat {
       get {
         return originValue
@@ -169,13 +206,14 @@ extension MainMovieView: UITableViewDelegate {
     }
     
     
+    
     if compareArr.count > 1 {
       compareArr.remove(at: 0)
     }
     compareArr.append(offset)
     
     if offset <= -topPadding {
-      floatingView.frame.origin.y = 0
+      floatingView.frame.origin.y = -10
       return
     }
     
@@ -184,13 +222,13 @@ extension MainMovieView: UITableViewDelegate {
         // show
         let addtionalValue = compareArr[1] - compareArr[0]
         floatValue += -addtionalValue
-        originY = floatValue
+        originY = floatValue - 10
         return
       } else if compareArr[0] < compareArr[1] {
         // hide
         let addtionalValue = compareArr[1] - compareArr[0]
         floatValue += -addtionalValue
-        originY = floatValue
+        originY = floatValue - 10
         return
       } else {
         return
@@ -202,14 +240,11 @@ extension MainMovieView: UITableViewDelegate {
 }
 
 
-//extension MainMovieView: PreviewTableCellDelegate {
-//  func didSelectItemAt(indexPath: IndexPath) {
-//    print("didSelectItemAt")
-//
-//
-//
-//  }
-//}
+extension MainMovieView: PreviewTableCellDelegate {
+  func didSelectItemAt(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
+    myDelegate?.didTapPreview(indexPath: indexPath, logoArr: logoArr, videoItems: videoItems, idArr: idArr)
+  }
+}
 
 extension MainMovieView: SubTableCellDelegate {
   func didSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
@@ -219,8 +254,16 @@ extension MainMovieView: SubTableCellDelegate {
   func errOccurSendingAlert(message: String, okMessage: String) {
     delegate?.errOccurSendingAlert(message: message, okMessage: okMessage)
   }
+}
+
+
+extension MainMovieView: MainImageTableCellDelegate {
+  func playVideo(id: Int) {
+    mainDelegate?.playVideo(id: mainMovieId!)
+  }
   
-  
-  
+  func mainImageCelltoDetailVC(id: Int) {
+    mainDelegate?.mainImageCelltoDetailVC(id: mainMovieId!)
+  }
   
 }

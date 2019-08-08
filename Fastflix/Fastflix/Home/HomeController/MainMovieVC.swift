@@ -10,6 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 import Alamofire
+import AVKit
 
 class MainMovieVC: UIViewController {
   
@@ -25,23 +26,26 @@ class MainMovieVC: UIViewController {
   
   lazy var receiveKeys: [String]? = nil
   
-//  override func loadView() {
-//    mainMovieView.receiveKeys = receiveKeys
-//    mainMovieView.receiveData = receiveData
-//    mainMovieView.floatingView.delegate = self
-//    categoryVC.delegate = self
-//    self.view = mainMovieView
-//  }
+  //  override func loadView() {
+  //    mainMovieView.receiveKeys = receiveKeys
+  //    mainMovieView.receiveData = receiveData
+  //    mainMovieView.floatingView.delegate = self
+  //    categoryVC.delegate = self
+  //    self.view = mainMovieView
+  //  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     mainMovieView.receiveKeys = receiveKeys
     mainMovieView.receiveData = receiveData
     mainMovieView.floatingView.delegate = self
+    mainMovieView.mainDelegate = self
+    
     categoryVC.delegate = self
-//    self.view = mainMovieView
+    
     view.addSubview(mainMovieView)
     mainMovieView.delegate = self
+    mainMovieView.myDelegate = self
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -54,7 +58,7 @@ class MainMovieVC: UIViewController {
       $0.top.leading.bottom.trailing.equalToSuperview()
     }
   }
-
+  
 }
 
 extension MainMovieVC: FloatingViewDelegate {
@@ -63,9 +67,9 @@ extension MainMovieVC: FloatingViewDelegate {
   }
   
   func didTapMovie() {
-//    let mainMovieVC = self
-//    mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
-//    tabBarController?.viewControllers?[0] = mainMovieVC
+    //    let mainMovieVC = self
+    //    mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
+    //    tabBarController?.viewControllers?[0] = mainMovieVC
     
     categoryVC.modalPresentationStyle = .overCurrentContext
     UIView.animate(withDuration: 0.7) {
@@ -89,8 +93,14 @@ extension MainMovieVC: FloatingViewDelegate {
 }
 
 extension MainMovieVC: CategorySelectVCDelegate {
+  func sendText(text: String?) {
+    DispatchQueue.main.async {
+      self.mainMovieView.floatingView.movieBtn.setTitle(text, for: .normal)
+    }
+  }
+  
   func sendData(data: [RequestMovieElement], keys: [String]) {
-//    let view = self.view as! MainMovieView
+    //    let view = self.view as! MainMovieView
     print("runrun")
     mainMovieView.receiveData = data
     mainMovieView.receiveKeys = keys
@@ -116,3 +126,79 @@ extension MainMovieVC: SubTableCellDelegate {
     self.oneAlert(title: "영화데이터 오류", message: message, okButton: okMessage)
   }
 }
+
+extension MainMovieVC: MainMovieViewDelegate {
+  func didTapPreview(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
+    let preViewPlayerVC = PreViewPlayerVC()
+    preViewPlayerVC.logoURLs = logoArr
+    preViewPlayerVC.playerItems = videoItems
+    preViewPlayerVC.idArr = idArr
+    present(preViewPlayerVC, animated: true)
+  }
+}
+
+extension MainMovieVC: MainImageTableCellDelegate {
+  func mainImageCelltoDetailVC(id: Int) {
+    
+    let movieId = id
+    
+    APICenter.shared.getDetailData(id: movieId) {
+      switch $0 {
+      case .success(let movie):
+        DispatchQueue.main.async {
+          let detailVC = DetailVC()
+          detailVC.movieId = movie.id
+          detailVC.movieDetailData = movie
+          self.present(detailVC, animated: true)
+        }
+      case .failure(let err):
+        print("fail to login, reason: ", err)
+        
+        let message = """
+        죄송합니다. 해당 영화에 대한 정보를 가져오지
+        못했습니다. 다시 시도해 주세요.
+        """
+        DispatchQueue.main.async {
+          self.oneAlert(title: "영화데이터 오류", message: message, okButton: "재시도")
+        }
+      }
+    }
+  }
+  
+  func playVideo(id: Int) {
+    print("run playVideo")
+    let player = PlayerVC()
+    
+    let movieId = id
+    
+    APICenter.shared.getDetailData(id: movieId) {
+      switch $0 {
+      case .success(let movie):
+        print("디테일뷰 다시띄우기 위해 영화정보 다시 띄우기: ", movie.id, movie.name)
+        
+        // 영화 메인무비 정보
+        let url = movie.videoFile
+        let title = movie.name
+        let id = movie.id
+        
+        DispatchQueue.main.async {
+          player.configure(id: id, title: title, videoPath: url, seekTime: nil)
+          AppDelegate.instance.shouldSupportAllOrientation = false
+          self.present(player, animated: true)
+        }
+        
+      case .failure(let err):
+        print("fail to login, reason: ", err)
+        
+        let message = """
+        죄송합니다. 해당 영화에 대한 정보를 가져오지
+        못했습니다. 다시 시도해 주세요.
+        """
+        DispatchQueue.main.async {
+          self.oneAlert(title: "영화 플레이 오류", message: message, okButton: "재시도")
+        }
+      }
+    }
+  }
+}
+

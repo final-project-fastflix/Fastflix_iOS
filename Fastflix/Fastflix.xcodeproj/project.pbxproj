@@ -47,7 +47,6 @@
 		C14355F422DB0B11005189E9 /* PreviewCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14355F322DB0B11005189E9 /* PreviewCollectionCell.swift */; };
 		C14355F622DB0B18005189E9 /* PreviewTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14355F522DB0B18005189E9 /* PreviewTableCell.swift */; };
 		C14355F822DB0E22005189E9 /* MainImageTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14355F722DB0E22005189E9 /* MainImageTableCell.swift */; };
-		C143560222DC8D1C005189E9 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = C143560122DC8D1C005189E9 /* Player.swift */; };
 		C143560422DC8E3E005189E9 /* PreViewPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C143560322DC8E3E005189E9 /* PreViewPlayerVC.swift */; };
 		C143560822DCAA98005189E9 /* OriginalCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C143560722DCAA98005189E9 /* OriginalCollectionCell.swift */; };
 		C143560A22DCAAD5005189E9 /* OriginalTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C143560922DCAAD5005189E9 /* OriginalTableCell.swift */; };
@@ -130,7 +129,6 @@
 		C14355F322DB0B11005189E9 /* PreviewCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewCollectionCell.swift; sourceTree = "<group>"; };
 		C14355F522DB0B18005189E9 /* PreviewTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewTableCell.swift; sourceTree = "<group>"; };
 		C14355F722DB0E22005189E9 /* MainImageTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainImageTableCell.swift; sourceTree = "<group>"; };
-		C143560122DC8D1C005189E9 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		C143560322DC8E3E005189E9 /* PreViewPlayerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreViewPlayerVC.swift; sourceTree = "<group>"; };
 		C143560722DCAA98005189E9 /* OriginalCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalCollectionCell.swift; sourceTree = "<group>"; };
 		C143560922DCAAD5005189E9 /* OriginalTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OriginalTableCell.swift; sourceTree = "<group>"; };
@@ -334,7 +332,6 @@
 				529BDC3D22F924D6004D9B10 /* PlayerView.swift */,
 				478B2B7D22FB033900925759 /* FastFilixPlayerView.swift */,
 				5295216C22D5D62F00174BC1 /* FloatingView.swift */,
-				C143560122DC8D1C005189E9 /* Player.swift */,
 				C1C522F922F4AECB00B34866 /* LoadingView.swift */,
 				C17A3C2122F81DBE00C4C29B /* PreViewPlayerView.swift */,
 			);
@@ -698,7 +695,6 @@
 				47FF9DC722DE3CC4005C7BAD /* DetailViewBelowCollectionViewCell.swift in Sources */,
 				47E35BDB22F0C57A002D5319 /* AddView.swift in Sources */,
 				C1FC3F3422E8ACFC008E1FE9 /* MyContentVC.swift in Sources */,
-				C143560222DC8D1C005189E9 /* Player.swift in Sources */,
 				470B0BCA22F857FD006EFBE2 /* BlurEffectExtension.swift in Sources */,
 				C1FC3F2E22E6B9BA008E1FE9 /* MainMovieVC.swift in Sources */,
 				5295216522D5D57F00174BC1 /* DataOfTass.swift in Sources */,
@@ -859,7 +855,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KNHX5B578D;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Fastflix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -879,7 +875,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KNHX5B578D;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Fastflix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (

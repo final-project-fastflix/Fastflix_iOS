@@ -10,6 +10,7 @@ import UIKit
 
 protocol CategorySelectVCDelegate {
   func sendData(data: [RequestMovieElement], keys: [String])
+  func sendText(text: String?)
 }
 
 class CategorySelectVC: UIViewController {
@@ -159,6 +160,7 @@ extension CategorySelectVC: UITableViewDelegate {
     let genreName = categoryArray[indexPathRow]
     // 실제 데이터요청에 필요한 장르로 바꾸기
     let name = checkGenre(genre: genreName)
+    delegate?.sendText(text: name)
     
     APICenter.shared.getListByGenreData(genre: name) {
       switch $0 {

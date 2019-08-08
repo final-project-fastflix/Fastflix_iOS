@@ -12,6 +12,8 @@ import AVKit
 
 class MainHomeVC: UIViewController {
   
+  let subUserSingle = SubUserSingleton.shared
+  
   // download 가 끝났을 시, 결과값이 true라면 reload
   var finishDownload = false {
     willSet(new) {
@@ -30,10 +32,12 @@ class MainHomeVC: UIViewController {
       return floatingView.frame.origin.y
     }
     set {
-      guard newValue >= -94 || newValue <= 0 else { return }
+      guard newValue >= -floatingView.frame.height || newValue <= 0 else { return }
       floatingView.frame.origin.y = newValue
     }
   }
+  
+  var mainMovieId: Int?
   
   // streamingCell이 보여질때 플레이 아니면 일시정지
   private var streamingCellFocus = false {
@@ -70,6 +74,7 @@ class MainHomeVC: UIViewController {
     return view
   }()
   
+  var userName: String?
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
@@ -81,11 +86,21 @@ class MainHomeVC: UIViewController {
     registerTableViewCell()
   }
   
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    userSetting()
+    floatingView.movieBtn.setTitle("영화", for: .normal)
+  }
+  
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     setupSNP()
   }
   
+  private func userSetting() {
+    let user = subUserSingle.subUserList?.filter { $0.id == APICenter.shared.getSubUserID() }
+    self.userName = user?[0].name
+  }
   
   
   private func addSubViews() {
@@ -98,8 +113,9 @@ class MainHomeVC: UIViewController {
     }
     
     floatingView.snp.makeConstraints {
-      $0.leading.trailing.top.equalToSuperview()
+      $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(50 + topPadding)
+      $0.top.equalToSuperview().offset(-10)
     }
   }
   
@@ -131,12 +147,17 @@ extension MainHomeVC: UITableViewDataSource {
       let bigImgPath = path.mainImageCellData?.mainMovie?.iosMainImage
       let logoImgPath = path.mainImageCellData?.mainMovie?.logoImagePath
       var text = ""
+      let id = path.mainImageCellData?.mainMovie?.id
       
       cell.delegate = self
+      cell.movieId = id
+      self.mainMovieId = id
       cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
       if let data = path.mainImageCellData?.mainMovie?.genre {
-        for idx in data {
-          text += (idx.name + "･")
+        for idx in 0...data.count {
+          if idx < 3 {
+            text += (data[idx].name + "･")
+          }
         }
       }
       let lastText = String(text.dropLast())
@@ -225,8 +246,12 @@ extension MainHomeVC: UITableViewDataSource {
       
     case 7:
       let cell = tableView.dequeueReusableCell(withIdentifier: WatchingMoviesTableCell.identifier, for: indexPath) as! WatchingMoviesTableCell
+      
+      let user = subUserSingle.subUserList?.filter { $0.id == APICenter.shared.getSubUserID() }
+      self.userName = user?[0].name
+      
       if let data = path.followUpMovie {
-        cell.configure(data: data, title: "시청중인 영화")
+        cell.configure(data: data, subUserName: self.userName)
       }
       cell.selectionStyle = .none
       cell.delegate = self
@@ -256,19 +281,37 @@ extension MainHomeVC: PreviewTableCellDelegate {
 
 
 extension MainHomeVC: OriginalTableCellDelegate {
-  func originalDidSelectItemAt(indexPath: IndexPath) {
+  func originalDidSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
+    
+    // 오리지널 눌렀을때
     let detailVC = DetailVC()
-    present(detailVC, animated: true)
+    detailVC.movieId = movieId
+    detailVC.movieDetailData = movieInfo
+    
+    self.present(detailVC, animated: true)
   }
   
 }
-extension MainHomeVC: WatchingMoviesTableCelllDelegate {
-  func WatchingMovielDidSelectItemAt(indexPath: IndexPath) {
-    print("MainHomeVC : WatchingMovielDidSelectItemAt")
+
+
+extension MainHomeVC: WatchingMoviesTableCellDelegate {
+  func WatchingMovielDidSelectItemAt(movieId: Int, url: String, movieTitle: String) {
+    
+    // 시청중인 콘텐츠 ===> 플레이어로 연결
+    let player = PlayerVC()
+    
+    let url = url
+    let title = movieTitle
+    let id = movieId
+    
+    player.configure(id: id, title: title, videoPath: url, seekTime: nil)
+    AppDelegate.instance.shouldSupportAllOrientation = false
+    self.present(player, animated: true)
   }
   
-  
 }
+
+
 
 extension MainHomeVC: UITableViewDelegate {
   
@@ -283,8 +326,6 @@ extension MainHomeVC: UITableViewDelegate {
     let transition = scrollView.panGestureRecognizer.translation(in: scrollView).y.rounded()
     
     let fixValue = floatingView.frame.size.height
-    
-    var compareValue: CGFloat = 0
     
     var floatValue: CGFloat {
       get {
@@ -308,8 +349,8 @@ extension MainHomeVC: UITableViewDelegate {
     }
     compareArr.append(offset)
     
-    if offset <= -44 {
-      floatingView.frame.origin.y = 0
+    if offset <= -topPadding {
+      floatingView.frame.origin.y = -10
       return
     }
     
@@ -318,18 +359,21 @@ extension MainHomeVC: UITableViewDelegate {
         // show
         let addtionalValue = compareArr[1] - compareArr[0]
         floatValue += -addtionalValue
-        originY = floatValue
+        originY = floatValue - 10
         return
       } else if compareArr[0] < compareArr[1] {
         // hide
         let addtionalValue = compareArr[1] - compareArr[0]
         floatValue += -addtionalValue
-        originY = floatValue
+        originY = floatValue - 10
+        
         return
       } else {
         return
       }
     }
+    
+    
   
   }
 }
@@ -387,7 +431,33 @@ extension MainHomeVC: SubTableCellDelegate {
 
 
 extension MainHomeVC: MainImageTableCellDelegate {
-  func playVideo() {
+  func mainImageCelltoDetailVC(id: Int) {
+    
+    APICenter.shared.getDetailData(id: mainMovieId!) {
+      switch $0 {
+      case .success(let movie):
+        print("디테일뷰 다시띄우기 위해 영화정보 다시 띄우기: ", movie.id, movie.name)
+        DispatchQueue.main.async {
+          let detailVC = DetailVC()
+          detailVC.movieId = self.mainMovieId!
+          detailVC.movieDetailData = movie
+          self.present(detailVC, animated: true)
+        }
+      case .failure(let err):
+        print("fail to login, reason: ", err)
+        
+        let message = """
+        죄송합니다. 해당 영화에 대한 정보를 가져오지
+        못했습니다. 다시 시도해 주세요.
+        """
+        DispatchQueue.main.async {
+          self.oneAlert(title: "영화데이터 오류", message: message, okButton: "재시도")
+        }
+      }
+    }
+  }
+  
+  func playVideo(id: Int) {
     print("run playVideo")
     let player = PlayerVC()
     

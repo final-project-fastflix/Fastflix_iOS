@@ -17,14 +17,17 @@ class SearchView: UIView {
   
   weak var delegate: SearchViewDelegate?
   
+  weak var searchDelegate: SubTableCellDelegate?
+  
   lazy var imgPaths: [String] = []
   lazy var movieIDArr: [Int] = []
+//  lazy var movieArray: [SearchMovie] = []
   
   var searchMovies: SearchMovie? {
     willSet(new) {
       guard let data = new else { return }
       self.imgPaths = []
-      
+      self.movieIDArr = []
       
       DispatchQueue.main.async {
         data.firstMovie.forEach { self.imgPaths.append($0.verticalImage ?? "") }
@@ -34,7 +37,6 @@ class SearchView: UIView {
         print("checkPath: ", self.movieIDArr)
         self.collectionView.reloadData()
       }
-      
     }
   }
   
@@ -122,13 +124,37 @@ extension SearchView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchCollectionCell.identifier, for: indexPath) as! SearchCollectionCell
     cell.delegate = self
-    cell.configure(imageUrlString: imgPaths[indexPath.row])
+    cell.configure(imageUrlString: imgPaths[indexPath.row], movieId: movieIDArr[indexPath.row])
     return cell
   }
   
   
 }
 extension SearchView: UICollectionViewDelegate {
+  
+//  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+  
+//    print("영화 아이디:", movieIDArr[indexPath.row])
+//    APICenter.shared.getDetailData(id: movieIDArr[indexPath.row]) { (result) in
+//      switch result {
+//      case .success(let movie):
+//        self.searchDelegate?.didSelectItemAt(movieId: movie.id, movieInfo: movie)
+//
+//      case .failure(let err):
+//        dump(err)
+//        print("fail to login, reason: ", err)
+//
+//        let message = """
+//        죄송합니다. 해당 영화에 대한 정보를 가져오지
+//        못했습니다. 다시 시도해 주세요.
+//        """
+//        let okMessage = "재시도"
+//
+//        self.searchDelegate?.errOccurSendingAlert(message: message, okMessage: okMessage)
+//      }
+//    }
+//  }
+  
   
 }
 
@@ -140,7 +166,7 @@ extension SearchView: UISearchBarDelegate {
   }
   
   func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-    
+
     searchBar.setPositionAdjustment(offset, for: .search)
     print("end")
     return true
@@ -164,24 +190,44 @@ extension SearchView: UISearchBarDelegate {
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     searchBar.resignFirstResponder()
     
-    
   }
+  
+  
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     print("취소오?")
     searchBar.resignFirstResponder()
  
     collectionView.reloadData()
-   
-   
+  
   }
   
 }
 
 
 extension SearchView: SearchCollectionCellDelegate {
+  func passMovieId(movieId: Int) {
+    print("영화 아이디:", movieId)
+    APICenter.shared.getDetailData(id: movieId) { (result) in
+      switch result {
+      case .success(let movie):
+        self.searchDelegate?.didSelectItemAt(movieId: movie.id, movieInfo: movie)
+      case .failure(let err):
+        dump(err)
+        print("fail to login, reason: ", err)
+        
+        let message = """
+            죄송합니다. 해당 영화에 대한 정보를 가져오지
+            못했습니다. 다시 시도해 주세요.
+            """
+        let okMessage = "재시도"
+        
+        self.searchDelegate?.errOccurSendingAlert(message: message, okMessage: okMessage)
+      }
+    }
+  }
+  
   func resignKeyboard() {
     self.searchBar.resignFirstResponder()
   }
-  
-  
 }
+

@@ -114,3 +114,7 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 19.08.07 feat: allen - CategorySelectVC in MainMovie, detailVC for movie page.
 
 19.08.08  feat: tass - Allow Http (www.api.fastflix.co.kr)
+
+19.08.08  feat: tass - FloatingView Text
+
+19.08.08  fix: tass - FloatingView in TopSafearea 20
