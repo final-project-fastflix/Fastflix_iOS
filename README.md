@@ -127,3 +127,4 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 
 19.08.08  feat: tass - rekoMovie Request
 
+19.08.09 feat: allen - my poked contents, fastflix original contents data hooking up.

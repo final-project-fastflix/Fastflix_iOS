@@ -10,13 +10,17 @@ import UIKit
 // 내가 찜한 콘텐츠 컨트롤러
 
 class MyContentVC: UIViewController {
+  
   lazy var myContentView = MyContentView()
+  
+  let path = DataCenter.shared
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     setupNavi()
     
   }
+  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -24,6 +28,7 @@ class MyContentVC: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+  
   }
   
   override func loadView() {
@@ -31,10 +36,12 @@ class MyContentVC: UIViewController {
     self.view = myContentView
     view.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     myContentView.delegate = self
+    myContentView.contentDelegate = self
   }
   
   private func setupNavi() {
     title = "내가 찜한 콘텐츠"
+    navigationController?.setNavigationBarHidden(false, animated: true)
     self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
     navigationController?.navigationBar.shadowImage = UIImage()
@@ -43,6 +50,7 @@ class MyContentVC: UIViewController {
     navigationItem.backBarButtonItem = UIBarButtonItem(title: "❮", style: .done, target: nil, action: nil)
     navigationController?.navigationBar.tintColor = .white
   }
+  
   
 }
 
@@ -78,6 +86,24 @@ extension MyContentVC: MyContentViewDelegate {
     //
     //    }
   }
+}
+
+extension MyContentVC: SubTableCellDelegate {
   
+  func didSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
+    // 영화 화면에서 디테일뷰 띄우기
+    DispatchQueue.main.async {
+      print("영화정보 디테일: ", movieId, movieInfo.name)
+      let detailVC = DetailVC()
+      detailVC.movieId = movieId
+      detailVC.movieDetailData = movieInfo
+      
+      self.present(detailVC, animated: true)
+    }
+  }
+  
+  func errOccurSendingAlert(message: String, okMessage: String) {
+    self.oneAlert(title: "영화데이터 오류", message: message, okButton: okMessage)
+  }
   
 }
