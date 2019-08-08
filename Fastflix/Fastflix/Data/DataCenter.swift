@@ -26,6 +26,8 @@ class DataCenter {
   var goldenMovie: GoldenMovie?
   
   var followUpMovie: FollowUp?
+  
+  var recommendMovie: [Search]?
 
   let group = DispatchGroup()
   
@@ -42,7 +44,7 @@ class DataCenter {
       self.getTop10Data()
       self.getGoldenMovieData()
       self.getFollowUpData()
-    
+      self.getRecommendData()
   }
   
   private func getGoldenMovieData() {
@@ -149,5 +151,23 @@ class DataCenter {
       }
     }
   }
+  
+  private func getRecommendData() {
+    group.enter()
+    downloadPath.getRecommendMovieData { (result) in
+      switch result {
+      case .success(let value):
+        self.recommendMovie = value
+        self.group.leave()
+      case .failure(let err):
+        dump(err)
+        self.recommendMovie = nil
+        self.group.leave()
+      }
+    }
+  }
+  
+  
+  
   
 }

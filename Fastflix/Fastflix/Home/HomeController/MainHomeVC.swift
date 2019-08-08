@@ -134,11 +134,10 @@ class MainHomeVC: UIViewController {
 extension MainHomeVC: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 8
+    return 9
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
     
     
     switch indexPath.row {
@@ -256,6 +255,23 @@ extension MainHomeVC: UITableViewDataSource {
       cell.selectionStyle = .none
       cell.delegate = self
       return cell
+      
+    case 8:
+      let cell = SubCell()
+      var mainURLs: [String] = []
+      var movieIDArr: [Int] = []
+      
+      if let data = path.recommendMovie {
+        for index in data {
+          mainURLs.append(index.verticalImage!)
+          movieIDArr.append(index.id)
+        }
+      }
+      
+      cell.configure(url: mainURLs, title: "추천영화", movieIDs: movieIDArr)
+      cell.delegate = self
+      return cell
+      
       
     default:
       let cell = tableView.dequeueReusableCell(withIdentifier: SubCell.identifier, for: indexPath) as! SubCell
