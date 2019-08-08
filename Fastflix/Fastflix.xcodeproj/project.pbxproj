@@ -85,6 +85,7 @@
 		C1FC3F9522F408B7008E1FE9 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FC3F9422F408B7008E1FE9 /* LaunchView.swift */; };
 		C1FD830722FC098C00EA08E5 /* FaceResultVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FD830622FC098C00EA08E5 /* FaceResultVC.swift */; };
 		C1FD830922FC09B800EA08E5 /* FaceRecognitionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FD830822FC09B800EA08E5 /* FaceRecognitionVC.swift */; };
+		C1FD830B22FC1B5600EA08E5 /* ImageCreateSheetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FD830A22FC1B5600EA08E5 /* ImageCreateSheetAlert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -170,6 +171,7 @@
 		C1FC3F9422F408B7008E1FE9 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		C1FD830622FC098C00EA08E5 /* FaceResultVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceResultVC.swift; sourceTree = "<group>"; };
 		C1FD830822FC09B800EA08E5 /* FaceRecognitionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaceRecognitionVC.swift; sourceTree = "<group>"; };
+		C1FD830A22FC1B5600EA08E5 /* ImageCreateSheetAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCreateSheetAlert.swift; sourceTree = "<group>"; };
 		E29600FEE1EEB7B6DD9E0171 /* Pods_Fastflix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Fastflix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -260,6 +262,7 @@
 				C1FC3F4022EAE5BB008E1FE9 /* AlertExtension.swift */,
 				470B0BC922F857FD006EFBE2 /* BlurEffectExtension.swift */,
 				47B4086922EAF30400D6A19D /* ImageCropExtension.swift */,
+				C1FD830A22FC1B5600EA08E5 /* ImageCreateSheetAlert.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -686,6 +689,7 @@
 				5295216B22D5D5E600174BC1 /* DoNotUse2.swift in Sources */,
 				C1FC3F0422E594E1008E1FE9 /* CreateProfileVC.swift in Sources */,
 				C1CA09C422E0A087009B1296 /* SeeMoreVC.swift in Sources */,
+				C1FD830B22FC1B5600EA08E5 /* ImageCreateSheetAlert.swift in Sources */,
 				C1FD830722FC098C00EA08E5 /* FaceResultVC.swift in Sources */,
 				C1C522F822F4AEBA00B34866 /* LoadingVC.swift in Sources */,
 				47FF9DC122DE3C15005C7BAD /* DetailVC.swift in Sources */,
