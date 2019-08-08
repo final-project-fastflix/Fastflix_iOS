@@ -184,7 +184,5 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
     bottomView.addGestureRecognizer(tap)
     bottomView.isUserInteractionEnabled = true
   }
-  
-  
-  
+
 }
