@@ -8,6 +8,7 @@
 
 import Foundation
 import Alamofire
+import ImageIO
 
 
 class APICenter {
@@ -49,27 +50,30 @@ class APICenter {
     let header = getHeader(needSubuser: false)
     print("errorreko", header)
     let url = RequestString.postRekoMovie.rawValue
-    guard let convertImg = image.jpegData(compressionQuality: 0.9) else {
+    guard let convertImg = image.pngData() else {
       completion(.failure(ErrorType.NoData))
       return }
     
     
     Alamofire.upload(multipartFormData: { multi in
-      multi.append(convertImg, withName: "image", mimeType: "image/jpeg")
+//      multi.append(convertImg, withName: "image", mimeType: "image/png")
+      multi.append(convertImg, withName: "image", fileName: "image", mimeType: "image/png")
     }, to: url, method: .post, headers: header) { (result) in
       switch result {
       case .success(request: let req, streamingFromDisk: _, streamFileURL: _):
-        req.responseData(queue: .global(), completionHandler: { (result) in
+        req.responseData(queue: .main, completionHandler: { (result) in
           
           switch result.result {
           case .success(let value):
-            let test = try? JSONSerialization.jsonObject(with: value)
             print("errorreko", value)
+            let test = try? JSONSerialization.jsonObject(with: value) as? [Any]
+            print("errorreko", test)
             guard let data = try? JSONDecoder().decode(RekoMovie.self, from: value) else {
               completion(.failure(ErrorType.FailToParsing))
               return
             }
             completion(.success(data))
+            
           case .failure(let err):
             dump(err)
             completion(.failure(ErrorType.networkError))

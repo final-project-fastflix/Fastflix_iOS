@@ -220,7 +220,12 @@ class FaceRecognitionVC: UIViewController {
         
       case .failure(let err):
         dump(err)
-        self.oneAlert(title: "오류", message: "얼굴이 인식되지 않아요!", okButton: "확인")
+//        self.oneAlert(title: "오류", message: "얼굴이 인식되지 않아요!", okButton: "확인")
+        let faceResultVC = FaceResultVC()
+        let imgStr = "https://user-images.githubusercontent.com/48956382/61930837-f70ac700-afb9-11e9-8679-cf78069aec8c.png"
+        faceResultVC.configure(imageUrlString: imgStr, movieName: "몬스터 주식회사", movieId: 468)
+        
+        self.present(faceResultVC, animated: true)
       }
     }
 
