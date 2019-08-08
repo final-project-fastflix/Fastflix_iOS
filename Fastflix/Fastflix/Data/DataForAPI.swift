@@ -32,6 +32,7 @@ enum RequestString: String {
   case getDetailURL = "http://www.api.fastflix.co.kr/movies/"
   case getMovieGenre = "http://www.api.fastflix.co.kr//movies/genre/list/"
   case getListByGenre = "http://www.api.fastflix.co.kr//movies/list_by_genre/"
+  case getRecommendMovieURL = "http://www.api.fastflix.co.kr//movies/rcd/"
 }
 
 
@@ -128,12 +129,14 @@ struct Search: Codable {
   let horizontalImagePath: String
   let verticalImage: String?
   let iosMainImage: String?
+  let sampleVideoFile: String?
   
   enum CodingKeys: String, CodingKey {
     case id, name
     case horizontalImagePath = "horizontal_image_path"
     case verticalImage = "vertical_image"
     case iosMainImage = "ios_main_image"
+    case sampleVideoFile = "sample_video_file"
   }
 }
 
