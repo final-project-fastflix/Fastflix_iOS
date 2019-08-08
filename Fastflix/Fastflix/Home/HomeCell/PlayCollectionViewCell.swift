@@ -13,28 +13,35 @@ class PlayCollectionViewCell: UICollectionViewCell {
   
   static let identifier = "PlayCollectionViewCell"
   
-  var playerItem: AVPlayerItem?
-  lazy var player = AVPlayer(playerItem: playerItem)
+//  var playerItem: AVPlayerItem?
+//  lazy var player = AVPlayer(playerItem: playerItem)
+  var player = AVPlayer()
+  var playerLayer: AVPlayerLayer?
   
-  private func setupPlayer() {
-    let playerLayer = AVPlayerLayer(player: player)
-    playerLayer.masksToBounds = true
-    playerLayer.contentsGravity = .resizeAspectFill
-    playerLayer.frame = UIScreen.main.bounds
+  func configure(item: AVPlayerItem?) {
+//    self.playerItem = item
+//    player = AVPlayer()
+    player.replaceCurrentItem(with: item)
     
-    
-    self.layer.addSublayer(playerLayer)
-    player.play()
-    
+    setupPlayer()
   }
   
-  deinit {
-    player.pause()
+  private func setupPlayer() {
+    
+    playerLayer = AVPlayerLayer(player: player)
+    playerLayer?.masksToBounds = true
+    playerLayer?.contentsGravity = .resizeAspectFill
+    playerLayer?.frame = UIScreen.main.bounds
+    
+    
+    self.layer.addSublayer(playerLayer!)
+//    player.play()
+    
   }
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
-    setupPlayer()
+    
   }
   
   

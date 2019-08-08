@@ -13,6 +13,7 @@ import AVKit
 class MainHomeVC: UIViewController {
   
   let subUserSingle = SubUserSingleton.shared
+  var preViewPlayerVC: PreViewPlayerVC? = nil
   
   // download 가 끝났을 시, 결과값이 true라면 reload
   var finishDownload = false {
@@ -413,12 +414,21 @@ extension MainHomeVC: UITableViewDataSource {
 // 미리보기
 extension MainHomeVC: PreviewTableCellDelegate {
   func didSelectItemAt(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
-    let preViewPlayerVC = PreViewPlayerVC()
-    preViewPlayerVC.logoURLs = logoArr
-    preViewPlayerVC.playerItems = videoItems
-    preViewPlayerVC.idArr = idArr
-    present(preViewPlayerVC, animated: true)
+    preViewPlayerVC = PreViewPlayerVC()
+    preViewPlayerVC?.logoURLs = logoArr
+    preViewPlayerVC?.playerItems = videoItems
+    preViewPlayerVC?.idArr = idArr
+    guard let view = preViewPlayerVC else { return }
+    present(view, animated: true)
   }
+  
+}
+
+extension MainHomeVC: PreViewPlayerVCDelegate {
+  func finishVideo() {
+    preViewPlayerVC = nil
+  }
+  
   
 }
 
