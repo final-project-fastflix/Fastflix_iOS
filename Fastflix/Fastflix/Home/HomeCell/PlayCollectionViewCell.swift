@@ -15,7 +15,7 @@ class PlayCollectionViewCell: UICollectionViewCell {
   
 //  var playerItem: AVPlayerItem?
 //  lazy var player = AVPlayer(playerItem: playerItem)
-  var player: AVPlayer?
+  var player = AVPlayer()
   
   func configure(item: AVPlayerItem?) {
 //    self.playerItem = item
@@ -25,9 +25,9 @@ class PlayCollectionViewCell: UICollectionViewCell {
   }
   
   func setupPlayer(item: AVPlayerItem?) {
-    player = AVPlayer()
+    
     var playerLayer: AVPlayerLayer?
-    player?.replaceCurrentItem(with: item)
+    player.replaceCurrentItem(with: item)
     playerLayer = AVPlayerLayer(player: player)
     playerLayer?.masksToBounds = true
     playerLayer?.contentsGravity = .resizeAspectFill

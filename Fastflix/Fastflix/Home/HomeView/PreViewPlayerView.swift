@@ -219,7 +219,7 @@ class PreViewPlayerView: UIView {
     for idx in 0..<count {
       let index = IndexPath(row: idx, section: 0)
       let cell = playCollectionView.cellForItem(at: index) as? PlayCollectionViewCell
-      cell?.player?.replaceCurrentItem(with: nil)
+      cell?.player.replaceCurrentItem(with: nil)
 //      cell?.playerLayer = nil
     }
     
@@ -303,7 +303,7 @@ extension PreViewPlayerView: UICollectionViewDelegate {
     for idx in indexArr {
       let cell = playCollectionView.cellForItem(at: idx) as? PlayCollectionViewCell
 //      cell?.playerLayer = nil
-      cell?.player?.pause()
+      cell?.player.pause()
       
     }
   }
@@ -311,14 +311,14 @@ extension PreViewPlayerView: UICollectionViewDelegate {
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     if scrollView == playCollectionView {
       let cell = playCollectionView.cellForItem(at: index ?? IndexPath(item: 0, section: 0)) as? PlayCollectionViewCell
-      cell?.player?.play()
+      cell?.player.play()
     }
   }
   
   func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
     if scrollView == logoCollectionView {
       let cell = playCollectionView.cellForItem(at: index ?? IndexPath(item: 0, section: 0)) as? PlayCollectionViewCell
-      cell?.player?.play()
+      cell?.player.play()
     }
   }
 }
