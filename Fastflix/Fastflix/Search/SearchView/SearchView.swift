@@ -180,6 +180,7 @@ extension SearchView: UISearchBarDelegate {
         self.searchMovies = value
       case .failure(let err):
         dump(err)
+        
       }
     }
     
