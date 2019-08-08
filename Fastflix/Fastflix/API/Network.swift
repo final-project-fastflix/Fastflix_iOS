@@ -47,19 +47,15 @@ class APICenter {
   
   func rekoMovie(image: UIImage, completion: @escaping (Result<RekoMovie>) -> ()) {
     let header = getHeader(needSubuser: false)
+    print("errorreko", header)
     let url = RequestString.postRekoMovie.rawValue
-    guard let convertImg = image.jpegData(compressionQuality: 0.5) else {
+    guard let convertImg = image.jpegData(compressionQuality: 0.9) else {
       completion(.failure(ErrorType.NoData))
       return }
     
-    let parameters = [
-      "image": convertImg
-    ]
     
     Alamofire.upload(multipartFormData: { multi in
-      for (key, value) in parameters {
-        multi.append(value, withName: key)
-      }
+      multi.append(convertImg, withName: "image", mimeType: "image/jpeg")
     }, to: url, method: .post, headers: header) { (result) in
       switch result {
       case .success(request: let req, streamingFromDisk: _, streamFileURL: _):
@@ -67,6 +63,8 @@ class APICenter {
           
           switch result.result {
           case .success(let value):
+            let test = try? JSONSerialization.jsonObject(with: value)
+            print("errorreko", value)
             guard let data = try? JSONDecoder().decode(RekoMovie.self, from: value) else {
               completion(.failure(ErrorType.FailToParsing))
               return
