@@ -234,9 +234,16 @@ extension PreViewPlayerView : UICollectionViewDataSource {
     
     if collectionView == self.logoCollectionView {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LogoCollectionCell.identifier, for: indexPath) as! LogoCollectionCell
-      // 이미지 넣어주세요
-//      cell.logoImageView.image = UIImage(named: logoImg[indexPath.row])
       
+      cell.logoImageView.kf.setImage(with: logoURLs?[indexPath.row], options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 400, height: 200))), .cacheOriginalImage]) { img in
+        switch img {
+        case .success(let data):
+          cell.logoImageView.image = data.image.cropAlpha()
+          cell.logoImageView.contentMode = .scaleAspectFit
+        case .failure(let err):
+          dump(err)
+        }
+      }
       logoPageController.currentPage = indexPath.item
       
       return cell
@@ -245,6 +252,7 @@ extension PreViewPlayerView : UICollectionViewDataSource {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlayCollectionViewCell.identifier, for: indexPath) as! PlayCollectionViewCell
       
       cell.playerItem = playerItems?[indexPath.row]
+//      cell.player = AVPlayer(playerItem: playerItems?[indexPath.row])
       return cell
     }
     
