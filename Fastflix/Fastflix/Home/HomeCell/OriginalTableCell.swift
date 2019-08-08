@@ -12,7 +12,8 @@ import SnapKit
 import Kingfisher
 
 protocol OriginalTableCellDelegate: class {
-  func originalDidSelectItemAt(indexPath: IndexPath)
+  func originalDidSelectItemAt(movieId: Int, movieInfo: MovieDetail)
+  func errOccurSendingAlert(message: String, okMessage: String)
 }
 
 final class OriginalTableCell: UITableViewCell {
@@ -104,8 +105,31 @@ extension OriginalTableCell: UICollectionViewDataSource {
 
 extension OriginalTableCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//    print("indexPath.row: ", indexPath.row)
-    delegate?.originalDidSelectItemAt(indexPath: indexPath)
+    
+    print("오리지널 영화들 아이디 필요")
+    
+    // 영화 아이디값 있어야 함
+    
+//    APICenter.shared.getDetailData(id: id) { (result) in
+//      switch result {
+//      case .success(let movie):
+//        print("!!!need to bind Data!!!", movie)
+//        print("value: ", movie)
+//        self.delegate?.originalDidSelectItemAt(movieId: movie.id, movieInfo: movie)
+//
+//      case .failure(let err):
+//        dump(err)
+//        print("fail to login, reason: ", err)
+//
+//        let message = """
+//        죄송합니다. 해당 영화에 대한 정보를 가져오지
+//        못했습니다. 다시 시도해 주세요.
+//        """
+//        let okMessage = "재시도"
+//
+//        self.delegate?.errOccurSendingAlert(message: message, okMessage: okMessage)
+//      }
+//    }
     
   }
 }

@@ -12,6 +12,8 @@ import AVKit
 
 class MainHomeVC: UIViewController {
   
+  let subUserSingle = SubUserSingleton.shared
+  
   // download 가 끝났을 시, 결과값이 true라면 reload
   var finishDownload = false {
     willSet(new) {
@@ -72,6 +74,7 @@ class MainHomeVC: UIViewController {
     return view
   }()
   
+  var userName: String?
   
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
@@ -85,6 +88,7 @@ class MainHomeVC: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    userSetting()
     floatingView.movieBtn.setTitle("영화", for: .normal)
   }
   
@@ -93,6 +97,10 @@ class MainHomeVC: UIViewController {
     setupSNP()
   }
   
+  private func userSetting() {
+    let user = subUserSingle.subUserList?.filter { $0.id == APICenter.shared.getSubUserID() }
+    self.userName = user?[0].name
+  }
   
   
   private func addSubViews() {
@@ -235,8 +243,12 @@ extension MainHomeVC: UITableViewDataSource {
       
     case 7:
       let cell = tableView.dequeueReusableCell(withIdentifier: WatchingMoviesTableCell.identifier, for: indexPath) as! WatchingMoviesTableCell
+      
+      let user = subUserSingle.subUserList?.filter { $0.id == APICenter.shared.getSubUserID() }
+      self.userName = user?[0].name
+      
       if let data = path.followUpMovie {
-        cell.configure(data: data, title: "시청중인 영화")
+        cell.configure(data: data, subUserName: self.userName)
       }
       cell.selectionStyle = .none
       cell.delegate = self
@@ -266,19 +278,37 @@ extension MainHomeVC: PreviewTableCellDelegate {
 
 
 extension MainHomeVC: OriginalTableCellDelegate {
-  func originalDidSelectItemAt(indexPath: IndexPath) {
+  func originalDidSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
+    
+    // 오리지널 눌렀을때
     let detailVC = DetailVC()
-    present(detailVC, animated: true)
+    detailVC.movieId = movieId
+    detailVC.movieDetailData = movieInfo
+    
+    self.present(detailVC, animated: true)
   }
   
 }
-extension MainHomeVC: WatchingMoviesTableCelllDelegate {
-  func WatchingMovielDidSelectItemAt(indexPath: IndexPath) {
-    print("MainHomeVC : WatchingMovielDidSelectItemAt")
+
+
+extension MainHomeVC: WatchingMoviesTableCellDelegate {
+  func WatchingMovielDidSelectItemAt(movieId: Int, url: String, movieTitle: String) {
+    
+    // 시청중인 콘텐츠 ===> 플레이어로 연결
+    let player = PlayerVC()
+    
+    let url = url
+    let title = movieTitle
+    let id = movieId
+    
+    player.configure(id: id, title: title, videoPath: url, seekTime: nil)
+    AppDelegate.instance.shouldSupportAllOrientation = false
+    self.present(player, animated: true)
   }
   
-  
 }
+
+
 
 extension MainHomeVC: UITableViewDelegate {
   

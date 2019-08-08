@@ -138,11 +138,19 @@ final class DoNotUse2: UITableViewController {
 //}
 
 extension DoNotUse2: OriginalTableCellDelegate {
-  func originalDidSelectItemAt(indexPath: IndexPath) {
-//    let detailVC = DetailTableVC()
-    let detailVC = DetailVC()
-    print("present DetailVC")
-    present(detailVC, animated: true)
+  func originalDidSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
+    
   }
+  
+  func errOccurSendingAlert(message: String, okMessage: String) {
+    
+  }
+  
+//  func originalDidSelectItemAt(indexPath: IndexPath) {
+////    let detailVC = DetailTableVC()
+//    let detailVC = DetailVC()
+//    print("present DetailVC")
+//    present(detailVC, animated: true)
+//  }
   
 }
