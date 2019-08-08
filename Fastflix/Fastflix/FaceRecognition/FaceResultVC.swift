@@ -10,16 +10,12 @@ import UIKit
 import SnapKit
 
 class FaceResultVC: UIViewController {
-  
-//  var blurImageView: UIImageView = {
-//    let img = UIImageView()
-//    img.image = UIImage(named: "blur22")
-//    return img
-//  }()
+
   
   var blurImageView: UIImageView = {
     let img = UIImageView()
-    img.image = UIImage(named: "blurzzz")
+    img.image = UIImage(named: "fastblur")
+    img.contentMode = .scaleAspectFit
     return img
   }()
   
