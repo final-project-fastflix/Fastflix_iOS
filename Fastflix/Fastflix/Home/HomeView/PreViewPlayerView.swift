@@ -18,10 +18,11 @@ protocol PreViewPlayerViewDelegate {
 class PreViewPlayerView: UIView {
   
   var delegate: PreViewPlayerViewDelegate?
-  
+//  var point: CGPoint? = nil
+  var index: IndexPath?
   //test
-  let img = ["test1", "test2", "test3", "test4", "test1", "test2"]
-  let logoImg = ["logoTest2", "preViewLogo", "logoTest2", "preViewLogo", "logoTest2", "preViewLogo"]
+//  let img = ["test1", "test2", "test3", "test4", "test1", "test2"]
+//  let logoImg = ["logoTest2", "preViewLogo", "logoTest2", "preViewLogo", "logoTest2", "preViewLogo"]
   
   var mainURLs: [URL?]?
   var logoURLs: [URL?]?
@@ -44,22 +45,22 @@ class PreViewPlayerView: UIView {
     return collectionView
   }()
   
-  lazy var logoPageController: UIPageControl = {
-    let page = UIPageControl()
-    //    page.currentPage = 0
-    page.numberOfPages = logoImg.count
-    
-    page.isHidden = true
-    return page
-  }()
+//  lazy var logoPageController: UIPageControl = {
+//    let page = UIPageControl()
+//    //    page.currentPage = 0
+//    page.numberOfPages = logoImg.count
+//
+//    page.isHidden = true
+//    return page
+//  }()
   
-  lazy var playPageController: UIPageControl = {
-    let page = UIPageControl()
-    //    page.currentPage = 0
-    page.numberOfPages = img.count
-    page.isHidden = true
-    return page
-  }()
+//  lazy var playPageController: UIPageControl = {
+//    let page = UIPageControl()
+//    //    page.currentPage = 0
+//    page.numberOfPages = img.count
+//    page.isHidden = true
+//    return page
+//  }()
   
   
   private lazy var pokeButton: UIButton = {
@@ -110,7 +111,7 @@ class PreViewPlayerView: UIView {
   
   private func addSubViews() {
     
-    [playCollectionView, stackView, logoCollectionView, dismissBtn, logoPageController, playPageController].forEach { self.addSubview($0) }
+    [playCollectionView, stackView, logoCollectionView, dismissBtn].forEach { self.addSubview($0) }
     //    [logoCollectionView].forEach { playCollectionView.addSubview($0) }
     self.bringSubviewToFront(logoCollectionView)
     self.bringSubviewToFront(stackView)
@@ -138,7 +139,7 @@ class PreViewPlayerView: UIView {
     
     dismissBtn.snp.makeConstraints {
       $0.top.equalToSuperview().offset(topPadding)
-//      $0.leading.equalTo(logoCollectionView.snp.trailing)
+      //      $0.leading.equalTo(logoCollectionView.snp.trailing)
       $0.trailing.equalToSuperview().offset(-10)
     }
     
@@ -188,7 +189,7 @@ class PreViewPlayerView: UIView {
     
     layout.sectionHeadersPinToVisibleBounds = true
     playCollectionView.showsHorizontalScrollIndicator = false
-    playCollectionView.clipsToBounds = false
+    playCollectionView.clipsToBounds = true
     
   }
   
@@ -214,6 +215,8 @@ class PreViewPlayerView: UIView {
     print(" 뒤로가여 ")
     delegate?.dismissBtnDidTap()
     
+    
+    
   }
   
   
@@ -234,6 +237,7 @@ extension PreViewPlayerView : UICollectionViewDataSource {
     
     if collectionView == self.logoCollectionView {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LogoCollectionCell.identifier, for: indexPath) as! LogoCollectionCell
+//      let cell: LogoCollectionCell? = LogoCollectionCell()
       
       cell.logoImageView.kf.setImage(with: logoURLs?[indexPath.row], options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 400, height: 200))), .cacheOriginalImage]) { img in
         switch img {
@@ -244,15 +248,16 @@ extension PreViewPlayerView : UICollectionViewDataSource {
           dump(err)
         }
       }
-      logoPageController.currentPage = indexPath.item
+//      logoPageController.currentPage = indexPath.item
       
       return cell
       
     } else {
       let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlayCollectionViewCell.identifier, for: indexPath) as! PlayCollectionViewCell
+//      let cell: PlayCollectionViewCell? = PlayCollectionViewCell()
       
-      cell.playerItem = playerItems?[indexPath.row]
-//      cell.player = AVPlayer(playerItem: playerItems?[indexPath.row])
+//      cell.playerItem = playerItems?[indexPath.row]
+      cell.configure(item: playerItems?[indexPath.row])
       return cell
     }
     
@@ -261,8 +266,9 @@ extension PreViewPlayerView : UICollectionViewDataSource {
 
 extension PreViewPlayerView: UICollectionViewDelegate {
   
+  
+  
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    
     
     if collectionView == logoCollectionView {
       print("logo Indexpath: ", indexPath)
@@ -270,25 +276,41 @@ extension PreViewPlayerView: UICollectionViewDelegate {
     } else if collectionView == playCollectionView {
       print("play collectionView IndexPath: ", indexPath)
     }
-    
   }
   
-  
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    
     if scrollView == playCollectionView {
-//      let currentPage = round(scrollView.contentOffset.x / self.frame.width)
-//      let index = IndexPath(row: Int(currentPage), section: 0)
-//      logoCollectionView.scrollToItem(at: index, at: .left, animated: true)
-        logoCollectionView.contentOffset.x = scrollView.contentOffset.x/3
+      let currentPage = round(scrollView.contentOffset.x / self.frame.width)
+      index = IndexPath(row: Int(currentPage), section: 0)
+      print("index play:", index)
+      logoCollectionView.contentOffset.x = scrollView.contentOffset.x/3
     }
     if scrollView == logoCollectionView {
-        playCollectionView.contentOffset.x = scrollView.contentOffset.x * 3
-//      print("logo frame: ", logoCollectionView.frame.maxX)
-//      let currentPage = round((scrollView.contentOffset.x) / (logoCollectionView.frame.width))
-//      print("currentPage in logo: ", currentPage)
-//      let index = IndexPath(row: Int(currentPage), section: 0)
-//      playCollectionView.scrollToItem(at: index, at: .left, animated: true)
+      playCollectionView.contentOffset.x = scrollView.contentOffset.x * 3
     }
     
+    
+    let indexArr = playCollectionView.indexPathsForVisibleItems
+    for idx in indexArr {
+      let cell = playCollectionView.cellForItem(at: idx) as? PlayCollectionViewCell
+      cell?.playerLayer = nil
+      cell?.player.pause()
+      
+    }
+  }
+  
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    if scrollView == playCollectionView {
+      let cell = playCollectionView.cellForItem(at: index ?? IndexPath(item: 0, section: 0)) as? PlayCollectionViewCell
+      cell?.player.play()
+    }
+  }
+  
+  func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    if scrollView == logoCollectionView {
+      let cell = playCollectionView.cellForItem(at: index ?? IndexPath(item: 0, section: 0)) as? PlayCollectionViewCell
+      cell?.player.play()
+    }
   }
 }

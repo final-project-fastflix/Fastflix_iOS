@@ -80,6 +80,7 @@ final class PreViewPlayerVC: UIViewController {
   
   @objc func didFinishVideo(_ sender: NSNotification) {
     dismiss(animated: true)
+    delegate?.finishVideo()
   }
   
   

@@ -13,6 +13,7 @@ import AVKit
 class MainHomeVC: UIViewController {
   
   let subUserSingle = SubUserSingleton.shared
+  var preViewPlayerVC: PreViewPlayerVC? = nil
   
   // download 가 끝났을 시, 결과값이 true라면 reload
   var finishDownload = false {
@@ -90,7 +91,40 @@ class MainHomeVC: UIViewController {
     super.viewWillAppear(animated)
     userSetting()
     floatingView.movieBtn.setTitle("영화", for: .normal)
+    
+//    reGetPokedList()
   }
+  
+//  func reGetPokedList() {
+//    APICenter.shared.getListOfFork {
+//      switch $0 {
+//      case .success(let list):
+//        var imgPaths = [String]()
+//        var movieIDArr = [Int]()
+//
+//        for i in 0...list.count - 1 {
+//          imgPaths.append(list[i].verticalImage)
+//          movieIDArr.append(list[i].id)
+//        }
+//
+//        DispatchQueue.main.async {
+//          let cell = self.tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as? SubCell
+//          cell?.configure(url: imgPaths, title: "찜 리스트", movieIDs: movieIDArr)
+//
+//          cell?.collectionView.reloadData()
+//        }
+//
+//      case .failure(let err):
+//        print("fail to parsing, reason: ", err)
+//        let message = """
+//          죄송합니다. 찜 정보를 가져오는데
+//          실패했습니다.
+//          다시 시도하세요.
+//          """
+//        self.oneAlert(title: "실패", message: message, okButton: "찜 목록 다시 확인하기")
+//      }
+//    }
+//  }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
@@ -380,17 +414,28 @@ extension MainHomeVC: UITableViewDataSource {
 // 미리보기
 extension MainHomeVC: PreviewTableCellDelegate {
   func didSelectItemAt(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
-    let preViewPlayerVC = PreViewPlayerVC()
-    preViewPlayerVC.logoURLs = logoArr
-    preViewPlayerVC.playerItems = videoItems
-    preViewPlayerVC.idArr = idArr
-    present(preViewPlayerVC, animated: true)
+    preViewPlayerVC = PreViewPlayerVC()
+    preViewPlayerVC?.logoURLs = logoArr
+    preViewPlayerVC?.playerItems = videoItems
+    preViewPlayerVC?.idArr = idArr
+    guard let view = preViewPlayerVC else { return }
+    present(view, animated: true)
   }
+  
+}
+
+extension MainHomeVC: PreViewPlayerVCDelegate {
+  func finishVideo() {
+    preViewPlayerVC = nil
+  }
+  
   
 }
 
 
 extension MainHomeVC: OriginalTableCellDelegate {
+  
+  
   func originalDidSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
     
     // 오리지널 눌렀을때
@@ -514,10 +559,47 @@ extension MainHomeVC: FloatingViewDelegate {
   }
   
   func didTapPoke() {
+    print("일단 눌러는 지는 겁니까????")
+    
     streamingCell.pauseVideo()
+//    let mainPokeVC = MainPokeVC()
+//    mainPokeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
+//    tabBarController?.viewControllers?[0] = mainPokeVC
+    
+    
+    
     let mainPokeVC = MainPokeVC()
-    mainPokeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
-    tabBarController?.viewControllers?[0] = mainPokeVC
+    
+    var imgPaths: [String] = []
+    var movieIDArr: [Int] = []
+    
+    APICenter.shared.getListOfFork {
+      switch $0 {
+      case .success(let list):
+        
+        for i in 0...list.count - 1 {
+          imgPaths.append(list[i].verticalImage)
+          movieIDArr.append(list[i].id)
+        }
+        DispatchQueue.main.async {
+          mainPokeVC.mainPokeView.configure(url: imgPaths, movieIDs: movieIDArr)
+//          self.navigationController?.show(mainPokeVC, sender: nil)
+          
+          mainPokeVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
+          self.tabBarController?.viewControllers?[0] = mainPokeVC
+          
+        }
+        
+      case .failure(let err):
+        print("fail to parsing, reason: ", err)
+        let message = """
+          죄송합니다. 찜 정보를 가져오는데
+          실패했습니다.
+          다시 시도하세요.
+          """
+        self.oneAlert(title: "실패", message: message, okButton: "찜 목록 다시 확인하기")
+      }
+    }
   }
 }
 

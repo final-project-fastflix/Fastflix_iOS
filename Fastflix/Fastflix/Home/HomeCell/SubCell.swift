@@ -22,7 +22,7 @@ class SubCell: UITableViewCell {
   private var movieIDs: [Int] = []
   
   private let layout = UICollectionViewFlowLayout()
-  private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+  lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
   
   private let titleLabel: UILabel = {
     let label = UILabel()

@@ -1,88 +1,86 @@
 //
-//  MyContentView.swift
+//  MainPokeView.swift
 //  Fastflix
 //
-//  Created by Jeon-heaji on 25/07/2019.
+//  Created by HongWeonpyo on 09/08/2019.
 //  Copyright © 2019 hyeoktae kwon. All rights reserved.
 //
 
 import UIKit
-import SnapKit
-import Kingfisher
 
-// 내가 찜한 콘텐츠 뷰 - data 추가
-protocol MyContentViewDelegate: class {
-  func scrollViewDidScroll(scrollView: UIScrollView)
-}
 
-class MyContentView: UIView {
+class MainPokeView: UIView {
   
   var movieIDArr: [Int] = []
   var imgPaths: [String] = []
   
-  weak var delegate: MyContentViewDelegate?
+//  weak var delegate: MyContentViewDelegate?
   
   weak var contentDelegate: SubTableCellDelegate?
   
   let path = DataCenter.shared
   
-  // 네이게이션뷰
-  lazy var navigationView: UIView = {
-    let view = UIView()
-    view.backgroundColor = .black
+  private var originY: CGFloat {
+    get {
+      return floatingView.frame.origin.y
+    }
+    set {
+      guard newValue >= -floatingView.frame.height || newValue <= 0 else { return }
+      floatingView.frame.origin.y = newValue
+    }
+  }
+  
+  let floatingView: FloatingView = {
+    let view = FloatingView()
     return view
   }()
-
+  
   private let layout = UICollectionViewFlowLayout()
   
   let collectionView: UICollectionView = {
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     return collectionView
   }()
-
+  
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
     self.backgroundColor = .clear
+    
     addSubViews()
     setupSNP()
     setupCollectionView()
     registerCollectionViewCell()
-    
-    
-//    if let data = path.forkData {
-//      for index in data {
-//        imgPaths.append(index.verticalImage)
-//        movieIDArr.append(index.id)
-//      }
-//    }
+  
   }
   
   private func addSubViews() {
-    [collectionView, navigationView]
+    [collectionView, floatingView]
       .forEach { self.addSubview($0) }
-
+    
   }
   
   private func setupSNP() {
-    navigationView.snp.makeConstraints {
-      $0.top.equalToSuperview()
-      $0.leading.trailing.equalToSuperview()
-      $0.height.equalTo(UIScreen.main.bounds.height * 0.11)
-    }
     
     collectionView.snp.makeConstraints {
-      $0.top.leading.trailing.bottom.equalToSuperview()
+      $0.top.equalToSuperview().offset(90)
+      $0.leading.trailing.bottom.equalToSuperview()
     }
-
+    
+    floatingView.snp.makeConstraints {
+      $0.leading.trailing.equalToSuperview()
+      $0.height.equalTo(50 + topPadding)
+      $0.top.equalToSuperview().offset(-10)
+    }
+    
   }
   
   func configure(url: [String]?, movieIDs: [Int]?) {
     imgPaths = url ?? imageUrls
     let idArr = movieIDs ?? []
     
-//    self.imgPaths = urlArr.map { URL(string: $0) }
+    //    self.imgPaths = urlArr.map { URL(string: $0) }
     self.movieIDArr = idArr
-//    self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
+    //    self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
   }
   
   // MARK: - setupCollectionView
@@ -114,10 +112,10 @@ class MyContentView: UIView {
   private func registerCollectionViewCell() {
     collectionView.register(MyContentCollectionCell.self, forCellWithReuseIdentifier: MyContentCollectionCell.identifier)
   }
-
+  
 }
 
-extension MyContentView: UICollectionViewDataSource {
+extension MainPokeView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return movieIDArr.count
   }
@@ -131,35 +129,29 @@ extension MyContentView: UICollectionViewDataSource {
   }
   
 }
-extension MyContentView: UICollectionViewDelegate {
+extension MainPokeView: UICollectionViewDelegate {
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
-  
-        APICenter.shared.getDetailData(id: movieIDArr[indexPath.row]) { (result) in
-          switch result {
-          case .success(let movie):
-            self.contentDelegate?.didSelectItemAt(movieId: movie.id, movieInfo: movie)
     
-          case .failure(let err):
-            dump(err)
-            print("fail to login, reason: ", err)
-    
-            let message = """
+    APICenter.shared.getDetailData(id: movieIDArr[indexPath.row]) { (result) in
+      switch result {
+      case .success(let movie):
+        self.contentDelegate?.didSelectItemAt(movieId: movie.id, movieInfo: movie)
+        
+      case .failure(let err):
+        dump(err)
+        print("fail to login, reason: ", err)
+        
+        let message = """
             죄송합니다. 해당 영화에 대한 정보를 가져오지
             못했습니다. 다시 시도해 주세요.
             """
-            let okMessage = "재시도"
-    
-            self.contentDelegate?.errOccurSendingAlert(message: message, okMessage: okMessage)
-          }
-        }
-  }
-}
-  
-  extension MyContentView: MyContentViewDelegate {
-  
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-      delegate?.scrollViewDidScroll(scrollView: scrollView)
+        let okMessage = "재시도"
+        
+        self.contentDelegate?.errOccurSendingAlert(message: message, okMessage: okMessage)
+      }
     }
   }
+}
+

@@ -16,14 +16,17 @@ class LaunchView: UIView {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "launchlogo3")
     imageView.contentMode = .scaleAspectFit
-    imageView.alpha = 0
+    imageView.alpha = 1
     return imageView
   }()
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
+    self.backgroundColor = .black
     addSubViews()
     setupSNP()
+    
+    imageView.image = UIImage.gifImageWithURL(gifUrl: "https://firebasestorage.googleapis.com/v0/b/test-e3f46.appspot.com/o/finalFastLogoGIF.gif?alt=media&token=9055703e-1f7a-44c5-aa94-54da603d8b74")
   }
   
   private func addSubViews() {

@@ -13,6 +13,8 @@ import SnapKit
 
 class MyContentCollectionCell: UICollectionViewCell {
   
+  var movieId: Int?
+  
   let pokeImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.contentMode = .scaleToFill
@@ -38,7 +40,8 @@ class MyContentCollectionCell: UICollectionViewCell {
     }
   }
   
-  func configure(imageUrlString: String) {
-      pokeImageView.kf.setImage(with: URL(string: imageUrlString), options: [.processor(CroppingImageProcessor(size: CGSize(width: 150, height: 200))), .scaleFactor(UIScreen.main.scale)])
+  func configure(movieId: Int?, imageUrlString: String?) {
+      self.movieId = movieId
+    pokeImageView.kf.setImage(with: URL(string: imageUrlString ?? ""), options: [.processor(CroppingImageProcessor(size: CGSize(width: 150, height: 200))), .scaleFactor(UIScreen.main.scale)])
   }
 }

@@ -123,5 +123,6 @@ extension PreviewTableCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //    print("indexPath.row: ", indexPath.row)
     delegate?.didSelectItemAt(indexPath: indexPath, logoArr: logoURLs!, videoItems: playerItems!, idArr: idArr!)
+    
   }
 }

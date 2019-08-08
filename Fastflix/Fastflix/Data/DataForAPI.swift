@@ -135,7 +135,7 @@ struct Response: Codable {
   let name: String
   let horizontalImagePath: String
   let verticalImage: String
-  let iosMainImage: String
+  let iosMainImage: String?
   let sampleVideoFile: String
   
   enum CodingKeys: String, CodingKey {
