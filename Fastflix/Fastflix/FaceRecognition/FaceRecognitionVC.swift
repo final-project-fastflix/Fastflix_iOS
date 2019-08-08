@@ -52,7 +52,7 @@ class FaceRecognitionVC: UIViewController {
   
   let imageSelectLabel: UILabel = {
     let label = UILabel()
-    label.text = " 얼굴인식하기 클릭  "
+    label.text = " 카메라이미지 클릭!  "
     label.textColor = .lightGray
     label.font = UIFont.systemFont(ofSize: 17, weight: .bold)
     label.textAlignment = .center
@@ -106,8 +106,11 @@ class FaceRecognitionVC: UIViewController {
       addSubViews()
       setupSNP()
 
-      
     }
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+//    cameraImg.image = nil
+  }
   
   private func addSubViews() {
     [topView, cameraImg, resultBtn]
