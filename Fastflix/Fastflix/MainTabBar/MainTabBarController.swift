@@ -52,13 +52,14 @@ final class MainTabBarController: UITabBarController {
     tabBar.tintColor = .white
     tabBar.backgroundImage = UIImage(named: "black")
     
-    self.viewControllers = [mainHomeVC, searchVC, faceResultVC, navi]
+    self.viewControllers = [mainHomeVC, searchVC, faceRecogVC, navi]
   }
   
   private func installTabBarItems() {
     let homeVCItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
     let searchVCItem = UITabBarItem(title: "검색", image: UIImage(named: "tabBarSearch1"), tag: 1)
-    let downloadVCItem = UITabBarItem(title: "저장한 콘텐츠 목록", image: UIImage(named: "tabBarDownLoad1"), tag: 2)
+//    let downloadVCItem = UITabBarItem(title: "얼굴 인식", image: UIImage(named: "tabBarDownLoad1"), tag: 2)
+    let faceItem = UITabBarItem(title: "얼굴 인식", image: UIImage(named: "selfie"), tag: 2)
     let seeMoreVCItem = UITabBarItem(title: "더 보기", image: UIImage(named: "tabBarSeeMore1"), tag: 3)
     
 //    downloadVCItem.badgeValue = "☁︎"
@@ -66,7 +67,8 @@ final class MainTabBarController: UITabBarController {
     
     mainHomeVC.tabBarItem = homeVCItem
     searchVC.tabBarItem = searchVCItem
-    faceResultVC.tabBarItem = downloadVCItem
+//    faceRecogVC.tabBarItem = downloadVCItem
+    faceRecogVC.tabBarItem = faceItem
     navi.tabBarItem = seeMoreVCItem
 
   }

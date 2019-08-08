@@ -11,9 +11,15 @@ import SnapKit
 
 class FaceResultVC: UIViewController {
   
+//  var blurImageView: UIImageView = {
+//    let img = UIImageView()
+//    img.image = UIImage(named: "blur22")
+//    return img
+//  }()
+  
   var blurImageView: UIImageView = {
     let img = UIImageView()
-    img.image = UIImage(named: "blur22")
+    img.image = UIImage(named: "blurzzz")
     return img
   }()
   
@@ -63,7 +69,8 @@ class FaceResultVC: UIViewController {
     let button = UIButton(type: .system)
     button.setTitle("뒤로가기", for: .normal)
     button.setTitleColor(.lightGray, for: .normal)
-    button.layer.borderWidth = 0.7
+    button.addTarget(self, action: #selector(dismissBtnDidTap(_:)), for: .touchUpInside)
+    button.layer.borderWidth = 0.8
     button.layer.borderColor = UIColor.gray.cgColor
     button.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
     return button
@@ -138,6 +145,7 @@ class FaceResultVC: UIViewController {
   }
   
   @objc func dismissBtnDidTap(_ sender: UIButton) {
+    dismiss(animated: true)
     
   }
 

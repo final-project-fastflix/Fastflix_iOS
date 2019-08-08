@@ -106,8 +106,11 @@ class FaceRecognitionVC: UIViewController {
       addSubViews()
       setupSNP()
 
-      
     }
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+//    cameraImg.image = nil
+  }
   
   private func addSubViews() {
     [topView, cameraImg, resultBtn]
