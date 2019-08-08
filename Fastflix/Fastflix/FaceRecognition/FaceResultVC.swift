@@ -73,7 +73,7 @@ class FaceResultVC: UIViewController {
     button.addTarget(self, action: #selector(dismissBtnDidTap(_:)), for: .touchUpInside)
     button.layer.borderWidth = 0.8
     button.layer.borderColor = UIColor.gray.cgColor
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
     return button
   }()
     

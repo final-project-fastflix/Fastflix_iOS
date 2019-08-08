@@ -46,9 +46,9 @@ class FaceRecognitionVC: UIViewController {
   
   let infoLabel: UILabel = {
     let label = UILabel()
-    label.text = " 얼굴을 인식해서 영화를 추천해드립니다. \n 사진을 선택해서 영화 추천을 받아보세요  "
+    label.text = " 얼굴을 인식해서 영화를 추천해드립니다. \n  \n사진을 선택해서 영화 추천을 받아보세요  "
     label.textColor = .lightGray
-    label.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+    label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
     label.textAlignment = .center
     label.numberOfLines = 0
     label.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -243,7 +243,25 @@ class FaceRecognitionVC: UIViewController {
       }
     }
     
+    UIView.animate(withDuration: 0.5,
+                   animations: {
+                    
+                    self.view.alpha = 0
+                    
+                    
+    }) { (param) in
+      Thread.sleep(forTimeInterval:0.7)
+      UIView.animate(withDuration: 0.21,
+                     animations: {
+                      
+                      self.view.alpha = 0.8
+      })
+    }
+
     self.isAction = false
+    
+    
+
 
     
   }
