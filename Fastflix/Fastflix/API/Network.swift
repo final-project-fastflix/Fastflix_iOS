@@ -777,4 +777,25 @@ class APICenter {
     }
   }
   
+  // 추천영화 가져오기
+  func getRecommendMovieData(completion: @escaping (Result<[Search]>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    
+    Alamofire.request(RequestString.getRecommendMovieURL.rawValue, method: .get, headers: header)
+      .validate(statusCode: 200...299)
+      .responseData(queue: .global()) { (res) in
+        switch res.result {
+        case .success(let value):
+          guard let dict = try? JSONDecoder().decode([Search].self, from: value) else {
+            completion(.failure(ErrorType.FailToParsing))
+            return
+          }
+          
+          completion(.success(dict))
+        case .failure(let err):
+          dump(err)
+          completion(.failure(ErrorType.networkError))
+        }
+    }
+  }
 }
