@@ -26,7 +26,7 @@ class LaunchView: UIView {
     addSubViews()
     setupSNP()
     
-    imageView.image = UIImage.gifImageWithURL(gifUrl: "https://firebasestorage.googleapis.com/v0/b/test-e3f46.appspot.com/o/fastGIfWhite.gif?alt=media&token=6e9f22a5-93c1-4373-b712-b3ce8f15e9dc")
+    imageView.image = UIImage.gifImageWithURL(gifUrl: "https://firebasestorage.googleapis.com/v0/b/test-e3f46.appspot.com/o/finalFastLogoGIF.gif?alt=media&token=9055703e-1f7a-44c5-aa94-54da603d8b74")
   }
   
   private func addSubViews() {
