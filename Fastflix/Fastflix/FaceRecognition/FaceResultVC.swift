@@ -14,6 +14,7 @@ import Kingfisher
 class FaceResultVC: UIViewController {
   
    var movieId: Int? = nil
+  
 
   
   var blurImageView: UIImageView = {
@@ -72,7 +73,7 @@ class FaceResultVC: UIViewController {
     button.addTarget(self, action: #selector(dismissBtnDidTap(_:)), for: .touchUpInside)
     button.layer.borderWidth = 0.8
     button.layer.borderColor = UIColor.gray.cgColor
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
     return button
   }()
     
@@ -150,11 +151,30 @@ class FaceResultVC: UIViewController {
       $0.centerX.equalToSuperview()
     }
     
-    
   }
   
   @objc func dismissBtnDidTap(_ sender: UIButton) {
     dismiss(animated: true)
+    
+  }
+  
+  func configure(imageUrlString: String, movieId: Int) {
+    //    searchImageView.kf.setImage(with: URL(string: imageUrlString), options: [.processor(CroppingImageProcessor(size: CGSize(width: 150, height: 200))), .scaleFactor(UIScreen.main.scale)])
+    
+    self.movieId = movieId
+    movieImageView.kf.setImage(with: URL(string: imageUrlString), options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 100, height: 200))), .cacheOriginalImage])
+  }
+  
+  private func setupTapGestureForView() {
+    let tap = UITapGestureRecognizer(target: self, action: #selector(imageViewDidTap))
+    tap.numberOfTapsRequired = 1
+    movieImageView.addGestureRecognizer(tap)
+    movieImageView.isUserInteractionEnabled = true
+  }
+  
+  @objc func imageViewDidTap() {
+    let id = movieId!
+    
     
   }
 
