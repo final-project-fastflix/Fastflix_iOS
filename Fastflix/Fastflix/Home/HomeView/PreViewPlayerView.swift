@@ -213,6 +213,16 @@ class PreViewPlayerView: UIView {
   
   @objc private func dismissBtnDidTap(_ sender: UIButton) {
     print(" 뒤로가여 ")
+    
+    guard let count = playerItems?.count else { return }
+    
+    for idx in 0..<count {
+      let index = IndexPath(row: idx, section: 0)
+      let cell = playCollectionView.cellForItem(at: index) as? PlayCollectionViewCell
+      cell?.player?.replaceCurrentItem(with: nil)
+//      cell?.playerLayer = nil
+    }
+    
     delegate?.dismissBtnDidTap()
     
     
@@ -266,8 +276,6 @@ extension PreViewPlayerView : UICollectionViewDataSource {
 
 extension PreViewPlayerView: UICollectionViewDelegate {
   
-  
-  
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
     if collectionView == logoCollectionView {
@@ -294,8 +302,8 @@ extension PreViewPlayerView: UICollectionViewDelegate {
     let indexArr = playCollectionView.indexPathsForVisibleItems
     for idx in indexArr {
       let cell = playCollectionView.cellForItem(at: idx) as? PlayCollectionViewCell
-      cell?.playerLayer = nil
-      cell?.player.pause()
+//      cell?.playerLayer = nil
+      cell?.player?.pause()
       
     }
   }
@@ -303,14 +311,14 @@ extension PreViewPlayerView: UICollectionViewDelegate {
   func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
     if scrollView == playCollectionView {
       let cell = playCollectionView.cellForItem(at: index ?? IndexPath(item: 0, section: 0)) as? PlayCollectionViewCell
-      cell?.player.play()
+      cell?.player?.play()
     }
   }
   
   func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
     if scrollView == logoCollectionView {
       let cell = playCollectionView.cellForItem(at: index ?? IndexPath(item: 0, section: 0)) as? PlayCollectionViewCell
-      cell?.player.play()
+      cell?.player?.play()
     }
   }
 }

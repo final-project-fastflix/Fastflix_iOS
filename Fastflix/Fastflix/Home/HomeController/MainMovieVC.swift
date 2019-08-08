@@ -16,6 +16,8 @@ class MainMovieVC: UIViewController {
   
   let categoryVC = CategorySelectVC()
   
+  var preViewPlayerVC: PreViewPlayerVC? = PreViewPlayerVC()
+  
   let mainMovieView = MainMovieView()
   
   var receiveData: RequestMovie? = nil {
@@ -162,11 +164,13 @@ extension MainMovieVC: SubTableCellDelegate {
 
 extension MainMovieVC: MainMovieViewDelegate {
   func didTapPreview(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
-    let preViewPlayerVC = PreViewPlayerVC()
-    preViewPlayerVC.logoURLs = logoArr
-    preViewPlayerVC.playerItems = videoItems
-    preViewPlayerVC.idArr = idArr
-    present(preViewPlayerVC, animated: true)
+    preViewPlayerVC = PreViewPlayerVC()
+    preViewPlayerVC?.logoURLs = logoArr
+    preViewPlayerVC?.playerItems = videoItems
+    preViewPlayerVC?.idArr = idArr
+    preViewPlayerVC?.delegate = self
+    guard let view = preViewPlayerVC else { return }
+    present(view, animated: true)
   }
 }
 
@@ -235,3 +239,12 @@ extension MainMovieVC: MainImageTableCellDelegate {
   }
 }
 
+extension MainMovieVC: PreViewPlayerVCDelegate {
+  func finishVideo() {
+    print("아에헹")
+    preViewPlayerVC = nil
+    AppDelegate.instance.checkLoginState()
+  }
+  
+  
+}
