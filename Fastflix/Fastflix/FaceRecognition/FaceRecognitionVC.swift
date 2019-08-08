@@ -48,7 +48,7 @@ class FaceRecognitionVC: UIViewController {
     let label = UILabel()
     label.text = " 얼굴을 인식해서 영화를 추천해드립니다. \n 사진을 선택해서 영화 추천을 받아보세요  "
     label.textColor = .lightGray
-    label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+    label.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
     label.textAlignment = .center
     label.numberOfLines = 0
     label.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -100,6 +100,8 @@ class FaceRecognitionVC: UIViewController {
     return button
   }()
   
+  var isAction = false
+  
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
@@ -110,11 +112,21 @@ class FaceRecognitionVC: UIViewController {
       view.backgroundColor = .black
       addSubViews()
       setupSNP()
+      heartBitAnimation(withDelay: 0)
 
     }
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    
+    if isAction == false{
+      faceImageView.image = UIImage(named: "camera")
+      isAction = true
+    }
+    if isHeartBitAnimationFirstTime {
+      heartBitAnimation(withDelay: 0.5)
+      isHeartBitAnimationFirstTime = false
+    } else {
+      heartBitAnimation(withDelay: 0)
+    }
   }
   
   private func addSubViews() {
@@ -128,7 +140,7 @@ class FaceRecognitionVC: UIViewController {
     topView.snp.makeConstraints {
       $0.top.equalToSuperview()
       $0.leading.trailing.equalToSuperview().inset(8)
-      $0.height.equalTo(UIScreen.main.bounds.height * 0.47)
+      $0.height.equalTo(UIScreen.main.bounds.height * 0.46)
     }
     fastLogo.snp.makeConstraints {
       $0.top.equalTo(UIScreen.main.bounds.height * 0.10)
@@ -156,7 +168,7 @@ class FaceRecognitionVC: UIViewController {
     }
     
     imageSelectLabel.snp.makeConstraints {
-      $0.top.equalTo(infoLabel.snp.bottom).offset(-20)
+      $0.top.equalTo(infoLabel.snp.bottom).offset(15)
       $0.centerX.equalToSuperview()
     }
     
@@ -200,6 +212,7 @@ class FaceRecognitionVC: UIViewController {
     imagePickerActionSheet.addAction(cancelButton)
     present(imagePickerActionSheet, animated: true)
     
+    
   }
   
   
@@ -218,6 +231,7 @@ class FaceRecognitionVC: UIViewController {
         
         self.present(faceResultVC, animated: true)
         
+        
       case .failure(let err):
         dump(err)
 //        self.oneAlert(title: "오류", message: "얼굴이 인식되지 않아요!", okButton: "확인")
@@ -228,10 +242,32 @@ class FaceRecognitionVC: UIViewController {
         self.present(faceResultVC, animated: true)
       }
     }
+    
+    self.isAction = false
 
     
   }
-
+  
+  var isHeartBitAnimationFirstTime = true
+  private func heartBitAnimation(withDelay delay: Double){
+    UIView.animateKeyframes(withDuration: 1,
+                            delay: delay,
+                            options: [.repeat, .allowUserInteraction],
+                            animations: {
+                              UIView.addKeyframe(withRelativeStartTime: 0,
+                                                 relativeDuration: 0.2,
+                                                 animations: {
+                                                  self.resultBtn.alpha = 1
+                                                  self.resultBtn.transform = CGAffineTransform.init(scaleX: 1.2, y: 1.2)
+                              })
+                              UIView.addKeyframe(withRelativeStartTime: 0.2,
+                                                 relativeDuration: 0.8,
+                                                 animations: {
+                                                  self.resultBtn.alpha = 0.5
+                                                  self.resultBtn.transform = CGAffineTransform.identity
+                              })
+    })
+  }
 }
 
 extension FaceRecognitionVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
