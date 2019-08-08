@@ -71,5 +71,6 @@ class SearchCollectionCell: UICollectionViewCell {
   @objc func imageViewDidTap() {
     let id = movieId!
     delegate?.passMovieId(movieId: id)
+    
   }
 }
