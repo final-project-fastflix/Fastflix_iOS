@@ -184,6 +184,8 @@ struct Movie: Codable {
   let horizontalImagePath: String
   let verticalImage: String
   let realRunningTime: Int
+  let toBeContinue: Int?
+  let progressBar: Int?
   
   enum CodingKeys: String, CodingKey {
     case id, name
@@ -192,6 +194,8 @@ struct Movie: Codable {
     case horizontalImagePath = "horizontal_image_path"
     case verticalImage = "vertical_image"
     case realRunningTime = "real_running_time"
+    case toBeContinue = "to_be_continue"
+    case progressBar = "progress_bar"
   }
 }
 

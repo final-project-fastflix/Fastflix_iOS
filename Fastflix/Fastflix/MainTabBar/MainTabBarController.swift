@@ -11,8 +11,7 @@ import SnapKit
 
 final class MainTabBarController: UITabBarController {
   
-  
-  
+  let subUserSingle = SubUserSingleton.shared
   
   // MARK: - Properties
   private let mainHomeVC = MainHomeVC()
@@ -33,8 +32,15 @@ final class MainTabBarController: UITabBarController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupTabBar()
-    
+//    userSetting()
   }
+  
+//  private func userSetting() {
+//    print("유저셋팅 되긴함???")
+//    let user = subUserSingle.subUserList?.filter { $0.id == APICenter.shared.getSubUserID()
+//    mainHomeVC.userName = user?[0].name
+//  }
+  
   
   private func setupTabBar() {
     installTabBarItems()

@@ -40,7 +40,6 @@ final class FastFilixPlayerView: UIView {
     button.setImage(image, for: .normal)
     button.addTarget(self, action: #selector(didTapBtns), for: .touchUpInside)
     button.tag = 4
-    button.addSubview(bigCloseButton)
     return button
   }()
   
@@ -261,8 +260,9 @@ final class FastFilixPlayerView: UIView {
     
     // 닫기버튼위에 잘 눌리는 큰 버튼 달기
     bigCloseButton.snp.makeConstraints {
-      $0.width.height.equalTo(40)
-      $0.centerX.centerY.equalToSuperview()
+      $0.width.height.equalTo(50)
+      $0.top.equalTo(30)
+      $0.trailing.equalTo(-50)
     }
 
     // 뒤로가기 관련

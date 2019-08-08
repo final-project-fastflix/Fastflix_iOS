@@ -10,33 +10,39 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-
 class WatchingMoviesCollectionCell: UICollectionViewCell {
  
   static let identifier = "WatchingMoviesCollectionCell"
   
   var movieID: Int? = nil
-  var progressBarPoint: CGFloat? = nil
+  var progressBarPoint: Float = 0
   var toBeContinue: Int? = nil
   var videoPath: String? = nil
   var runningTime: Int? = nil
   
-  
-  private let imageView: UIImageView = {
+  private lazy var imageView: UIImageView = {
     let img = UIImageView()
     img.contentMode = .scaleAspectFill
     img.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     img.clipsToBounds = true
+//    img.addSubview(playImageView)
     return img
   }()
   
+  // 버튼이 셀 위로 가면 셀 자체가 안 눌리는 현상이 있어서... 이미지뷰로 대체
+//  var playBtn: UIButton = {
+//    let button = UIButton(type: .custom)
+//    button.setImage(UIImage(named: "blurplayBtn"), for: .normal)
+//    button.addTarget(self, action: #selector(playBtnDidTap(_:)), for: .touchUpInside)
+////    button.alpha = 0.7
+//    return button
+//  }()
   
-  private let playBtn: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "blurplayBtn"), for: .normal)
-    button.addTarget(self, action: #selector(playBtnDidTap(_:)), for: .touchUpInside)
-//    button.alpha = 0.7
-    return button
+  private let playImageView: UIImageView = {
+    let imageview = UIImageView()
+    let image = UIImage(named: "blurplayBtn")
+    imageview.image = image
+    return imageview
   }()
   
   
@@ -49,7 +55,7 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
   private let infoBtn: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "info"), for: .normal)
-    button.addTarget(self, action: #selector(infoBtnDidTap(_:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(infoBtnDidTap), for: .touchUpInside)
     button.tintColor = .gray
     return button
   }()
@@ -57,8 +63,8 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
   
   private let playTimeLabel: UILabel = {
     let label = UILabel()
-    label.text = "2시간 5분"
-    label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+//    label.text = "2시간 5분"
+    label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
     label.textColor = .gray
     return label
   }()
@@ -77,35 +83,62 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
     super.didMoveToSuperview()
     self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
     addSubViews()
-    setupSNP() 
-    
+    setupSNP()
+    setupTapGestureForView()
   }
   
+//  override init(frame: CGRect) {
+//    super.init(frame: frame)
+//    self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
+//    addSubViews()
+//    setupSNP()
+//  }
+  
+//  required init?(coder aDecoder: NSCoder) {
+//    fatalError("init(coder:) has not been implemented")
+//  }
+  
   func configure(imageUrl: String, id: Int, video: String, runningTime: Int, progress: Int, toBe: Int) {
+    //이미지 설정
     imageView.kf.setImage(with: URL(string: imageUrl), options: [.processor(CroppingImageProcessor(size: CGSize(width: 170, height: 300))), .scaleFactor(UIScreen.main.scale)])
+    
     self.movieID = id
+    
     self.videoPath = video
-    self.progressBar.value = Float(progress) * 0.01
     self.toBeContinue = toBe
-    let hour = runningTime/3600
-    let min = (runningTime - hour)/60
-    self.playTimeLabel.text = "\(hour)시간 \(min)분"
+  
+    // 슬라이더 설정을 위한 값 (예) 0.333555
+    let sliderFloat = Float(toBe) / Float(runningTime)
+    
+    // 시간(분)을 시간 기준으로 환산
+    let hour = runningTime / 60
+    let minute = runningTime % 60
+    
+    // 프로그레스바 설정
+    self.progressBar.setValue(sliderFloat, animated: false)
+    self.progressBarPoint = sliderFloat
+    
+    // 시간 String값으로 만들기
+    self.playTimeLabel.text = "\(hour)시간 \(minute)분"
   }
   
   private func addSubViews() {
-    [imageView, playBtn, progressBar, bottomView].forEach { addSubview($0) }
-    [playTimeLabel, infoBtn, ].forEach {
-      bottomView.addSubview($0)
-    }
+    [imageView, /*playBtn,*/ playImageView, progressBar, bottomView].forEach { addSubview($0) }
+    [playTimeLabel, infoBtn].forEach { bottomView.addSubview($0) }
   }
   
   private func setupSNP() {
     imageView.snp.makeConstraints {
       $0.top.equalToSuperview().offset(-30)
       $0.leading.trailing.equalToSuperview()
-      $0.height.equalTo((UIScreen.main.bounds.width - 44)/3 * 1.6)
+      $0.height.equalTo((UIScreen.main.bounds.width - 50)/3 * 1.6)
     }
-    playBtn.snp.makeConstraints {
+//    playBtn.snp.makeConstraints {
+//      $0.centerX.equalToSuperview()
+//      $0.centerY.equalToSuperview().offset(-5)
+//    }
+    
+    playImageView.snp.makeConstraints {
       $0.centerX.equalToSuperview()
       $0.centerY.equalToSuperview().offset(-5)
     }
@@ -123,7 +156,7 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
 
     playTimeLabel.snp.makeConstraints {
       $0.top.equalToSuperview().offset(7)
-      $0.leading.equalToSuperview().inset(10)
+      $0.leading.equalToSuperview().inset(8)
     }
 
     infoBtn.snp.makeConstraints {
@@ -132,13 +165,26 @@ class WatchingMoviesCollectionCell: UICollectionViewCell {
     }
   }
   
-  @objc func playBtnDidTap(_ sender: UIButton) {
-    print("playBtnDidTap Tap")
-  }
+//  @objc func playBtnDidTap(_ sender: UIButton) {
+//    print("playBtnDidTap Tap")
+//
+//  }
   
   
-  @objc func infoBtnDidTap(_ sender: UIButton) {
+  @objc func infoBtnDidTap() {
     print("infoButton Did Tap")
+    
+//    movieID
+    
   }
+  
+  private func setupTapGestureForView() {
+    let tap = UITapGestureRecognizer(target: self, action: #selector(infoBtnDidTap))
+    tap.numberOfTapsRequired = 1
+    bottomView.addGestureRecognizer(tap)
+    bottomView.isUserInteractionEnabled = true
+  }
+  
+  
   
 }
