@@ -118,3 +118,12 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 19.08.08  feat: tass - FloatingView Text
 
 19.08.08  fix: tass - FloatingView in TopSafearea 20
+
+19.08.08  feat: devy - rekoMovieView 
+
+19.08.08  feat: devy - add images , FaceRecognition
+
+19.08.08  feat: devy - rekoMovieView
+
+19.08.08  feat: tass - rekoMovie Request
+
