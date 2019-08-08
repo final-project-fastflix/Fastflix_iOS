@@ -18,13 +18,16 @@ protocol OriginalTableCellDelegate: class {
 
 final class OriginalTableCell: UITableViewCell {
   
+  private var urls: [URL?] = []
+  private var movieIDs: [Int] = []
+  
   static let identifier = "OriginalTableCell"
   
   private let sectionHeaderlabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
     label.text = "Netflix 오리지널 >"
-    label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+    label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
     return label
   }()
   
@@ -52,7 +55,7 @@ final class OriginalTableCell: UITableViewCell {
   private func setupSNP() {
     
     contentView.snp.makeConstraints {
-      $0.height.equalTo(370)
+      $0.height.equalTo(290)
     }
     
     sectionHeaderlabel.snp.makeConstraints {
@@ -76,13 +79,20 @@ final class OriginalTableCell: UITableViewCell {
     layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
     layout.minimumLineSpacing = 7
     layout.minimumInteritemSpacing = 7
-    layout.itemSize = CGSize(width: 170, height: 370)
+    layout.itemSize = CGSize(width: 170, height: 250)
     
     layout.sectionHeadersPinToVisibleBounds = true
     collectionView.showsHorizontalScrollIndicator = false
   }
   
-  
+  func configure(url: [String]?, movieIDs: [Int]?) {
+    let urlArr = url ?? imageUrls
+    let idArr = movieIDs ?? []
+    
+    self.urls = urlArr.map { URL(string: $0) }
+    self.movieIDs = idArr
+    self.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
+  }
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -91,12 +101,14 @@ final class OriginalTableCell: UITableViewCell {
 }
 extension OriginalTableCell: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return ImagesData.shared.originalImages.count
+    return movieIDs.count
   }
   
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OriginalCollectionCell.identifier, for: indexPath) as! OriginalCollectionCell
-    cell.configure(imageUrlString: ImagesData.shared.originalImages[indexPath.row])
+    
+    cell.configure(url: urls[indexPath.row], movieID: movieIDs[indexPath.row])
+    
     return cell
   }
   

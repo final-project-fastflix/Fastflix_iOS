@@ -34,6 +34,7 @@ enum RequestString: String {
   case getListByGenre = "http://www.api.fastflix.co.kr/movies/list_by_genre/"
   case postRekoMovie = "http://www.api.fastflix.co.kr/face_reko/"
   case getRecommendMovieURL = "http://www.api.fastflix.co.kr//movies/rcd/"
+  case getListByFastFlixMovieURL = "http://www.api.fastflix.co.kr//movies/genre/"
 }
 
 
@@ -457,17 +458,28 @@ struct MoviesByGenre: Codable {
   let id: Int
   let name: String
   let sampleVideoFile: String?
+  let degree: Degree?
+  let feature: [Feature]?
+  let runningTime: String?
   let logoImagePath: String?
   let horizontalImagePath: String
   let verticalImage: String
+  let originalVerticalImagePath: String?
   
   enum CodingKeys: String, CodingKey {
-    case id, name
+    case id, name, degree, feature
     case sampleVideoFile = "sample_video_file"
+    case runningTime = "running_time"
     case logoImagePath = "logo_image_path"
     case horizontalImagePath = "horizontal_image_path"
     case verticalImage = "vertical_image"
+    case originalVerticalImagePath = "original_vertical_image_path"
   }
+}
+
+struct Feature: Codable {
+  let id: Int
+  let name: String
 }
 
 typealias RequestMovie = [RequestMovieElement]

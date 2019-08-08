@@ -134,7 +134,7 @@ class MainHomeVC: UIViewController {
 extension MainHomeVC: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 9
+    return 14
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -241,6 +241,20 @@ extension MainHomeVC: UITableViewDataSource {
       let cell = tableView.dequeueReusableCell(withIdentifier: OriginalTableCell.identifier, for: indexPath) as! OriginalTableCell
       cell.selectionStyle = .none
       cell.delegate = self
+      
+      var mainURLs: [String] = []
+      var movieIDArr: [Int] = []
+      
+      if let data = path.fastFlixOriginal {
+        print("오리지널 데이터", data)
+        for index in data {
+          mainURLs.append(index.verticalImage)
+          movieIDArr.append(index.id)
+        }
+      }
+      print("오리지널 전달 어레이 데이터", mainURLs, movieIDArr)
+      cell.configure(url: mainURLs, movieIDs: movieIDArr)
+      
       return cell
       
     case 7:
@@ -269,6 +283,86 @@ extension MainHomeVC: UITableViewDataSource {
       }
       
       cell.configure(url: mainURLs, title: "추천영화", movieIDs: movieIDArr)
+      cell.delegate = self
+      return cell
+      
+    case 9:
+      let cell = SubCell()
+      var mainURLs: [String] = []
+      var movieIDArr: [Int] = []
+      
+      if let data = path.goodOstMovie {
+        for index in data {
+          mainURLs.append(index.verticalImage)
+          movieIDArr.append(index.id)
+        }
+      }
+      
+      cell.configure(url: mainURLs, title: "ost가 좋은 영화", movieIDs: movieIDArr)
+      cell.delegate = self
+      return cell
+      
+    case 10:
+      let cell = SubCell()
+      var mainURLs: [String] = []
+      var movieIDArr: [Int] = []
+      
+      if let data = path.summerMovie {
+        for index in data {
+          mainURLs.append(index.verticalImage)
+          movieIDArr.append(index.id)
+        }
+      }
+      
+      cell.configure(url: mainURLs, title: "여름에 볼만한 영화", movieIDs: movieIDArr)
+      cell.delegate = self
+      return cell
+      
+    case 11:
+      let cell = SubCell()
+      var mainURLs: [String] = []
+      var movieIDArr: [Int] = []
+      
+      if let data = path.funnyMovie {
+        for index in data {
+          mainURLs.append(index.verticalImage)
+          movieIDArr.append(index.id)
+        }
+      }
+      
+      cell.configure(url: mainURLs, title: "미치도록 웃긴영화", movieIDs: movieIDArr)
+      cell.delegate = self
+      return cell
+      
+    case 12:
+      let cell = SubCell()
+      var mainURLs: [String] = []
+      var movieIDArr: [Int] = []
+      
+      if let data = path.englishStudyMovie {
+        for index in data {
+          mainURLs.append(index.verticalImage)
+          movieIDArr.append(index.id)
+        }
+      }
+      
+      cell.configure(url: mainURLs, title: "영어 공부하기 좋은 영화", movieIDs: movieIDArr)
+      cell.delegate = self
+      return cell
+      
+    case 13:
+      let cell = SubCell()
+      var mainURLs: [String] = []
+      var movieIDArr: [Int] = []
+      
+      if let data = path.disneyMovie {
+        for index in data {
+          mainURLs.append(index.verticalImage)
+          movieIDArr.append(index.id)
+        }
+      }
+      
+      cell.configure(url: mainURLs, title: "디즈니 영화", movieIDs: movieIDArr)
       cell.delegate = self
       return cell
       

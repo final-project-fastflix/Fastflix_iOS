@@ -28,12 +28,22 @@ class DataCenter {
   var followUpMovie: FollowUp?
   
   var recommendMovie: [Search]?
+  
+  var fastFlixOriginal: [MoviesByGenre]?
 
+  var goodOstMovie: [MoviesByGenre]?
+  
+  var summerMovie: [MoviesByGenre]?
+  
+  var funnyMovie: [MoviesByGenre]?
+  
+  var englishStudyMovie: [MoviesByGenre]?
+  
+  var disneyMovie: [MoviesByGenre]?
+  
   let group = DispatchGroup()
   
   let downloadQueue = DispatchQueue(label: "downloadQueue", attributes: .concurrent)
-
-
 
   func downloadDatas() {
     
@@ -45,6 +55,12 @@ class DataCenter {
       self.getGoldenMovieData()
       self.getFollowUpData()
       self.getRecommendData()
+      self.getFastFlixOriginalData()
+      self.getGoodOstData()
+      self.getSummerData()
+      self.getFunnyData()
+      self.getEnglishData()
+      self.getDisneyData()
   }
   
   private func getGoldenMovieData() {
@@ -166,6 +182,100 @@ class DataCenter {
       }
     }
   }
+  
+  private func getFastFlixOriginalData() {
+    group.enter()
+    downloadPath.getListMovieGenreData(genre: "넷플릭스 오리지널") { (result) in
+      switch result {
+      case .success(let value):
+        self.fastFlixOriginal = value
+        print("오리지널 값은 나오니????", value)
+        self.group.leave()
+      case .failure(let err):
+        dump(err)
+        print("오리지널 값이 안나옴")
+        self.fastFlixOriginal = nil
+        self.group.leave()
+      }
+    }
+  }
+  
+  private func getGoodOstData() {
+    group.enter()
+    downloadPath.getListMovieGenreData(genre: "ost가 좋은 영화") { (result) in
+      switch result {
+      case .success(let value):
+        self.goodOstMovie = value
+        self.group.leave()
+      case .failure(let err):
+        dump(err)
+        self.goodOstMovie = nil
+        self.group.leave()
+      }
+    }
+  }
+  
+  private func getSummerData() {
+    group.enter()
+    downloadPath.getListMovieGenreData(genre: "여름과 관련된 영화") { (result) in
+      switch result {
+      case .success(let value):
+        self.summerMovie = value
+        self.group.leave()
+      case .failure(let err):
+        dump(err)
+        self.summerMovie = nil
+        self.group.leave()
+      }
+    }
+  }
+  
+  private func getFunnyData() {
+    group.enter()
+    downloadPath.getListMovieGenreData(genre: "미치도록 웃긴영화") { (result) in
+      switch result {
+      case .success(let value):
+        self.funnyMovie = value
+        self.group.leave()
+      case .failure(let err):
+        dump(err)
+        self.funnyMovie = nil
+        self.group.leave()
+      }
+    }
+  }
+  
+  private func getEnglishData() {
+    group.enter()
+    downloadPath.getListMovieGenreData(genre: "영어 공부하기 좋은 영화") { (result) in
+      switch result {
+      case .success(let value):
+        self.englishStudyMovie = value
+        self.group.leave()
+      case .failure(let err):
+        dump(err)
+        self.englishStudyMovie = nil
+        self.group.leave()
+      }
+    }
+  }
+  
+  private func getDisneyData() {
+    group.enter()
+    downloadPath.getListMovieGenreData(genre: "디즈니 영화") { (result) in
+      switch result {
+      case .success(let value):
+        self.disneyMovie = value
+        self.group.leave()
+      case .failure(let err):
+        dump(err)
+        self.disneyMovie = nil
+        self.group.leave()
+      }
+    }
+  }
+  
+  
   
   
   

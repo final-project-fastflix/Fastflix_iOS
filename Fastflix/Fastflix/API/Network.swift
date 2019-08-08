@@ -798,4 +798,31 @@ class APICenter {
         }
     }
   }
+  
+  // 넷플릭스 오리지널 등 우리만의 영화리스트
+  func getListMovieGenreData(genre: String, completion: @escaping (Result<[MoviesByGenre]>) -> ()) {
+    let header = getHeader(needSubuser: true)
+    let fullURL = RequestString.getListByFastFlixMovieURL.rawValue + "\(genre)/list/"
+    print("유알엘 찍어보기:", fullURL)
+    
+    let encoding = fullURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+    
+    let apiURL = URL(string: encoding)!
+    
+    Alamofire.request(apiURL, method: .get, headers: header)
+      .responseData(queue: .global()) { (result) in
+        switch result.result {
+        case .success(let value):
+          guard let result = try? JSONDecoder().decode([MoviesByGenre].self, from: value) else {
+            completion(.failure(ErrorType.FailToParsing))
+            return
+          }
+          completion(.success(result))
+        case .failure(let err):
+          dump(err)
+          completion(.failure(ErrorType.networkError))
+        }
+    }
+  }
+  
 }
