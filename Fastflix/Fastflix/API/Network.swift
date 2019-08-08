@@ -45,6 +45,47 @@ class APICenter {
   }
   
   
+  func rekoMovie(image: UIImage, completion: @escaping (Result<RekoMovie>) -> ()) {
+    let header = getHeader(needSubuser: false)
+    let url = RequestString.postRekoMovie.rawValue
+    guard let convertImg = image.jpegData(compressionQuality: 0.5) else {
+      completion(.failure(ErrorType.NoData))
+      return }
+    
+    let parameters = [
+      "image": convertImg
+    ]
+    
+    Alamofire.upload(multipartFormData: { multi in
+      for (key, value) in parameters {
+        multi.append(value, withName: key)
+      }
+    }, to: url, method: .post, headers: header) { (result) in
+      switch result {
+      case .success(request: let req, streamingFromDisk: _, streamFileURL: _):
+        req.responseData(queue: .global(), completionHandler: { (result) in
+          
+          switch result.result {
+          case .success(let value):
+            guard let data = try? JSONDecoder().decode(RekoMovie.self, from: value) else {
+              completion(.failure(ErrorType.FailToParsing))
+              return
+            }
+            completion(.success(data))
+          case .failure(let err):
+            dump(err)
+            completion(.failure(ErrorType.networkError))
+          }
+        })
+        
+      case .failure(let err):
+        dump(err)
+        completion(.failure(ErrorType.networkError))
+      }
+    }
+  }
+  
+  // post pause movie time
   func postPauseTime(movieID: Int?, time: Int?, completion: @escaping (Result<Bool>) -> ()) {
     let header = [
       "Authorization": "Token \(getToken())",
@@ -112,7 +153,7 @@ class APICenter {
       switch res.result {
       case .success(let value):
         guard let result = try? JSONDecoder().decode(SearchMovie.self, from: value) else {
-        completion(.failure(ErrorType.FailToParsing))
+          completion(.failure(ErrorType.FailToParsing))
           return }
         
         completion(.success(result))
@@ -158,24 +199,24 @@ class APICenter {
     Alamofire.request(RequestString.deleteProfileInfoURL.rawValue, method: .delete, headers: header)
       .validate(statusCode: 200...299)
       .responseData(queue: .global()) { (res) in
-      switch res.result {
-      case .success(_):
-        guard let data = res.data else {
-          completion(.failure(ErrorType.NoData))
-          return }
-        guard let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Int] else {
-          completion(.failure(ErrorType.FailToParsing))
-          return
+        switch res.result {
+        case .success(_):
+          guard let data = res.data else {
+            completion(.failure(ErrorType.NoData))
+            return }
+          guard let dict = try? JSONSerialization.jsonObject(with: data) as? [String: Int] else {
+            completion(.failure(ErrorType.FailToParsing))
+            return
+          }
+          guard let result = dict["response"] else {
+            completion(.failure(ErrorType.FailToParsing))
+            return }
+          completion(.success(result))
+        case .failure(let err):
+          dump(err)
+          completion(.failure(ErrorType.networkError))
+          
         }
-        guard let result = dict["response"] else {
-          completion(.failure(ErrorType.FailToParsing))
-          return }
-        completion(.success(result))
-      case .failure(let err):
-        dump(err)
-        completion(.failure(ErrorType.networkError))
-        
-      }
     }
   }
   
@@ -436,7 +477,7 @@ class APICenter {
   private func getToken() -> String {
     guard let token = path.string(forKey: "token") else {
       print("ERROR!!!, No Token")
-//      AppDelegate.instance.checkLoginState()
+      //      AppDelegate.instance.checkLoginState()
       return ""}
     return token
   }
@@ -757,9 +798,4 @@ class APICenter {
         }
     }
   }
-  
-  
-  
-  
-
 }
