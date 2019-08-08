@@ -16,18 +16,18 @@ class PlayCollectionViewCell: UICollectionViewCell {
 //  var playerItem: AVPlayerItem?
 //  lazy var player = AVPlayer(playerItem: playerItem)
   var player = AVPlayer()
-  var playerLayer: AVPlayerLayer?
   
   func configure(item: AVPlayerItem?) {
 //    self.playerItem = item
 //    player = AVPlayer()
-    player.replaceCurrentItem(with: item)
     
-    setupPlayer()
+    setupPlayer(item: item)
   }
   
-  private func setupPlayer() {
+  func setupPlayer(item: AVPlayerItem?) {
     
+    var playerLayer: AVPlayerLayer?
+    player.replaceCurrentItem(with: item)
     playerLayer = AVPlayerLayer(player: player)
     playerLayer?.masksToBounds = true
     playerLayer?.contentsGravity = .resizeAspectFill
@@ -36,7 +36,6 @@ class PlayCollectionViewCell: UICollectionViewCell {
     
     self.layer.addSublayer(playerLayer!)
 //    player.play()
-    
   }
   
   override func didMoveToSuperview() {

@@ -213,6 +213,16 @@ class PreViewPlayerView: UIView {
   
   @objc private func dismissBtnDidTap(_ sender: UIButton) {
     print(" 뒤로가여 ")
+    
+    guard let count = playerItems?.count else { return }
+    
+    for idx in 0..<count {
+      let index = IndexPath(row: idx, section: 0)
+      let cell = playCollectionView.cellForItem(at: index) as? PlayCollectionViewCell
+      cell?.player.replaceCurrentItem(with: nil)
+//      cell?.playerLayer = nil
+    }
+    
     delegate?.dismissBtnDidTap()
     
     
@@ -266,8 +276,6 @@ extension PreViewPlayerView : UICollectionViewDataSource {
 
 extension PreViewPlayerView: UICollectionViewDelegate {
   
-  
-  
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     
     if collectionView == logoCollectionView {
@@ -294,7 +302,7 @@ extension PreViewPlayerView: UICollectionViewDelegate {
     let indexArr = playCollectionView.indexPathsForVisibleItems
     for idx in indexArr {
       let cell = playCollectionView.cellForItem(at: idx) as? PlayCollectionViewCell
-      cell?.playerLayer = nil
+//      cell?.playerLayer = nil
       cell?.player.pause()
       
     }

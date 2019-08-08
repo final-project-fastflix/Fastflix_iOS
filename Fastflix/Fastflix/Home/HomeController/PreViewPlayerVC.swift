@@ -16,7 +16,7 @@ protocol PreViewPlayerVCDelegate: class {
 
 final class PreViewPlayerVC: UIViewController {
   
-  private weak var delegate: PreViewPlayerVCDelegate?
+  weak var delegate: PreViewPlayerVCDelegate?
   
   var mainURLs: [URL?]?
   var logoURLs: [URL?]?
@@ -79,8 +79,8 @@ final class PreViewPlayerVC: UIViewController {
   }
   
   @objc func didFinishVideo(_ sender: NSNotification) {
-    dismiss(animated: true)
     delegate?.finishVideo()
+    dismiss(animated: true)
   }
   
   
@@ -89,6 +89,7 @@ final class PreViewPlayerVC: UIViewController {
 
 extension PreViewPlayerVC: PreViewPlayerViewDelegate {
   func dismissBtnDidTap() {
+    delegate?.finishVideo()
     self.dismiss(animated: true)
   }
   

@@ -85,6 +85,7 @@ class MainHomeVC: UIViewController {
     super.viewDidLoad()
     addSubViews()
     registerTableViewCell()
+    preViewPlayerVC?.delegate = self
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -415,6 +416,7 @@ extension MainHomeVC: UITableViewDataSource {
 extension MainHomeVC: PreviewTableCellDelegate {
   func didSelectItemAt(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
     preViewPlayerVC = PreViewPlayerVC()
+    preViewPlayerVC?.delegate = self
     preViewPlayerVC?.logoURLs = logoArr
     preViewPlayerVC?.playerItems = videoItems
     preViewPlayerVC?.idArr = idArr
@@ -426,7 +428,9 @@ extension MainHomeVC: PreviewTableCellDelegate {
 
 extension MainHomeVC: PreViewPlayerVCDelegate {
   func finishVideo() {
+    print("아에헹")
     preViewPlayerVC = nil
+    AppDelegate.instance.checkLoginState()
   }
   
   
