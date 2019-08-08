@@ -32,7 +32,7 @@ class MainHomeVC: UIViewController {
       return floatingView.frame.origin.y
     }
     set {
-      guard newValue >= -94 || newValue <= 0 else { return }
+      guard newValue >= -floatingView.frame.height || newValue <= 0 else { return }
       floatingView.frame.origin.y = newValue
     }
   }
@@ -113,8 +113,9 @@ class MainHomeVC: UIViewController {
     }
     
     floatingView.snp.makeConstraints {
-      $0.leading.trailing.top.equalToSuperview()
+      $0.leading.trailing.equalToSuperview()
       $0.height.equalTo(50 + topPadding)
+      $0.top.equalToSuperview().offset(-10)
     }
   }
   
@@ -153,8 +154,10 @@ extension MainHomeVC: UITableViewDataSource {
       self.mainMovieId = id
       cell.configure(imageURLString: bigImgPath, logoImageURLString: logoImgPath)
       if let data = path.mainImageCellData?.mainMovie?.genre {
-        for idx in data {
-          text += (idx.name + "･")
+        for idx in 0...data.count {
+          if idx < 3 {
+            text += (data[idx].name + "･")
+          }
         }
       }
       let lastText = String(text.dropLast())
@@ -324,8 +327,6 @@ extension MainHomeVC: UITableViewDelegate {
     
     let fixValue = floatingView.frame.size.height
     
-    var compareValue: CGFloat = 0
-    
     var floatValue: CGFloat {
       get {
         return originValue
@@ -348,8 +349,8 @@ extension MainHomeVC: UITableViewDelegate {
     }
     compareArr.append(offset)
     
-    if offset <= -44 {
-      floatingView.frame.origin.y = 0
+    if offset <= -topPadding {
+      floatingView.frame.origin.y = -10
       return
     }
     
@@ -358,18 +359,21 @@ extension MainHomeVC: UITableViewDelegate {
         // show
         let addtionalValue = compareArr[1] - compareArr[0]
         floatValue += -addtionalValue
-        originY = floatValue
+        originY = floatValue - 10
         return
       } else if compareArr[0] < compareArr[1] {
         // hide
         let addtionalValue = compareArr[1] - compareArr[0]
         floatValue += -addtionalValue
-        originY = floatValue
+        originY = floatValue - 10
+        
         return
       } else {
         return
       }
     }
+    
+    
   
   }
 }

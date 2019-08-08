@@ -10,6 +10,7 @@ import UIKit
 import Kingfisher
 import SnapKit
 import Alamofire
+import AVKit
 
 class MainMovieVC: UIViewController {
   
@@ -25,13 +26,13 @@ class MainMovieVC: UIViewController {
   
   lazy var receiveKeys: [String]? = nil
   
-//  override func loadView() {
-//    mainMovieView.receiveKeys = receiveKeys
-//    mainMovieView.receiveData = receiveData
-//    mainMovieView.floatingView.delegate = self
-//    categoryVC.delegate = self
-//    self.view = mainMovieView
-//  }
+  //  override func loadView() {
+  //    mainMovieView.receiveKeys = receiveKeys
+  //    mainMovieView.receiveData = receiveData
+  //    mainMovieView.floatingView.delegate = self
+  //    categoryVC.delegate = self
+  //    self.view = mainMovieView
+  //  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -41,9 +42,10 @@ class MainMovieVC: UIViewController {
     mainMovieView.mainDelegate = self
     
     categoryVC.delegate = self
-//    self.view = mainMovieView
+    
     view.addSubview(mainMovieView)
     mainMovieView.delegate = self
+    mainMovieView.myDelegate = self
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -56,7 +58,7 @@ class MainMovieVC: UIViewController {
       $0.top.leading.bottom.trailing.equalToSuperview()
     }
   }
-
+  
 }
 
 extension MainMovieVC: FloatingViewDelegate {
@@ -65,9 +67,9 @@ extension MainMovieVC: FloatingViewDelegate {
   }
   
   func didTapMovie() {
-//    let mainMovieVC = self
-//    mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
-//    tabBarController?.viewControllers?[0] = mainMovieVC
+    //    let mainMovieVC = self
+    //    mainMovieVC.tabBarItem = UITabBarItem(title: "홈", image: UIImage(named: "tabBarhome2"), tag: 0)
+    //    tabBarController?.viewControllers?[0] = mainMovieVC
     
     categoryVC.modalPresentationStyle = .overCurrentContext
     UIView.animate(withDuration: 0.7) {
@@ -91,8 +93,14 @@ extension MainMovieVC: FloatingViewDelegate {
 }
 
 extension MainMovieVC: CategorySelectVCDelegate {
+  func sendText(text: String?) {
+    DispatchQueue.main.async {
+      self.mainMovieView.floatingView.movieBtn.setTitle(text, for: .normal)
+    }
+  }
+  
   func sendData(data: [RequestMovieElement], keys: [String]) {
-//    let view = self.view as! MainMovieView
+    //    let view = self.view as! MainMovieView
     print("runrun")
     mainMovieView.receiveData = data
     mainMovieView.receiveKeys = keys
@@ -116,6 +124,16 @@ extension MainMovieVC: SubTableCellDelegate {
   
   func errOccurSendingAlert(message: String, okMessage: String) {
     self.oneAlert(title: "영화데이터 오류", message: message, okButton: okMessage)
+  }
+}
+
+extension MainMovieVC: MainMovieViewDelegate {
+  func didTapPreview(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
+    let preViewPlayerVC = PreViewPlayerVC()
+    preViewPlayerVC.logoURLs = logoArr
+    preViewPlayerVC.playerItems = videoItems
+    preViewPlayerVC.idArr = idArr
+    present(preViewPlayerVC, animated: true)
   }
 }
 
@@ -181,16 +199,6 @@ extension MainMovieVC: MainImageTableCellDelegate {
         }
       }
     }
-
-    
-    
-    
-    
-    
-    
-    
-    
-  
   }
-  
 }
+
