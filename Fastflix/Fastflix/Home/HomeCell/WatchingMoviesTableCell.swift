@@ -8,28 +8,31 @@
 
 import UIKit
 
-protocol WatchingMoviesTableCelllDelegate: class {
-  func WatchingMovielDidSelectItemAt(indexPath: IndexPath)
+protocol WatchingMoviesTableCellDelegate: class {
+  func WatchingMovielDidSelectItemAt(movieId: Int, url: String, movieTitle: String)
 }
 
 class WatchingMoviesTableCell: UITableViewCell {
   
+  let subUserSingle = SubUserSingleton.shared
+  
   static let identifier = "WatchingMoviesTableCell"
   
-  var delegate: WatchingMoviesTableCelllDelegate?
+  var delegate: WatchingMoviesTableCellDelegate?
   
   var baseData: FollowUp?
   
   private let titleLabel: UILabel = {
     let label = UILabel()
-    label.text = "hea 님이 시청중인 콘텐츠"
+//    label.text = "hea 님이 시청중인 콘텐츠"
     label.textColor = .white
-    label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+    label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
     return label
   }()
   
   private let layout = UICollectionViewFlowLayout()
   private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+  
   
   override func didMoveToSuperview() {
     super.didMoveToSuperview()
@@ -38,14 +41,25 @@ class WatchingMoviesTableCell: UITableViewCell {
     setupSNP()
     registerCollectionViewCell()
     setupCollectionView()
+
+  }
+  
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
     
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
   
-  func configure(data: FollowUp, title: String?) {
+  func configure(data: FollowUp, subUserName: String?) {
     self.baseData = data
-    let title = title ?? "title"
     
+    let name = subUserName ?? ""
+    
+    let title = "\(name) 님이 시청중인 콘텐츠"
     
 //    self.urls = urlArr.map { URL(string: $0) }
     self.titleLabel.text = title
@@ -106,12 +120,12 @@ class WatchingMoviesTableCell: UITableViewCell {
     // 컬렉션뷰의 전체적으로 떨어진 간격 설정(inset)
     layout.sectionInset = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
     // 다음줄(아랫줄)과의 간격설정 - 12
-    layout.minimumLineSpacing = 12
+    layout.minimumLineSpacing = 8
     // 옆줄과의 간격설정 - 14
     layout.minimumInteritemSpacing = 14
     // 전체 뷰에서 왼쪽 8, 오른쪽 8, 사이 14 * 2 (전체 44)를 빼고난 나머지 공간을 3줄로 나누기
-    let width = (UIScreen.main.bounds.width - 44)/3
-    let height = width * 1.4
+    let width = UIScreen.main.bounds.width / 3.5
+    let height = width * 1.35
     // 컬렉션뷰의 각 한개의 아이템 사이즈 설정
     layout.itemSize = CGSize(width: width, height: height)
     
@@ -139,8 +153,12 @@ extension WatchingMoviesTableCell: UICollectionViewDataSource {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WatchingMoviesCollectionCell.identifier, for: indexPath) as! WatchingMoviesCollectionCell
     
     if let data = baseData?[indexPath.row] {
-      cell.configure(imageUrl: data.movie.verticalImage, id: data.movie.id, video: data.movie.videoFile ?? "", runningTime: data.movie.realRunningTime, progress: data.progressBar, toBe: data.toBeContinue)
+      
+      print("시청중인 콘텐츠",data)
+      cell.configure(imageUrl: data.movie.verticalImage, id: data.movie.id, video: data.movie.videoFile ?? "", runningTime: data.totalMinute, progress: data.progressBar, toBe: data.toBeContinue)
+//      cell.playBtn.addTarget(self, action: #selector(self.collectionView(_:didSelectItemAt:)), for: .touchUpInside)
     }
+
     return cell
   }
   
@@ -150,7 +168,34 @@ extension WatchingMoviesTableCell: UICollectionViewDataSource {
 extension WatchingMoviesTableCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     //    print("indexPath.row: ", indexPath.row)
-    delegate?.WatchingMovielDidSelectItemAt(indexPath: indexPath)
     
+    let data = baseData?[indexPath.item]
+    let movieId = data?.movie.id ?? 253
+    
+    APICenter.shared.getDetailData(id: movieId) {
+      switch $0 {
+      case .success(let movie):
+        print("영화 플레이화면으로 전달: ", movie.id, movie.name)
+        
+        DispatchQueue.main.async {
+          self.delegate?.WatchingMovielDidSelectItemAt(movieId: movieId, url: movie.videoFile, movieTitle: movie.name)
+        }
+        
+      case .failure(let err):
+        print("fail to login, reason: ", err)
+        
+        let message = """
+        죄송합니다. 해당 영화에 대한 정보를 가져오지
+        못했습니다. 다시 시도해 주세요.
+        """
+        
+      }
+    }
   }
 }
+
+//extension WatchingMoviesTableCell: CellForBetterTouchButtonCellDelegate {
+//  func buttonDidTap(indexPath: IndexPath) {
+//    self.collectionView(collectionView, didSelectItemAt: indexPath)
+//  }
+//}

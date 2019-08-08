@@ -28,7 +28,7 @@ class SubCell: UITableViewCell {
     let label = UILabel()
     label.textColor = .white
     label.backgroundColor = #colorLiteral(red: 0.07762928299, green: 0.07762928299, blue: 0.07762928299, alpha: 1)
-    label.font = UIFont.boldSystemFont(ofSize: 20)
+    label.font = UIFont.boldSystemFont(ofSize: 18)
     return label
   }()
   
@@ -49,10 +49,13 @@ class SubCell: UITableViewCell {
     super.didMoveToSuperview()
     [collectionView, titleLabel].forEach { addSubview($0) }
     
-    layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 20, right: 10)
-    layout.minimumLineSpacing = 15
+    let width = UIScreen.main.bounds.width / 3.5
+    let height = width * 1.4380
+    
+    layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 20, right: 10)
+    layout.minimumLineSpacing = 8
     layout.minimumInteritemSpacing = 15
-    layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3.5, height: UIScreen.main.bounds.height / 4.8)
+    layout.itemSize = CGSize(width: width, height: height)
     layout.scrollDirection = .horizontal
     
     collectionView.register(
@@ -69,7 +72,7 @@ class SubCell: UITableViewCell {
   private func setupSNP() {
     
     contentView.snp.makeConstraints {
-      $0.height.equalTo(220)
+      $0.height.equalTo(210)
     }
     
     titleLabel.snp.makeConstraints {
@@ -80,7 +83,7 @@ class SubCell: UITableViewCell {
     collectionView.snp.makeConstraints {
       $0.leading.trailing.equalToSuperview()
       $0.top.equalTo(titleLabel.snp.bottom).offset(5)
-      $0.bottom.equalToSuperview().offset(-10)
+      $0.bottom.equalToSuperview()
     }
     
   }

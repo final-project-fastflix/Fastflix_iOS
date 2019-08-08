@@ -66,7 +66,7 @@ class MyContentView: UIView {
     layout.minimumInteritemSpacing = 14
     // 전체 뷰에서 왼쪽 8, 오른쪽 8, 사이 14 * 2 (전체 44)를 빼고난 나머지 공간을 3줄로 나누기
     let width = (UIScreen.main.bounds.width - 44)/3
-    let height = width * 1.4
+    let height = width * 1.4380
     // 컬렉션뷰의 각 한개의 아이템 사이즈 설정
     layout.itemSize = CGSize(width: width, height: height)
     
