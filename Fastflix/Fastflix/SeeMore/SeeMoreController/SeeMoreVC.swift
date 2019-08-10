@@ -125,12 +125,16 @@ extension SeeMoreVC: SeeMoreViewDelegate {
           self.oneAlert(title: "실패", message: message, okButton: "찜 목록 다시 확인하기")
         }
       }
-    case IndexPath(row: 1, section: 2):
+    case IndexPath(row: 0, section: 2):
+      let downLoadVC = DownloadVC()
+      navigationController?.show(downLoadVC, sender: nil)
+      
+    case IndexPath(row: 1, section: 3):
       
       let iconVC = IconVC()
       navigationController?.show(iconVC, sender: nil)
       
-    case IndexPath(row: 2, section: 2):
+    case IndexPath(row: 2, section: 3):
       
       
       let iconVC = IconVC()
@@ -140,13 +144,13 @@ extension SeeMoreVC: SeeMoreViewDelegate {
 //      navigationController?.show(loadingVC, sender: nil)
 
 
-    case IndexPath(row: 3, section: 2):
+    case IndexPath(row: 3, section: 3):
       
       let customerCVC = CustomerCenterVC()
       navigationController?.show(customerCVC, sender: nil)
 //      navigationItem.setHidesBackButton(true, animated: true)
       
-    case IndexPath(row: 4, section: 2):
+    case IndexPath(row: 4, section: 3):
       self.alert(title: "로그아웃", message: "로그아웃하시겠어요?") {
         let path = UserDefaults.standard
         path.removeObject(forKey: "token")
