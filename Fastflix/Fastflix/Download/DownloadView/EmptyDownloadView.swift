@@ -15,7 +15,7 @@ class EmptyDownloadView: UIView {
   
   private lazy var saveWifiBtn: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(named: "wifisave2"), for: .normal)
+    button.setImage(UIImage(named: "saved"), for: .normal)
     button.addTarget(self, action: #selector(saveWiftBtnDidTap(_:)), for: .touchUpInside)
     return button
   }()
@@ -113,7 +113,7 @@ class EmptyDownloadView: UIView {
   
   
   @objc func saveWiftBtnDidTap(_ sender: UIButton) {
-    print("saveWiftBtnDidTap")
+    
   }
   
   @objc func onClickSwitch(_ sender: UISwitch) {
