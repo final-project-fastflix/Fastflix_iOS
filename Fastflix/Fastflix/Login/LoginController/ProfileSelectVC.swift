@@ -8,14 +8,20 @@
 
 import UIKit
 
-class ProfileSelectVC: UIViewController {
+final class ProfileSelectVC: UIViewController {
 
-  let subUserSingle = SubUserSingleton.shared
+  private let subUserSingle = SubUserSingleton.shared
   
+  // 프로필 바꾸고나서의 객체에 접근하기 위해서 private으로 선언하지 않음
   let profileChangeVC = ProfileChangeVC()
   
+  // 스태터스 바
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+  
   // 네이게이션뷰
-  lazy var navigationView: UIView = {
+  private lazy var navigationView: UIView = {
     let view = UIView()
     view.backgroundColor = .clear
     view.addSubview(profileManageLabel)
@@ -26,7 +32,7 @@ class ProfileSelectVC: UIViewController {
   }()
   
   // 로고
-  let logoView: UIImageView = {
+  private let logoView: UIImageView = {
     let image = UIImage(named: "fastflix")
     let view = UIImageView()
     view.image = image
@@ -34,8 +40,8 @@ class ProfileSelectVC: UIViewController {
     return view
   }()
   
-  // 프로필관리 레이블(edit할때 나타나는 label)
-  let profileManageLabel: UILabel = {
+  // MARK: - 프로필관리 레이블(edit할때만 나타나는 label)
+  private let profileManageLabel: UILabel = {
     let label = UILabel()
     label.text = "프로필 관리"
     label.textAlignment = .center
@@ -45,8 +51,8 @@ class ProfileSelectVC: UIViewController {
     return label
   }()
   
-  // 변경 버튼
-  lazy var changeButton: UIButton = {
+  // MARK: - 변경 버튼  ====> 편집모드로
+  private lazy var changeButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("변경", for: .normal)
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
@@ -55,8 +61,8 @@ class ProfileSelectVC: UIViewController {
     return button
   }()
   
-  // 완료 버튼
-  lazy var finishButton: UIButton = {
+  // MARK: - 변경 완료 버튼
+  private lazy var finishButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("완료", for: .normal)
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
@@ -67,7 +73,7 @@ class ProfileSelectVC: UIViewController {
   }()
   
   // 안내문구
-  let introlabel: UILabel = {
+  private let introlabel: UILabel = {
     let label = UILabel()
     label.text = "Fastflix를 시청할 프로필을 선택하세요."
     label.font = UIFont.systemFont(ofSize: 20, weight: .light)
@@ -76,45 +82,50 @@ class ProfileSelectVC: UIViewController {
     return label
   }()
   
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
+  // MARK: - 서브유저 관련 5개의 뷰를 일단은 다 올려놓음 - 존재유뮤에 따라 isHidden으로 숨김
+  // 커스텀해서 만든 UserView
+  private var profileImageView1 = UserView()
+  private var profileImageView2 = UserView()
+  private var profileImageView3 = UserView()
+  private var profileImageView4 = UserView()
+  private var profileImageView5 = UserView()
   
-  var profileImageView1 = UserView()
-  var profileImageView2 = UserView()
-  var profileImageView3 = UserView()
-  var profileImageView4 = UserView()
-  var profileImageView5 = UserView()
-  var addProfileView = AddProfileView()
+  // 프로필추가 버튼(커스텀뷰)
+  private var addProfileView = AddProfileView()
   
+  // MARK: - 서브유저의 숫자
   var numberOfUsers: Int?
+  
   var subUserList: [SubUser]? {
     didSet {
       numberOfUsers = subUserList?.count
     }
   }
   
+  // MARK: - 레이아웃 설정을 위한 높이 관련 속성
   let firstYLine = UIScreen.main.bounds.height * 0.32
   lazy var secondYLine = firstYLine + 180
   lazy var thirdYLine = secondYLine + 180
   
-  
+  // MARK: - SeeMore뷰에서 왔는지(또는 로그인하면서 뷰를 띄웠는지) 여부
+  // SeeMore뷰에서 접근하면 바로 "편집(editing)모드"로 가기 위함
   var isFromSeeMoreView: Bool = false
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    subUserList = subUserSingle.subUserList
-    numberOfUsers = subUserSingle.subUserList?.count
+//    subUserList = subUserSingle.subUserList
+//    numberOfUsers = subUserSingle.subUserList?.count
+    
+    configure()
+    navigationBarSetting()
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-
+    // 뷰가 나타날때마다 서브유저 및 서브유저 숫자 확인
     subUserList = subUserSingle.subUserList
     numberOfUsers = subUserSingle.subUserList?.count
     
-    configure()
-    navigationBarSetting()
     addSubViews()
     setFuntions()
     
