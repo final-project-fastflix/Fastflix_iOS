@@ -8,12 +8,17 @@
 
 import UIKit
 
-class LoginVC: UIViewController {
+final class LoginVC: UIViewController {
   
-  let subUserSingle = SubUserSingleton.shared
+  private let subUserSingle = SubUserSingleton.shared
   
-  // 네이게이션뷰
-  lazy var navigationView: UIView = {
+  // 스태터스바 글씨 하얗게 설정
+  override var preferredStatusBarStyle: UIStatusBarStyle {
+    return .lightContent
+  }
+  
+  // 네이게이션뷰(네비게이션 커스텀하기 위해, 뷰를 네이게이션바처럼 보이게하기 위함)
+  private lazy var navigationView: UIView = {
     let view = UIView()
     view.backgroundColor = .clear
     view.addSubview(logoView)
@@ -24,7 +29,7 @@ class LoginVC: UIViewController {
   }()
   
   // 네비게이션 - 로고
-  let logoView: UIImageView = {
+  private let logoView: UIImageView = {
     let image = UIImage(named: "fastflix")
     let view = UIImageView()
     view.image = image
@@ -33,7 +38,7 @@ class LoginVC: UIViewController {
   }()
   
   // 고객센터 버튼
-  lazy var customerCenterButton: UIButton = {
+  private lazy var customerCenterButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("고객 센터", for: .normal)
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
@@ -43,7 +48,7 @@ class LoginVC: UIViewController {
   }()
   
   // 뒤로가기 버튼
-  lazy var backButton: UIButton = {
+  private lazy var backButton: UIButton = {
     let button = UIButton(type: .system)
     let image = UIImage(named: "back")
     button.setImage(image, for: .normal)
@@ -54,15 +59,15 @@ class LoginVC: UIViewController {
   }()
 
   // 뒤로가기 잘 안눌려서 큰 버튼 위에 입힘
-  let bigBackButton: UIButton = {
+  private let bigBackButton: UIButton = {
     let button = UIButton(type: .system)
     button.backgroundColor = .clear
     button.addTarget(self, action: #selector(backButtonTapped(_:)), for: .touchUpInside)
     return button
   }()
   
-  //이메일 입력하는 텍스트 뷰 (뷰 위에 텍스트 필드 및 안내문구 올라가 있음)
-  lazy var emailTextFieldView: UIView = {
+  // MARK: - 이메일 입력하는 텍스트 뷰 (뷰 위에 텍스트 필드 및 안내문구 올라가 있음)
+  private lazy var emailTextFieldView: UIView = {
     let view = UIView()
     view.frame.size.height = 48
     view.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
@@ -75,7 +80,7 @@ class LoginVC: UIViewController {
   }()
   
   // 이메일텍스트필드의 안내문구
-  var emailLabel: UILabel = {
+  private var emailLabel: UILabel = {
     let label = UILabel()
     label.text = "이메일주소 또는 전화번호"
     label.font = UIFont.systemFont(ofSize: 18)
@@ -84,7 +89,7 @@ class LoginVC: UIViewController {
   }()
   
   // 로그인 - 이메일 입력 필드
-  lazy var emailTextField: UITextField = {
+  private lazy var emailTextField: UITextField = {
     var tf = UITextField()
     tf.frame.size.height = 48
     tf.backgroundColor = .clear
@@ -94,13 +99,13 @@ class LoginVC: UIViewController {
     tf.autocorrectionType = .no
     tf.spellCheckingType = .no
     tf.keyboardType = .emailAddress
-    tf.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
+    tf.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
 //    tf.keyboardAppearance = .dark
     return tf
   }()
   
-  //비밀번호 입력하는 텍스트 뷰 (뷰 위에 텍스트 필드 및 안내문구 올라가 있음)
-  lazy var passwordTextFieldView: UIView = {
+  // MARK: - 비밀번호 입력하는 텍스트 뷰 (뷰 위에 텍스트 필드 및 안내문구 올라가 있음)
+  private lazy var passwordTextFieldView: UIView = {
     let view = UIView()
     view.frame.size.height = 48
     view.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
@@ -114,7 +119,7 @@ class LoginVC: UIViewController {
   }()
   
   // 패스워드텍스트필드의 안내문구
-  var passwordLabel: UILabel = {
+  private var passwordLabel: UILabel = {
     let label = UILabel()
     label.text = "비밀번호"
     label.font = UIFont.systemFont(ofSize: 18)
@@ -123,7 +128,7 @@ class LoginVC: UIViewController {
   }()
   
   // 로그인 - 비밀번호 입력 필드
-  let passwordTextField: UITextField = {
+  private let passwordTextField: UITextField = {
     let tf = UITextField()
     tf.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
     tf.frame.size.height = 48
@@ -135,13 +140,13 @@ class LoginVC: UIViewController {
     tf.spellCheckingType = .no
     tf.isSecureTextEntry = true
     tf.clearsOnBeginEditing = false
-    tf.addTarget(self, action: #selector(editingChanged(_:)), for: .editingChanged)
+    tf.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
 //    tf.keyboardAppearance = .dark
     return tf
   }()
   
   // 패스워드에 "표시"버튼 비밀번호 가리기 기능
-  let passwordSecureButton: UIButton = {
+  private let passwordSecureButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("표시", for: .normal)
     button.setTitleColor(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1), for: .normal)
@@ -150,8 +155,8 @@ class LoginVC: UIViewController {
     return button
   }()
   
-  // 로그인버튼
-  let loginButton: UIButton = {
+  // MARK: - 로그인버튼
+  private let loginButton: UIButton = {
     let button = UIButton(type: .custom)
     button.backgroundColor = .clear
     button.layer.cornerRadius = 5
@@ -165,7 +170,7 @@ class LoginVC: UIViewController {
   }()
   
   // 이메일텍스트필드, 패스워드, 로그인버튼 스택뷰에 배치
-  lazy var stackView: UIStackView = {
+  private lazy var stackView: UIStackView = {
     let sview = UIStackView(arrangedSubviews: [emailTextFieldView, passwordTextFieldView, loginButton])
     sview.spacing = 18
     sview.axis = .vertical
@@ -175,7 +180,7 @@ class LoginVC: UIViewController {
   }()
   
   // 비밀번호 재설정 버튼
-  let passwordResetButton: UIButton = {
+  private let passwordResetButton: UIButton = {
     let button = UIButton()
     button.backgroundColor = .clear
     button.setTitle("비밀번호 재설정", for: .normal)
@@ -183,28 +188,30 @@ class LoginVC: UIViewController {
     return button
   }()
   
-  // 3개의 각 텍스트필드 및 로그인 버튼의 높이 설정을 위한 속성
-  let textViewHeight: CGFloat = 48
-  
-  // 스태터스바 글씨 하얗게 설정
-  override var preferredStatusBarStyle: UIStatusBarStyle {
-    return .lightContent
-  }
-  
+  // 3개의 각 텍스트필드 및 로그인 버튼의 높이 설정
+  private let textViewHeight: CGFloat = 48
+
+  // MARK: - 시점 viewDidLoad
   override func viewDidLoad() {
     super.viewDidLoad()
     
     configure()
     navigationBarSetting()
     addSubViews()
-    makeObserverForKeyboard()
     setupSNP()
+    setupNotiObserverForKeyboardMoveUpDown()
   }
   
   private func configure() {
     view.backgroundColor = #colorLiteral(red: 0.07450980392, green: 0.07450980392, blue: 0.07450980392, alpha: 1)
     emailTextField.delegate = self
     passwordTextField.delegate = self
+  }
+  
+  // 네비게이션바 세팅
+  private func navigationBarSetting() {
+    let navCon = navigationController!
+    navCon.isNavigationBarHidden = true
   }
   
   private func addSubViews() {
@@ -288,13 +295,8 @@ class LoginVC: UIViewController {
 
   }
   
-  // 네비게이션바 세팅
-  private func navigationBarSetting() {
-    let navCon = navigationController!
-    navCon.isNavigationBarHidden = true
-  }
-  
-  private func makeObserverForKeyboard() {
+  // MARK: - 키보드 Notification
+  private func setupNotiObserverForKeyboardMoveUpDown() {
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(didReceiveKeyboardNotification(_:)),
@@ -312,23 +314,25 @@ class LoginVC: UIViewController {
     )
   }
   
+  // MARK: - 키보드가 가리는 부분 만큼만 살짝 뷰를 올리기 위한 메서드
   @objc private func didReceiveKeyboardNotification(_ noti: Notification) {
     guard let userInfo = noti.userInfo,
       let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
       let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
       else { return }
     
-    // 키보드 이동시킬 높이 계산 ---> 키보드가 올라와서 스택뷰(+10)와 겹치는 영역만큼 (다만 0보다 작을땐 안 움직이게)
-    let shouldBeMovedHeight = (textViewHeight*3 + 36 + 10)/2 - (self.view.frame.height/2 - keyboardFrame.height)
+    // 겹치는 영역 계산 ---> 키보드가 올라와서 스택뷰와 겹치는 영역만큼(영역 조금늘리기 위해서 플러스 + 10)
+    // (다만 0보다 작을땐) 7,8과 같은 환경 (겹치는 영역이 없을땐) 안 움직이게
+    let overlappedHeight = (textViewHeight*3 + 36 + 10)/2 - (self.view.frame.height/2 - keyboardFrame.height)
     
-    // 기기에 따라서 실제 이동할 높이
-    var movingHeight: CGFloat
+    // 기기에 따라서 실제 이동해야만 하는 높이
+    var actuallyHaveToBeMovedHeight: CGFloat
     
-    // 겹치는 부분이 0보다 크면 이동, 겹치는 부분이 0보다 작으면(겹치는 부분이 없으면) 0 (즉, 이동 안함)
-    if shouldBeMovedHeight >= 0 {
-      movingHeight = shouldBeMovedHeight
+    // 겹치는 부분이 0보다 크면 이동, 겹치는 부분이 0보다 작으면(겹치는 부분이 없으면) 즉, 0이면 이동 안함
+    if overlappedHeight >= 0 {
+      actuallyHaveToBeMovedHeight = overlappedHeight
     }else {
-      movingHeight = 0
+      actuallyHaveToBeMovedHeight = 0
     }
     
     // 키보드와 뷰의 조건에 따라 오토레이아웃 바꾸기
@@ -342,7 +346,7 @@ class LoginVC: UIViewController {
     }else {
       // 스택뷰의 오토레이아웃 업데이트
       self.stackView.snp.updateConstraints {
-          $0.centerY.equalToSuperview().offset(-movingHeight)
+          $0.centerY.equalToSuperview().offset(-actuallyHaveToBeMovedHeight)
       }
       // 레이아웃 변경이 필요해
       self.stackView.setNeedsLayout()
@@ -357,26 +361,27 @@ class LoginVC: UIViewController {
 
   }
   
+  // MARK: - 비밀번호 가리기 모드 켜고 끄기
   @objc private func passwordSecureModeSetting() {
     passwordTextField.isSecureTextEntry.toggle()
   }
   
-  // 로그인버튼 눌렀을 때
+  // MARK: - 로그인버튼 눌렀을 때의 동작
   @objc private func didTapLoginBtn(_ sender: UIButton) {
     guard let id = emailTextField.text, let pw = passwordTextField.text else { return }
+    
     APICenter.shared.login(id: id, pw: pw) {
       switch $0 {
       case .success(let subUsers):
         print("Login Success!!!")
         print("value: ", subUsers)
-        
+        // 로그인 성공하면 서브유저리스트를 싱글톤에 저장
         self.subUserSingle.subUserList = subUsers
         
-        let profileSelectVC = ProfileSelectVC()
-        let navi = UINavigationController(rootViewController: profileSelectVC)
-        
-        self.present(navi, animated: false)
-        
+        // 로그인 실행(서브유저 선택하면으로 이동)
+        DispatchQueue.main.async {
+          self.executeLogIn()
+        }
       case .failure(let err):
         print("fail to login, reason: ", err)
         let message = """
@@ -387,6 +392,15 @@ class LoginVC: UIViewController {
         self.oneAlert(title: "로그인", message: message, okButton: "다시 입력하기")
       }
     }
+  }
+  
+  // MARK: - 로그인실행 서브유저선택하는 화면으로
+  private func executeLogIn() {
+    
+    let profileSelectVC = ProfileSelectVC()
+    let navi = UINavigationController(rootViewController: profileSelectVC)
+    
+    self.present(navi, animated: false)
   }
   
   // 고객센터버튼 눌렀을 때
@@ -401,7 +415,7 @@ class LoginVC: UIViewController {
   }
   
   // MARK: - 이메일텍스트필드, 비밀번호 텍스트필드 두가지 다 채워져 있을때, 로그인 버튼 빨간색으로 변경
-  @objc private func editingChanged(_ textField: UITextField) {
+  @objc private func textFieldEditingChanged(_ textField: UITextField) {
     if textField.text?.count == 1 {
       if textField.text?.first == " " {
         textField.text = ""
@@ -426,27 +440,34 @@ class LoginVC: UIViewController {
   
 }
 
-// MARK: - 텍스트필드 델리게이트 구현
+// MARK: - 텍스트필드 관련 델리게이트 구현
 extension LoginVC: UITextFieldDelegate {
-  // 텍스트필드 편집 시작할때의 설정 - 문구가 위로올라가면서 크기 작아지고, 오토레이아웃 업데이트
+  
+  // MARK: - 텍스트필드 편집 시작할때의 설정 - 문구가 위로올라가면서 크기 작아지고, 오토레이아웃 업데이트
   func textFieldDidBeginEditing(_ textField: UITextField) {
     
     if textField == emailTextField {
       emailTextFieldView.backgroundColor = #colorLiteral(red: 0.2972877622, green: 0.2973434925, blue: 0.297280401, alpha: 1)
       emailLabel.font = UIFont.systemFont(ofSize: 11)
+      // 오토레이아웃 업데이트
       emailLabel.snp.updateConstraints {
         $0.centerY.equalToSuperview().offset(-13)
       }
+      // 레이아웃 변경이 필요해
       emailLabel.setNeedsLayout()
     }
     if textField == passwordTextField {
       passwordTextFieldView.backgroundColor = #colorLiteral(red: 0.2972877622, green: 0.2973434925, blue: 0.297280401, alpha: 1)
       passwordLabel.font = UIFont.systemFont(ofSize: 11)
+      // 오토레이아웃 업데이트
       passwordLabel.snp.updateConstraints {
         $0.centerY.equalToSuperview().offset(-13)
       }
+      // 레이아웃 변경이 필요해
       passwordLabel.setNeedsLayout()
     }
+    
+    // 오토레이아웃 업데이트 했어
     super.updateViewConstraints()
   
     // 실제 레이아웃 변경은 애니메이션으로 줄꺼야
