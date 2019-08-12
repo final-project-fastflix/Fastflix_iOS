@@ -321,7 +321,8 @@ final class LoginVC: UIViewController {
       let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval
       else { return }
     
-    // 겹치는 영역 계산 ---> 키보드가 올라와서 스택뷰(+10)와 겹치는 영역만큼 (다만 0보다 작을땐 안 움직이게)
+    // 겹치는 영역 계산 ---> 키보드가 올라와서 스택뷰와 겹치는 영역만큼(영역 조금늘리기 위해서 플러스 + 10)
+    // (다만 0보다 작을땐) 7,8과 같은 환경 (겹치는 영역이 없을땐) 안 움직이게
     let overlappedHeight = (textViewHeight*3 + 36 + 10)/2 - (self.view.frame.height/2 - keyboardFrame.height)
     
     // 기기에 따라서 실제 이동해야만 하는 높이
@@ -376,9 +377,11 @@ final class LoginVC: UIViewController {
         print("value: ", subUsers)
         // 로그인 성공하면 서브유저리스트를 싱글톤에 저장
         self.subUserSingle.subUserList = subUsers
-        // 로그인 실행(서브유저 선택하면으로 이동)
-        self.executeLogIn()
         
+        // 로그인 실행(서브유저 선택하면으로 이동)
+        DispatchQueue.main.async {
+          self.executeLogIn()
+        }
       case .failure(let err):
         print("fail to login, reason: ", err)
         let message = """

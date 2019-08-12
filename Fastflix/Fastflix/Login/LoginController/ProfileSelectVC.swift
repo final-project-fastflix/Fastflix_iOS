@@ -103,9 +103,9 @@ final class ProfileSelectVC: UIViewController {
   }
   
   // MARK: - 레이아웃 설정을 위한 높이 관련 속성
-  let firstYLine = UIScreen.main.bounds.height * 0.32
-  lazy var secondYLine = firstYLine + 180
-  lazy var thirdYLine = secondYLine + 180
+  private let firstYLine = UIScreen.main.bounds.height * 0.32
+  private lazy var secondYLine = firstYLine + 180
+  private lazy var thirdYLine = secondYLine + 180
   
   // MARK: - SeeMore뷰에서 왔는지(또는 로그인하면서 뷰를 띄웠는지) 여부
   // SeeMore뷰에서 접근하면 바로 "편집(editing)모드"로 가기 위함
@@ -116,8 +116,8 @@ final class ProfileSelectVC: UIViewController {
 //    subUserList = subUserSingle.subUserList
 //    numberOfUsers = subUserSingle.subUserList?.count
     
-    configure()
     navigationBarSetting()
+    configure()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -126,10 +126,10 @@ final class ProfileSelectVC: UIViewController {
     subUserList = subUserSingle.subUserList
     numberOfUsers = subUserSingle.subUserList?.count
     
+    setDelegates()
     addSubViews()
-    setFuntions()
-    
-    // SeeMore뷰에서 직접 넘어왔다면 변경버튼까지 바로 누른 상태로 실행하기 위함(변경버튼 -> 유저 isEditing상태가 됨)
+  
+    // SeeMore뷰에서 직접 넘어왔다면 "변경"버튼까지 바로 누른 상태로 가기(변경버튼 -> 유저 isEditing상태가 됨)
     if isFromSeeMoreView {
       changeButtonTapped()
     }
@@ -137,15 +137,27 @@ final class ProfileSelectVC: UIViewController {
     setupSNP()
     setUserViews()
     setupProfileLayout()
-//    self.view.layoutIfNeeded()
-//    self.view.setNeedsLayout()
+    
+  }
+  
+  private func navigationBarSetting() {
+    let navCon = navigationController!
+    navCon.isNavigationBarHidden = true
   }
   
   private func configure() {
     view.backgroundColor = .black
   }
   
+  // 델리게이트 설정
+  private func setDelegates() {
+    [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.delegate = self }
+    addProfileView.delegate = self
+  }
+  
   private func addSubViews() {
+    // ProfileChangeVC에서 유저 추가 또는 삭제가 되었을때 레이아웃 변경을 위해서
+    // 일단은 객체 다 슈퍼뷰에서 삭제하기
     [navigationView, introlabel, profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.removeFromSuperview() }
     
     [navigationView, introlabel, profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { view.addSubview($0) }
@@ -210,13 +222,14 @@ final class ProfileSelectVC: UIViewController {
     }
   }
   
+  // MARK: - 서브유저의 숫자에 따라 레이아웃 잡기
   func setupProfileLayout() {
     
     switch numberOfUsers {
     case 1:
       [profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = true }
       [profileImageView1, addProfileView].forEach { $0.isHidden = false }
-      // 연필 움직이는 효과 구현
+      // 프로필추가 버튼 위치 잡기
       UIView.animate(withDuration: 0.1) {
         self.addProfileView.snp.makeConstraints {
           $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
@@ -231,7 +244,7 @@ final class ProfileSelectVC: UIViewController {
     case 2:
       [profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = true }
       [profileImageView1, profileImageView2, addProfileView].forEach { $0.isHidden = false }
-      // 연필 움직이는 효과 구현
+      // 프로필추가 버튼 위치 잡기
       UIView.animate(withDuration: 0.1) {
         self.addProfileView.snp.makeConstraints {
           $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
@@ -246,7 +259,7 @@ final class ProfileSelectVC: UIViewController {
     case 3:
       [profileImageView4, profileImageView5].forEach { $0.isHidden = true }
       [profileImageView1, profileImageView2, profileImageView3, addProfileView].forEach { $0.isHidden = false }
-      // 연필 움직이는 효과 구현
+      // 프로필추가 버튼 위치 잡기
       UIView.animate(withDuration: 0.1) {
         self.addProfileView.snp.makeConstraints {
           $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
@@ -261,7 +274,7 @@ final class ProfileSelectVC: UIViewController {
     case 4:
       profileImageView5.isHidden = true
       [profileImageView1, profileImageView2, profileImageView3, profileImageView4, addProfileView].forEach { $0.isHidden = false }
-      // 연필 움직이는 효과 구현
+      // 프로필추가 버튼 위치 잡기
       UIView.animate(withDuration: 0.1) {
         self.addProfileView.snp.makeConstraints {
           $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
@@ -276,7 +289,7 @@ final class ProfileSelectVC: UIViewController {
       
     case 5:
       [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = false }
-      // 연필 움직이는 효과 구현
+      // 프로필추가 버튼 위치 잡기
       UIView.animate(withDuration: 0.1) {
         self.addProfileView.snp.makeConstraints {
           $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
@@ -295,6 +308,7 @@ final class ProfileSelectVC: UIViewController {
     }
   }
   
+  // MARK: - 프로파일 뷰에 표시할 내용을 유저 숫자에 따라 표현하기
   func setUserViews() {
   
     switch numberOfUsers {
@@ -327,12 +341,6 @@ final class ProfileSelectVC: UIViewController {
     }
   }
   
-  
-  private func navigationBarSetting() {
-    let navCon = navigationController!
-    navCon.isNavigationBarHidden = true
-  }
-  
   // MARK: - "변경"버튼 누르면 UserView의 모든 isEditing속성을 바꿔서 편집가능한 상태로 만듦
   // 상단의 레이블 상태 변경
   @objc func changeButtonTapped() {
@@ -363,13 +371,6 @@ final class ProfileSelectVC: UIViewController {
       [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isEditing = false }
     }
   }
-  
-  // 델리게이트 설정
-  private func setFuntions() {
-    [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.delegate = self }
-    addProfileView.delegate = self
-  }
-  
 }
 
 // MARK: - UserView에 관한 델리게이트 구현
@@ -412,18 +413,16 @@ extension ProfileSelectVC: UserViewDelegate {
 
 // MARK: - 프로필 추가(AddProfileView)에 관한 델리게이트 구현
 extension ProfileSelectVC: AddProfileViewDelegate {
+  
   func addProfileButtonTapped() {
     
-    // 유저 생성중
+    // 유저 생성중임을 ProfileChangeVC에 알려주기(속성 설정)
     profileChangeVC.isUserCreating = true
     profileChangeVC.userName = ""
     profileChangeVC.userView.userImageView.image = nil
     profileChangeVC.userView.isForImageSelecting = true
     
-    
     let navi = UINavigationController(rootViewController: profileChangeVC)
     navigationController?.present(navi, animated: true)
-  
   }
-  
 }
