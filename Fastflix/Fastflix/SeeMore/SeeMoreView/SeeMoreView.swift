@@ -37,6 +37,7 @@ class SeeMoreView: UIView {
   let datas = [ "앱설정", "계정", "개인정보", "고객 센터", "로그아웃"]
   let notificationData = ["내가 찜한 콘텐츠"]
   let pokeData = [" 알림 설정"]
+  let downLoadData = [" 다운 로드 "]
   
   let topView: UIView = {
     let topView = UIView()
@@ -280,7 +281,7 @@ class SeeMoreView: UIView {
 // MARK: - TableView Extension
 extension SeeMoreView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 3
+    return 4
   }
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -291,6 +292,8 @@ extension SeeMoreView: UITableViewDataSource {
     case 1:
       return pokeData.count
     case 2:
+      return downLoadData.count
+    case 3:
       return datas.count
     default:
       return 0
@@ -337,6 +340,12 @@ extension SeeMoreView: UITableViewDataSource {
         cell.textLabel?.text = pokeData[indexPath.row]
       }
     case 2:
+      if indexPath.row == 0 {
+        cell.imageView?.image = UIImage(named: "tabBarDownLoad2")
+        cell.accessoryType = .disclosureIndicator
+        cell.textLabel?.text = downLoadData[indexPath.row]
+      }
+    case 3:
       cell.textLabel?.text = datas[indexPath.row]
       
     default:
