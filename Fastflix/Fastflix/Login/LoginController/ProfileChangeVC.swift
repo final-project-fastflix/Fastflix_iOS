@@ -8,14 +8,14 @@
 
 import UIKit
 
-class ProfileChangeVC: UIViewController {
+final class ProfileChangeVC: UIViewController {
   
   let userIconSelectVC = UserIconSelectVC()
 
   let subUserSingle = SubUserSingleton.shared
   
   // 네이게이션뷰
-  lazy var navigationView: UIView = {
+  private lazy var navigationView: UIView = {
     let view = UIView()
     view.backgroundColor = .clear
     view.addSubview(profileChangeLabel)
@@ -25,7 +25,7 @@ class ProfileChangeVC: UIViewController {
   }()
   
   // 프로필관리 레이블(edit할때 나타나는 label)
-  let profileChangeLabel: UILabel = {
+  private let profileChangeLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
     label.textColor = .white
@@ -34,7 +34,7 @@ class ProfileChangeVC: UIViewController {
   }()
   
   // 저장 버튼
-  lazy var saveButton: UIButton = {
+  private lazy var saveButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("저장", for: .normal)
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
@@ -44,7 +44,7 @@ class ProfileChangeVC: UIViewController {
   }()
   
   // 취소 버튼
-  lazy var cancelButton: UIButton = {
+  private lazy var cancelButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("취소", for: .normal)
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
@@ -70,14 +70,16 @@ class ProfileChangeVC: UIViewController {
   // MARK: - 유저 생성중인지 여부 확인
   var isUserCreating: Bool = false
   
-  let textSurroundingView: UIView = {
+  // 텍스트필드 바깥의 흰색 테두리 뷰
+  private let textSurroundingView: UIView = {
     let view = UIView()
     view.layer.borderWidth = 1
     view.layer.borderColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1)
     return view
   }()
   
-  var subUserNameTextField: UITextField = {
+  // 서브유저 이름 입력하는 텍스트 필드
+  private var subUserNameTextField: UITextField = {
     let tf = UITextField()
     tf.backgroundColor = .black
     tf.textColor = .white
@@ -85,7 +87,7 @@ class ProfileChangeVC: UIViewController {
     return tf
   }()
   
-  let kidsLabel: UILabel = {
+  private let kidsLabel: UILabel = {
     let label = UILabel()
     label.text = "키즈용"
     label.textColor = .white
@@ -93,13 +95,14 @@ class ProfileChangeVC: UIViewController {
     return label
   }()
   
-  let kidsSwitchButton: UISwitch = {
+  private let kidsSwitchButton: UISwitch = {
     let switchButton = UISwitch()
     switchButton.onTintColor = #colorLiteral(red: 0, green: 0.4823529412, blue: 0.9960784314, alpha: 1)
     return switchButton
   }()
   
-  lazy var kidsStackView: UIStackView = {
+  // 키즈용 글자 및 스위치 묶음 스택뷰
+  private lazy var kidsStackView: UIStackView = {
     var sv = UIStackView(arrangedSubviews: [kidsLabel, kidsSwitchButton])
     sv.spacing = 15
     sv.axis = .horizontal
@@ -108,7 +111,7 @@ class ProfileChangeVC: UIViewController {
     return sv
   }()
   
-  let trashButton: UIButton = {
+  private let trashButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(named: "trash"), for: .normal)
     button.setTitleColor(.white, for: .normal)
@@ -116,7 +119,7 @@ class ProfileChangeVC: UIViewController {
     return button
   }()
   
-  let deleteButton: UIButton = {
+  private let deleteButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("삭제", for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
@@ -125,7 +128,8 @@ class ProfileChangeVC: UIViewController {
     return button
   }()
   
-  lazy var deleteButtonStackView: UIStackView = {
+  // 휴지통 버튼 스택뷰 (휴지통 그림, 삭제 글자)
+  private lazy var deleteButtonStackView: UIStackView = {
     let sview = UIStackView(arrangedSubviews: [trashButton, deleteButton])
     sview.spacing = 5
     sview.axis = .horizontal
@@ -144,12 +148,13 @@ class ProfileChangeVC: UIViewController {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    configure()
-    addSubViews()
-    navigationBarSetting()
-    setFuntions()
     
+    navigationBarSetting()
+    configure()
+    setDelegates()
+    addSubViews()
     setupSNP()
+    
     kidsStackView.isHidden = false
     subUserNameTextField.becomeFirstResponder()
     checkDeleteButtonStatus()
@@ -162,6 +167,10 @@ class ProfileChangeVC: UIViewController {
     userView.userImageView.image = userImage ?? UIImage(named: "profile2")
     profileChangeLabel.text = isUserCreating ? "프로필 만들기" : "프로필 변경"
     subUserNameTextField.delegate = self
+  }
+  
+  private func setDelegates() {
+    userView.delegate = self
   }
   
   private func addSubViews() {
@@ -245,6 +254,7 @@ class ProfileChangeVC: UIViewController {
   
   // 실제 유저의 정보를 저장하는 메서드
   private func saveChangedUserInfo(completion: @escaping () -> ()) {
+    
     guard let name = subUserNameTextField.text else { return }
     let kid = kidsSwitchButton.isOn
     
@@ -292,9 +302,8 @@ class ProfileChangeVC: UIViewController {
     completion()
   }
   
-  
   // 유저 변경했으니 전체적인 서브유저 리스트를 다시 받아오는 메서드
-  func regetSubUserList(completion: @escaping () -> ()) {
+  private func regetSubUserList(completion: @escaping () -> ()) {
     APICenter.shared.getSubUserList() {
       switch $0 {
       case .success(let subUsers):
@@ -332,8 +341,8 @@ class ProfileChangeVC: UIViewController {
     }
   }
   
-  
-  func dismissingView() {
+  private func dismissingView() {
+    
     guard let navi = presentingViewController as? UINavigationController else { return }
     guard let profileSelectVC = navi.viewControllers.last as? ProfileSelectVC else { return }
     
@@ -342,7 +351,6 @@ class ProfileChangeVC: UIViewController {
     dismiss(animated: true)
     
   }
-  
   
   // 텍스트필드에 아무것도 없으면 저장 버튼 비활성화
   @objc private func editingChanged(_ textField: UITextField) {
@@ -369,15 +377,11 @@ class ProfileChangeVC: UIViewController {
       trashButton.isHidden = true
     }
   }
-  
 }
+
 
 // MARK: - 변경(UserView)을 선택했을 때 유저아이콘들 선택하는(UserIconSelectVC)뷰컨트롤러로 넘어가기 위한 델리게이트 구현
 extension ProfileChangeVC: UserViewDelegate {
-  
-  private func setFuntions() {
-    userView.delegate = self
-  }
   
   // 유저뷰(UserView)를 눌렀을때 이미지변경을 위한 이미지를 다 받은 다음 UserIconSelectVC로 넘어가기
   func toUserIconSelectVC() {
@@ -404,8 +408,7 @@ extension ProfileChangeVC: UserViewDelegate {
   func profileChangeTapped(tag: Int, userName: String, userImage: UIImage, imageURL: String) {
     
 //    print("유저변경 사항 저장 구현???")
-    
-    
+
   }
   
   func didSelectUser(tag: Int) {
