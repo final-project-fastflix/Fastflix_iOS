@@ -8,10 +8,10 @@
 
 import UIKit
 
-class UserIconSelectVC: UIViewController {
+final class UserIconSelectVC: UIViewController {
   
   // 네이게이션뷰
-  lazy var navigationView: UIView = {
+  private lazy var navigationView: UIView = {
     let view = UIView()
     view.backgroundColor = .black
     view.addSubview(backButton)
@@ -20,7 +20,7 @@ class UserIconSelectVC: UIViewController {
   }()
   
   // 뒤로가기 버튼
-  lazy var backButton: UIButton = {
+  private lazy var backButton: UIButton = {
     let button = UIButton(type: .system)
     let image = UIImage(named: "back")
     button.setImage(image, for: .normal)
@@ -30,7 +30,7 @@ class UserIconSelectVC: UIViewController {
     return button
   }()
   
-  lazy var titleLabel: UILabel = {
+  private lazy var titleLabel: UILabel = {
     let label = UILabel()
     label.text = "아이콘 선택"
     label.textColor = .white
@@ -42,7 +42,7 @@ class UserIconSelectVC: UIViewController {
   
   var categories: [String] = []
   
-  let tableView: UITableView = {
+  private let tableView: UITableView = {
     let tableView = UITableView()
     return tableView
   }()
@@ -117,6 +117,7 @@ class UserIconSelectVC: UIViewController {
 }
 
 extension UserIconSelectVC: UITableViewDataSource {
+  
   func numberOfSections(in tableView: UITableView) -> Int {
     return categories.count
   }

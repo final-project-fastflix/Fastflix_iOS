@@ -49,7 +49,7 @@ class SubCell: UITableViewCell {
     super.didMoveToSuperview()
     [collectionView, titleLabel].forEach { addSubview($0) }
     
-    let width = UIScreen.main.bounds.width / 3.5
+    let width = UIScreen.main.bounds.width / 3.45
     let height = width * 1.4380
     
     layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 20, right: 10)
