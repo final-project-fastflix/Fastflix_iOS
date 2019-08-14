@@ -11,201 +11,40 @@ import UIKit
 final class LoginVC: UIViewController {
   
   private let subUserSingle = SubUserSingleton.shared
+  private let rootView = LoginView()
+  
+  
+  override func loadView() {
+    view = rootView
+  }
+  
   
   // 스태터스바 글씨 하얗게 설정
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
   
-  // 네이게이션뷰(네비게이션 커스텀하기 위해, 뷰를 네이게이션바처럼 보이게하기 위함)
-  private lazy var navigationView: UIView = {
-    let view = UIView()
-    view.backgroundColor = .clear
-    view.addSubview(logoView)
-    view.addSubview(customerCenterButton)
-    view.addSubview(backButton)
-    view.addSubview(bigBackButton)
-    return view
-  }()
-  
-  // 네비게이션 - 로고
-  private let logoView: UIImageView = {
-    let image = UIImage(named: "fastflix")
-    let view = UIImageView()
-    view.image = image
-    view.contentMode = .scaleToFill
-    return view
-  }()
-  
-  // 고객센터 버튼
-  private lazy var customerCenterButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setTitle("고객 센터", for: .normal)
-    button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-    button.setTitleColor(.white, for: .normal)
-    button.addTarget(self, action: #selector(customerCenterTapped(_:)), for: .touchUpInside)
-    return button
-  }()
-  
-  // 뒤로가기 버튼
-  private lazy var backButton: UIButton = {
-    let button = UIButton(type: .system)
-    let image = UIImage(named: "back")
-    button.setImage(image, for: .normal)
-    button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-    button.tintColor = .white
-    button.addTarget(self, action: #selector(backButtonTapped(_:)), for: .touchUpInside)
-    return button
-  }()
-
-  // 뒤로가기 잘 안눌려서 큰 버튼 위에 입힘
-  private let bigBackButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.backgroundColor = .clear
-    button.addTarget(self, action: #selector(backButtonTapped(_:)), for: .touchUpInside)
-    return button
-  }()
-  
-  // MARK: - 이메일 입력하는 텍스트 뷰 (뷰 위에 텍스트 필드 및 안내문구 올라가 있음)
-  private lazy var emailTextFieldView: UIView = {
-    let view = UIView()
-    view.frame.size.height = 48
-    view.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-    view.layer.cornerRadius = 5
-    view.clipsToBounds = true
-    view.layer.cornerRadius = 5
-    view.addSubview(emailTextField)
-    view.addSubview(emailLabel)
-    return view
-  }()
-  
-  // 이메일텍스트필드의 안내문구
-  private var emailLabel: UILabel = {
-    let label = UILabel()
-    label.text = "이메일주소 또는 전화번호"
-    label.font = UIFont.systemFont(ofSize: 18)
-    label.textColor = #colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1)
-    return label
-  }()
-  
-  // 로그인 - 이메일 입력 필드
-  private lazy var emailTextField: UITextField = {
-    var tf = UITextField()
-    tf.frame.size.height = 48
-    tf.backgroundColor = .clear
-    tf.textColor = .white
-    tf.tintColor = .white
-    tf.autocapitalizationType = .none
-    tf.autocorrectionType = .no
-    tf.spellCheckingType = .no
-    tf.keyboardType = .emailAddress
-    tf.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
-//    tf.keyboardAppearance = .dark
-    return tf
-  }()
-  
-  // MARK: - 비밀번호 입력하는 텍스트 뷰 (뷰 위에 텍스트 필드 및 안내문구 올라가 있음)
-  private lazy var passwordTextFieldView: UIView = {
-    let view = UIView()
-    view.frame.size.height = 48
-    view.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-    view.layer.cornerRadius = 5
-    view.clipsToBounds = true
-    view.layer.cornerRadius = 5
-    view.addSubview(passwordTextField)
-    view.addSubview(passwordLabel)
-    view.addSubview(passwordSecureButton)
-    return view
-  }()
-  
-  // 패스워드텍스트필드의 안내문구
-  private var passwordLabel: UILabel = {
-    let label = UILabel()
-    label.text = "비밀번호"
-    label.font = UIFont.systemFont(ofSize: 18)
-    label.textColor = #colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1)
-    return label
-  }()
-  
-  // 로그인 - 비밀번호 입력 필드
-  private let passwordTextField: UITextField = {
-    let tf = UITextField()
-    tf.backgroundColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-    tf.frame.size.height = 48
-    tf.backgroundColor = .clear
-    tf.textColor = .white
-    tf.tintColor = .white
-    tf.autocapitalizationType = .none
-    tf.autocorrectionType = .no
-    tf.spellCheckingType = .no
-    tf.isSecureTextEntry = true
-    tf.clearsOnBeginEditing = false
-    tf.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
-//    tf.keyboardAppearance = .dark
-    return tf
-  }()
-  
-  // 패스워드에 "표시"버튼 비밀번호 가리기 기능
-  private let passwordSecureButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setTitle("표시", for: .normal)
-    button.setTitleColor(#colorLiteral(red: 0.8374180198, green: 0.8374378085, blue: 0.8374271393, alpha: 1), for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .light)
-    button.addTarget(self, action: #selector(passwordSecureModeSetting), for: .touchUpInside)
-    return button
-  }()
-  
-  // MARK: - 로그인버튼
-  private let loginButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.backgroundColor = .clear
-    button.layer.cornerRadius = 5
-    button.layer.borderWidth = 1
-    button.layer.borderColor = #colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
-    button.setTitle("로그인", for: .normal)
-    button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-    button.addTarget(self, action: #selector(didTapLoginBtn(_:)), for: .touchUpInside)
-    button.isEnabled = false
-    return button
-  }()
-  
-  // 이메일텍스트필드, 패스워드, 로그인버튼 스택뷰에 배치
-  private lazy var stackView: UIStackView = {
-    let sview = UIStackView(arrangedSubviews: [emailTextFieldView, passwordTextFieldView, loginButton])
-    sview.spacing = 18
-    sview.axis = .vertical
-    sview.distribution = .equalSpacing
-    sview.alignment = .fill
-    return sview
-  }()
-  
-  // 비밀번호 재설정 버튼
-  private let passwordResetButton: UIButton = {
-    let button = UIButton()
-    button.backgroundColor = .clear
-    button.setTitle("비밀번호 재설정", for: .normal)
-    button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-    return button
-  }()
-  
-  // 3개의 각 텍스트필드 및 로그인 버튼의 높이 설정
-  private let textViewHeight: CGFloat = 48
 
   // MARK: - 시점 viewDidLoad
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    rootView.customerCenterButton.addTarget(self, action: #selector(customerCenterTapped(_:)), for: .touchUpInside)
+    rootView.backButton.addTarget(self, action: #selector(backButtonTapped(_:)), for: .touchUpInside)
+    rootView.bigBackButton.addTarget(self, action: #selector(backButtonTapped(_:)), for: .touchUpInside)
+    rootView.emailTextField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
+    rootView.passwordTextField.addTarget(self, action: #selector(textFieldEditingChanged(_:)), for: .editingChanged)
+    rootView.passwordSecureButton.addTarget(self, action: #selector(passwordSecureModeSetting), for: .touchUpInside)
+    rootView.loginButton.addTarget(self, action: #selector(didTapLoginBtn(_:)), for: .touchUpInside)
+    
     configure()
     navigationBarSetting()
-    addSubViews()
-    setupSNP()
     setupNotiObserverForKeyboardMoveUpDown()
   }
   
   private func configure() {
-    view.backgroundColor = #colorLiteral(red: 0.07450980392, green: 0.07450980392, blue: 0.07450980392, alpha: 1)
-    emailTextField.delegate = self
-    passwordTextField.delegate = self
+    rootView.emailTextField.delegate = self
+    rootView.passwordTextField.delegate = self
   }
   
   // 네비게이션바 세팅
@@ -214,86 +53,6 @@ final class LoginVC: UIViewController {
     navCon.isNavigationBarHidden = true
   }
   
-  private func addSubViews() {
-    [navigationView, stackView, passwordResetButton].forEach { view.addSubview($0)}
-  }
-  
-  private func setupSNP() {
-    
-    navigationView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
-      $0.height.equalTo(UIScreen.main.bounds.height * 0.11)
-    }
-    logoView.snp.makeConstraints {
-      $0.bottom.equalTo(navigationView.snp.bottom).offset(8)
-      $0.centerX.equalToSuperview()
-      $0.width.equalToSuperview().multipliedBy(0.25)
-      $0.height.equalTo(logoView.snp.width).multipliedBy(0.70)
-    }
-    
-    customerCenterButton.snp.makeConstraints {
-      $0.centerY.equalTo(logoView.snp.centerY)
-      $0.trailing.equalTo(view.snp.trailing).offset(-15)
-    }
-    
-    backButton.snp.makeConstraints {
-      $0.centerY.equalTo(logoView.snp.centerY)
-      $0.width.height.equalTo(14)
-      $0.leading.equalTo(view.snp.leading).offset(20)
-    }
-    
-    bigBackButton.snp.makeConstraints {
-      $0.centerX.centerY.equalTo(backButton)
-      $0.width.height.equalTo(30)
-    }
-  
-    emailLabel.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview().inset(8)
-      $0.centerY.equalToSuperview()
-    }
-    
-    emailTextField.snp.makeConstraints {
-      $0.top.equalToSuperview().inset(15)
-      $0.bottom.equalToSuperview().inset(2)
-      $0.leading.trailing.equalToSuperview().inset(8)
-    }
-    
-    passwordLabel.snp.makeConstraints {
-      $0.leading.trailing.equalToSuperview().inset(8)
-      $0.centerY.equalToSuperview()
-    }
-    
-    passwordTextField.snp.makeConstraints {
-      $0.top.equalToSuperview().inset(15)
-      $0.bottom.equalToSuperview().inset(2)
-      $0.leading.trailing.equalToSuperview().inset(8)
-    }
-    
-    passwordSecureButton.snp.makeConstraints {
-      $0.top.bottom.equalToSuperview().inset(15)
-      $0.trailing.equalToSuperview().inset(8)
-    }
-    
-    stackView.snp.makeConstraints {
-      $0.centerX.centerY.equalToSuperview()
-      $0.leading.trailing.equalToSuperview().inset(30)
-      $0.height.equalTo(textViewHeight*3 + 36)
-    }
-    
-    stackView.arrangedSubviews.forEach {
-      $0.snp.makeConstraints {
-        $0.height.equalTo(48)
-      }
-    }
-    
-    passwordResetButton.snp.makeConstraints {
-      $0.top.equalTo(stackView.snp.bottom).offset(10)
-      $0.leading.equalTo(view.snp.leading).offset(30)
-      $0.trailing.equalTo(view.snp.trailing).offset(-30)
-      $0.height.equalTo(textViewHeight)
-    }
-
-  }
   
   // MARK: - 키보드 Notification
   private func setupNotiObserverForKeyboardMoveUpDown() {
