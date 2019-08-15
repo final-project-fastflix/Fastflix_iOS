@@ -7,11 +7,17 @@
 //
 
 import UIKit
+import SnapKit
 
 class MainController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-      
-    }
+  
+  let mainView = MainView(frame: UIScreen.main.bounds)
+  
+  override func loadView() {
+    self.view = mainView
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+  }
 }
