@@ -14,84 +14,19 @@ final class ProfileSelectVC: UIViewController {
   
   // 프로필 바꾸고나서의 객체에 접근하기 위해서 private으로 선언하지 않음
   let profileChangeVC = ProfileChangeVC()
+  private let rootView = ProfileSelectView()
+  
   
   // 스태터스 바
   override var preferredStatusBarStyle: UIStatusBarStyle {
     return .lightContent
   }
   
-  // 네이게이션뷰
-  private lazy var navigationView: UIView = {
-    let view = UIView()
-    view.backgroundColor = .clear
-    view.addSubview(profileManageLabel)
-    view.addSubview(logoView)
-    view.addSubview(changeButton)
-    view.addSubview(finishButton)
-    return view
-  }()
+  override func loadView() {
+    view = rootView
   
-  // 로고
-  private let logoView: UIImageView = {
-    let image = UIImage(named: "fastflix")
-    let view = UIImageView()
-    view.image = image
-    view.contentMode = .scaleToFill
-    return view
-  }()
+  }
   
-  // MARK: - 프로필관리 레이블(edit할때만 나타나는 label)
-  private let profileManageLabel: UILabel = {
-    let label = UILabel()
-    label.text = "프로필 관리"
-    label.textAlignment = .center
-    label.textColor = .white
-    label.font = UIFont.systemFont(ofSize: 17)
-    label.isHidden = true
-    return label
-  }()
-  
-  // MARK: - 변경 버튼  ====> 편집모드로
-  private lazy var changeButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setTitle("변경", for: .normal)
-    button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-    button.setTitleColor(.white, for: .normal)
-    button.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
-    return button
-  }()
-  
-  // MARK: - 변경 완료 버튼
-  private lazy var finishButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setTitle("완료", for: .normal)
-    button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-    button.setTitleColor(.white, for: .normal)
-    button.addTarget(self, action: #selector(finishButtonTapped(_:)), for: .touchUpInside)
-    button.isHidden = true
-    return button
-  }()
-  
-  // 안내문구
-  private let introlabel: UILabel = {
-    let label = UILabel()
-    label.text = "Fastflix를 시청할 프로필을 선택하세요."
-    label.font = UIFont.systemFont(ofSize: 20, weight: .light)
-    label.textColor = .white
-    label.textAlignment = .center
-    return label
-  }()
-  
-  // MARK: - 서브유저 관련 5개의 뷰를 일단은 다 올려놓음 - 존재유뮤에 따라 isHidden으로 숨김
-  // 커스텀해서 만든 UserView
-  private var profileImageView1 = UserView()
-  private var profileImageView2 = UserView()
-  private var profileImageView3 = UserView()
-  private var profileImageView4 = UserView()
-  private var profileImageView5 = UserView()
-  
-  // 프로필추가 버튼(커스텀뷰)
-  private var addProfileView = AddProfileView()
   
   // MARK: - 서브유저의 숫자
   var numberOfUsers: Int?
@@ -145,216 +80,21 @@ final class ProfileSelectVC: UIViewController {
     navCon.isNavigationBarHidden = true
   }
   
-  private func configure() {
-    view.backgroundColor = .black
-  }
-  
-  // 델리게이트 설정
-  private func setDelegates() {
-    [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.delegate = self }
-    addProfileView.delegate = self
-  }
-  
-  private func addSubViews() {
-    // ProfileChangeVC에서 유저 추가 또는 삭제가 되었을때 레이아웃 변경을 위해서
-    // 일단은 객체 다 슈퍼뷰에서 삭제하기
-    [navigationView, introlabel, profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.removeFromSuperview() }
-    
-    [navigationView, introlabel, profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { view.addSubview($0) }
-  }
-  
-  private func setupSNP() {
-    
-    navigationView.snp.makeConstraints {
-      $0.top.equalTo(view.snp.top)
-      $0.leading.equalTo(view.snp.leading)
-      $0.trailing.equalTo(view.snp.trailing)
-      $0.height.equalTo(UIScreen.main.bounds.height * 0.11)
-    }
-    logoView.snp.makeConstraints {
-      $0.bottom.equalTo(navigationView.snp.bottom).offset(8)
-      $0.centerX.equalTo(navigationView.snp.centerX)
-      $0.width.equalToSuperview().multipliedBy(0.25)
-      $0.height.equalTo(logoView.snp.width).multipliedBy(0.70)
-    }
-    profileManageLabel.snp.makeConstraints {
-      $0.bottom.equalTo(navigationView.snp.bottom).offset(8)
-      $0.centerX.equalTo(navigationView.snp.centerX)
-      $0.width.equalToSuperview().multipliedBy(0.25)
-      $0.height.equalTo(logoView.snp.width).multipliedBy(0.70)
-    }
-    changeButton.snp.makeConstraints {
-      $0.centerY.equalTo(logoView.snp.centerY)
-      $0.trailing.equalTo(view.snp.trailing).offset(-15)
-    }
-    finishButton.snp.makeConstraints {
-      $0.centerY.equalTo(logoView.snp.centerY)
-      $0.leading.equalTo(view.snp.leading).offset(15)
-    }
-    introlabel.snp.makeConstraints {
-      $0.centerX.equalToSuperview()
-      $0.centerY.equalTo(self.view.snp.top).offset(UIScreen.main.bounds.height * 0.15)
-    }
-    profileImageView1.snp.makeConstraints {
-      $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-      $0.centerX.equalToSuperview().offset(-70)
-      $0.centerY.equalTo(self.view.snp.top).offset(self.firstYLine)
-    }
-    profileImageView2.snp.makeConstraints {
-      $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-      $0.centerX.equalToSuperview().offset(70)
-      $0.centerY.equalTo(self.view.snp.top).offset(self.firstYLine)
-    }
-    profileImageView3.snp.makeConstraints {
-      $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-      $0.centerX.equalToSuperview().offset(-70)
-      $0.centerY.equalTo(self.view.snp.top).offset(self.secondYLine)
-    }
-    profileImageView4.snp.makeConstraints {
-      $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-      $0.centerX.equalToSuperview().offset(70)
-      $0.centerY.equalTo(self.view.snp.top).offset(self.secondYLine)
-    }
-    profileImageView5.snp.makeConstraints {
-      $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-      $0.centerX.equalToSuperview()
-      $0.centerY.equalTo(self.view.snp.top).offset(self.thirdYLine)
-    }
-  }
-  
-  // MARK: - 서브유저의 숫자에 따라 레이아웃 잡기
-  func setupProfileLayout() {
-    
-    switch numberOfUsers {
-    case 1:
-      [profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = true }
-      [profileImageView1, addProfileView].forEach { $0.isHidden = false }
-      // 프로필추가 버튼 위치 잡기
-      UIView.animate(withDuration: 0.1) {
-        self.addProfileView.snp.makeConstraints {
-          $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-          $0.centerX.equalToSuperview().offset(70)
-          $0.centerY.equalTo(self.view.snp.top).offset(self.firstYLine)
-        }
-      }
-      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
-        $0.layoutIfNeeded()
-      }
-      
-    case 2:
-      [profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = true }
-      [profileImageView1, profileImageView2, addProfileView].forEach { $0.isHidden = false }
-      // 프로필추가 버튼 위치 잡기
-      UIView.animate(withDuration: 0.1) {
-        self.addProfileView.snp.makeConstraints {
-          $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-          $0.centerX.equalToSuperview()
-          $0.centerY.equalTo(self.view.snp.top).offset(self.secondYLine)
-        }
-      }
-      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
-        $0.layoutIfNeeded()
-      }
-      
-    case 3:
-      [profileImageView4, profileImageView5].forEach { $0.isHidden = true }
-      [profileImageView1, profileImageView2, profileImageView3, addProfileView].forEach { $0.isHidden = false }
-      // 프로필추가 버튼 위치 잡기
-      UIView.animate(withDuration: 0.1) {
-        self.addProfileView.snp.makeConstraints {
-          $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-          $0.centerX.equalToSuperview().offset(70)
-          $0.centerY.equalTo(self.view.snp.top).offset(self.secondYLine)
-        }
-      }
-      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach { $0.setNeedsLayout()
-        $0.layoutIfNeeded()
-      }
-      
-    case 4:
-      profileImageView5.isHidden = true
-      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, addProfileView].forEach { $0.isHidden = false }
-      // 프로필추가 버튼 위치 잡기
-      UIView.animate(withDuration: 0.1) {
-        self.addProfileView.snp.makeConstraints {
-          $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-          $0.centerX.equalToSuperview()
-          $0.centerY.equalTo(self.view.snp.top).offset(self.thirdYLine)
-        }
-      }
-      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach {
-        $0.setNeedsLayout()
-        $0.layoutIfNeeded()
-      }
-      
-    case 5:
-      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isHidden = false }
-      // 프로필추가 버튼 위치 잡기
-      UIView.animate(withDuration: 0.1) {
-        self.addProfileView.snp.makeConstraints {
-          $0.width.equalTo(UIScreen.main.bounds.width * 0.32)
-          $0.centerX.equalToSuperview()
-          $0.centerY.equalTo(self.view.snp.top).offset(self.thirdYLine)
-        }
-      }
-      addProfileView.isHidden = true
-      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5, addProfileView].forEach {
-        $0.setNeedsLayout()
-        $0.layoutIfNeeded()
-      }
-      
-    default:
-      addProfileView.isHidden = true
-    }
-  }
-  
-  // MARK: - 프로파일 뷰에 표시할 내용을 유저 숫자에 따라 표현하기
-  func setUserViews() {
-  
-    switch numberOfUsers {
-    case 5:
-      profileImageView5.profileUserName = subUserList?[4].name
-      profileImageView5.tag = (subUserList?[4].id)!
-      profileImageView5.configureImage(imageURLString: subUserList?[4].profileInfo.profileImagePath)
-      fallthrough
-    case 4:
-      profileImageView4.profileUserName = subUserList?[3].name
-      profileImageView4.tag = (subUserList?[3].id)!
-      profileImageView4.configureImage(imageURLString: subUserList?[3].profileInfo.profileImagePath)
-      fallthrough
-    case 3:
-      profileImageView3.profileUserName = subUserList?[2].name
-      profileImageView3.tag = (subUserList?[2].id)!
-      profileImageView3.configureImage(imageURLString: subUserList?[2].profileInfo.profileImagePath)
-      fallthrough
-    case 2:
-      profileImageView2.profileUserName = subUserList?[1].name
-      profileImageView2.tag = (subUserList?[1].id)!
-      profileImageView2.configureImage(imageURLString: subUserList?[1].profileInfo.profileImagePath)
-      fallthrough
-    case 1:
-      profileImageView1.profileUserName = subUserList?[0].name
-      profileImageView1.tag = (subUserList?[0].id)!
-      profileImageView1.configureImage(imageURLString: subUserList?[0].profileInfo.profileImagePath)
-    default:
-      return
-    }
-  }
   
   // MARK: - "변경"버튼 누르면 UserView의 모든 isEditing속성을 바꿔서 편집가능한 상태로 만듦
   // 상단의 레이블 상태 변경
   @objc func changeButtonTapped() {
     // 상단 레이블 변경
-    [profileManageLabel, finishButton].forEach { $0.isHidden = false }
-    [changeButton, logoView, introlabel ].forEach { $0.isHidden = true }
+    [rootView.profileManageLabel, rootView.finishButton].forEach { $0.isHidden = false }
+    [rootView.changeButton, rootView.logoView, rootView.introlabel ].forEach { $0.isHidden = true }
     // UserView의 모든 isEditing속성을 바꾸기
-    [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isEditing = true }
+    [rootView.profileImageView1, rootView.profileImageView2, rootView.profileImageView3, rootView.profileImageView4, rootView.profileImageView5].forEach { $0.isEditing = true }
     // 연필 변경되는 효과 주기 위해서
     UIView.animate(withDuration: 0.01, animations: {
-      [self.profileImageView1.editImageView, self.profileImageView2.editImageView, self.profileImageView3.editImageView, self.profileImageView4.editImageView, self.profileImageView5.editImageView].forEach { $0.transform = CGAffineTransform.identity.scaledBy(x: 1.2, y: 1.2) }
+      [self.rootView.profileImageView1.editImageView, self.rootView.profileImageView2.editImageView, self.rootView.profileImageView3.editImageView, self.rootView.profileImageView4.editImageView, self.rootView.profileImageView5.editImageView].forEach { $0.transform = CGAffineTransform.identity.scaledBy(x: 1.2, y: 1.2) }
     }, completion: { (finish) in
       UIView.animate(withDuration: 0.4, animations: {
-        [self.profileImageView1.editImageView, self.profileImageView2.editImageView, self.profileImageView3.editImageView, self.profileImageView4.editImageView, self.profileImageView5.editImageView].forEach { $0.transform = CGAffineTransform.identity }
+        [self.rootView.profileImageView1.editImageView, self.rootView.profileImageView2.editImageView, self.rootView.profileImageView3.editImageView, self.rootView.profileImageView4.editImageView, self.rootView.profileImageView5.editImageView].forEach { $0.transform = CGAffineTransform.identity }
       })
     })
   }
@@ -366,9 +106,9 @@ final class ProfileSelectVC: UIViewController {
       dismiss(animated: true)
     // 아닌 경우, 상단 레이블 바꾸고, 모든 UserView의 isEditing 속성 다시 바꿔주기 (편집가능하지 않은 상태로)
     }else {
-      [profileManageLabel, finishButton].forEach { $0.isHidden = true }
-      [changeButton, logoView, introlabel ].forEach { $0.isHidden = false }
-      [profileImageView1, profileImageView2, profileImageView3, profileImageView4, profileImageView5].forEach { $0.isEditing = false }
+      [rootView.profileManageLabel, rootView.finishButton].forEach { $0.isHidden = true }
+      [rootView.changeButton, rootView.logoView, rootView.introlabel ].forEach { $0.isHidden = false }
+      [rootView.profileImageView1, rootView.profileImageView2, rootView.profileImageView3, rootView.profileImageView4, rootView.profileImageView5].forEach { $0.isEditing = false }
     }
   }
 }
