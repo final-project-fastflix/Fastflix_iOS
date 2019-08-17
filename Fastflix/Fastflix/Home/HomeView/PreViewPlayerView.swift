@@ -293,6 +293,8 @@ extension PreViewPlayerView: UICollectionViewDelegate {
       index = IndexPath(row: Int(currentPage), section: 0)
       print("index play:", index)
       logoCollectionView.contentOffset.x = scrollView.contentOffset.x/3
+      var targetCell = logoCollectionView.cellForItem(at: index!) as? LogoCollectionCell
+      targetCell?.systemLayoutSizeFitting(CGSize(width: 200, height: 150))
     }
     if scrollView == logoCollectionView {
       playCollectionView.contentOffset.x = scrollView.contentOffset.x * 3

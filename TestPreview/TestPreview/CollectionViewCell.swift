@@ -16,12 +16,13 @@ class CollectionViewCell: UICollectionViewCell {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-//    imgView.snp.makeConstraints {
-//      $0.top.leading.trailing.bottom.equalToSuperview()
-//    }
-    self.backgroundColor = .white
-    imgView.frame = UIScreen.main.bounds
     self.addSubview(imgView)
+    imgView.snp.makeConstraints {
+      $0.top.leading.trailing.bottom.equalToSuperview()
+    }
+    self.backgroundColor = .white
+//    imgView.frame = UIScreen.main.bounds
+    
     
   }
   
