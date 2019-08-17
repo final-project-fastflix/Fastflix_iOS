@@ -13,8 +13,9 @@ class MainView: UIView {
   lazy var testStackView: UIStackView = {
     let view = UIStackView(arrangedSubviews: views)
     view.axis = .horizontal
-    view.distribution = .fill
-    view.spacing = 5
+    view.distribution = .equalSpacing
+    view.alignment = .leading
+    view.spacing = 0
     view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.3)
     return view
   }()
@@ -36,7 +37,7 @@ class MainView: UIView {
   }()
   
   lazy var testCollectionView: UICollectionView = {
-    let collection = UICollectionView(frame: UIScreen.main.bounds, collectionViewLayout: flow)
+    let collection = UICollectionView(frame: .zero, collectionViewLayout: flow)
     collection.isPagingEnabled = true
     collection.showsHorizontalScrollIndicator = false
     collection.dataSource = self
@@ -44,31 +45,75 @@ class MainView: UIView {
     return collection
   }()
   
-  let view1 = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 150))
-  let view2 = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 150))
-  let view3 = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 150))
-  let view4 = UIImageView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+  let disMissBtn: UIButton = {
+    let btn = UIButton()
+    btn.setTitle("X", for: .normal)
+    btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+    btn.titleLabel?.textAlignment = .center
+    return btn
+  }()
   
-  lazy var views: [UIView] = [view1, view2, view3, view4]
+  let width = UIScreen.main.bounds.width / 3
+  
+  var view1 = UIImageView()
+  var view2 = UIImageView()
+  var view3 = UIImageView()
+  var view4 = UIImageView()
+  var view5 = UIImageView()
+  
+  lazy var views: [UIView] = [view1, view2, view3, view4, view5]
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    setImage()
     registerCells()
     addSubviews()
-//    testStackView.distribution = .fill
-//    testStackView.autoresizesSubviews = true
-//    testStackView.alignment = .fill
-//    testStackView.increaseSize(nil)
-//    testStackView.systemLayoutSizeFitting(CGSize(width: 200, height: 100))
-//    setupSNP()
+    setImage()
+    setupSNP()
+    setupStackView()
+    testStackView.distribution = .equalSpacing
+  }
+  
+  private func setupStackView() {
+    view1.alpha = 0
+    view1.snp.makeConstraints {
+      $0.leading.top.bottom.equalToSuperview()
+      $0.trailing.equalTo(view2.snp.leading)
+      $0.width.equalToSuperview().multipliedBy(0)
+    }
+    
+    view2.snp.makeConstraints {
+      $0.top.bottom.equalToSuperview()
+      $0.leading.equalTo(view1.snp.trailing)
+      $0.trailing.equalTo(view3.snp.leading)
+      $0.width.equalToSuperview().multipliedBy(0.4)
+    }
+    
+    view3.snp.makeConstraints {
+      $0.top.bottom.equalToSuperview()
+      $0.leading.equalTo(view2.snp.trailing)
+      $0.trailing.equalTo(view4.snp.leading)
+      $0.width.equalToSuperview().multipliedBy(0.2)
+    }
+    
+    view4.snp.makeConstraints {
+      $0.top.bottom.equalToSuperview()
+      $0.leading.equalTo(view3.snp.trailing)
+      $0.trailing.equalTo(view5.snp.leading)
+      $0.width.equalToSuperview().multipliedBy(0.2)
+    }
+    
+    view5.alpha = 0
+    view5.snp.makeConstraints {
+      $0.top.bottom.trailing.equalToSuperview()
+      $0.leading.equalTo(view4.snp.trailing)
+      $0.width.equalToSuperview().multipliedBy(0.1)
+    }
   }
   
   private func setImage() {
     views.forEach { ($0 as! UIImageView).image = UIImage(named: "fastflix")
       ($0 as! UIImageView).contentMode = .scaleAspectFit
     }
-    views[0].frame = CGRect(x: 0, y: 0, width: 200, height: 150)
   }
   
   private func registerCells() {
@@ -76,7 +121,7 @@ class MainView: UIView {
   }
   
   private func addSubviews() {
-    [testCollectionView, testStackView].forEach { addSubview($0) }
+    [testCollectionView, testStackView, disMissBtn].forEach { addSubview($0) }
   }
   
   private func setupSNP() {
@@ -85,13 +130,24 @@ class MainView: UIView {
     }
     
     testStackView.snp.makeConstraints {
-      $0.top.leading.trailing.equalToSuperview()
+      $0.top.leading.equalToSuperview()
       $0.height.equalToSuperview().multipliedBy(0.2)
+      $0.trailing.equalTo(disMissBtn.snp.leading)
+    }
+    
+    disMissBtn.snp.makeConstraints {
+      $0.centerY.equalTo(testStackView.snp.centerY)
+      $0.trailing.equalToSuperview()
+      $0.width.height.equalToSuperview().multipliedBy(0.1)
     }
   }
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  deinit {
+    print("Deinit now")
   }
 }
 
@@ -106,12 +162,14 @@ extension MainView: UICollectionViewDataSource {
     
     return cell
   }
+  
+  
 }
 
 extension MainView: UICollectionViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    let currentPage = round(scrollView.contentOffset.x / self.frame.width)
+    let currentPage = (scrollView.contentOffset.x / self.frame.width)
 //    print("currentPage: ", currentPage)
-    print("offset", scrollView.contentOffset)
+    print("offset", currentPage)
   }
 }
