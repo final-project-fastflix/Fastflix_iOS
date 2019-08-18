@@ -132,3 +132,5 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 19.08.09  docs: tass - FINISH
 
 19.08.18  fix: tass - try Preview
+
+19.08.19  feat: tass - almost done Test Preview Animation

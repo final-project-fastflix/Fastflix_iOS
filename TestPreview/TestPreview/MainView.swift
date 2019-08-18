@@ -9,6 +9,10 @@
 import UIKit
 
 class MainView: UIView {
+  
+  var currentPaged: CGFloat = 0
+  
+  var width = UIScreen.main.bounds.width - (UIScreen.main.bounds.width * 0.1)
 
   lazy var testStackView: UIStackView = {
     let view = UIStackView(arrangedSubviews: views)
@@ -53,8 +57,6 @@ class MainView: UIView {
     return btn
   }()
   
-  let width = UIScreen.main.bounds.width / 3
-  
   var view1 = UIImageView()
   var view2 = UIImageView()
   var view3 = UIImageView()
@@ -76,37 +78,105 @@ class MainView: UIView {
   private func setupStackView() {
     view1.alpha = 0
     view1.snp.makeConstraints {
-      $0.leading.top.bottom.equalToSuperview()
-      $0.trailing.equalTo(view2.snp.leading)
-      $0.width.equalToSuperview().multipliedBy(0)
+      $0.top.bottom.equalToSuperview()
+//      $0.width.equalToSuperview().multipliedBy(0)
+      $0.width.equalTo(0)
     }
     
     view2.snp.makeConstraints {
       $0.top.bottom.equalToSuperview()
-      $0.leading.equalTo(view1.snp.trailing)
-      $0.trailing.equalTo(view3.snp.leading)
-      $0.width.equalToSuperview().multipliedBy(0.4)
+//      $0.width.equalToSuperview().multipliedBy(0.6)
+      $0.width.equalTo(width * 0.5)
     }
     
     view3.snp.makeConstraints {
       $0.top.bottom.equalToSuperview()
-      $0.leading.equalTo(view2.snp.trailing)
-      $0.trailing.equalTo(view4.snp.leading)
-      $0.width.equalToSuperview().multipliedBy(0.2)
+//      $0.width.equalToSuperview().multipliedBy(0.2)
+      $0.width.equalTo(width * 0.25)
     }
     
     view4.snp.makeConstraints {
       $0.top.bottom.equalToSuperview()
-      $0.leading.equalTo(view3.snp.trailing)
-      $0.trailing.equalTo(view5.snp.leading)
-      $0.width.equalToSuperview().multipliedBy(0.2)
+//      $0.width.equalToSuperview().multipliedBy(0.2)
+      $0.width.equalTo(width * 0.25)
     }
     
     view5.alpha = 0
     view5.snp.makeConstraints {
-      $0.top.bottom.trailing.equalToSuperview()
-      $0.leading.equalTo(view4.snp.trailing)
-      $0.width.equalToSuperview().multipliedBy(0.1)
+      $0.top.bottom.equalToSuperview()
+//      $0.width.equalToSuperview().multipliedBy(0)
+      $0.width.equalTo(0)
+    }
+  }
+  
+  private func forwardScroll(value: CGFloat) {
+    print("forward")
+    view1.snp.updateConstraints {
+      $0.top.bottom.equalToSuperview()
+//      $0.width.equalToSuperview().multipliedBy(0)
+      $0.width.equalTo(0)
+    }
+    
+    view2.snp.updateConstraints {
+      $0.top.bottom.equalToSuperview()
+//      $0.width.equalToSuperview().multipliedBy(0.6)
+      $0.width.equalTo(width * 0.5 - (value * width * 0.5))
+    }
+    
+    view3.snp.updateConstraints {
+      $0.top.bottom.equalToSuperview()
+//      $0.width.equalToSuperview().multipliedBy(0.2)
+      $0.width.equalTo(width * 0.25 + (value * width * 0.25))
+    }
+    
+    view4.snp.updateConstraints {
+      $0.top.bottom.equalToSuperview()
+//      $0.width.equalToSuperview().multipliedBy(0.2)
+      $0.width.equalTo(width * 0.25)
+    }
+    
+    view5.alpha = value
+    view5.snp.updateConstraints {
+      $0.top.bottom.equalToSuperview()
+//      $0.width.equalToSuperview().multipliedBy(value * 0.2)
+      $0.width.equalTo(value * width * 0.25)
+    }
+  }
+  
+  private func backwardScroll(value: CGFloat) {
+    print("backward")
+    let absValue = abs(value)
+    view1.alpha = absValue
+    view1.snp.updateConstraints {
+      $0.top.bottom.equalToSuperview()
+      //      $0.width.equalToSuperview().multipliedBy(0)
+      $0.width.equalTo(absValue * width * 0.5)
+    }
+    
+    view2.snp.updateConstraints {
+      $0.top.bottom.equalToSuperview()
+      //      $0.width.equalToSuperview().multipliedBy(0.6)
+      $0.width.equalTo(width * 0.5 - (absValue * width * 0.25))
+    }
+    
+    view3.snp.updateConstraints {
+      $0.top.bottom.equalToSuperview()
+      //      $0.width.equalToSuperview().multipliedBy(0.2)
+      $0.width.equalTo(width * 0.25)
+    }
+    
+//    view4.alpha = 1 + value
+    view4.snp.updateConstraints {
+      $0.top.bottom.equalToSuperview()
+      //      $0.width.equalToSuperview().multipliedBy(0.2)
+      $0.width.equalTo(width * 0.25 - (absValue * width * 0.25))
+    }
+    
+    view5.alpha = 1 - absValue
+    view5.snp.updateConstraints {
+      $0.top.bottom.equalToSuperview()
+      //      $0.width.equalToSuperview().multipliedBy(value * 0.2)
+      $0.width.equalTo(0)
     }
   }
   
@@ -164,12 +234,40 @@ extension MainView: UICollectionViewDataSource {
   }
   
   
+  
 }
 
 extension MainView: UICollectionViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let currentPage = (scrollView.contentOffset.x / self.frame.width)
-//    print("currentPage: ", currentPage)
-    print("offset", currentPage)
+    let value = currentPage - currentPaged
+    print("wantValue: ", value)
+    
+    if value > 0 {
+      self.forwardScroll(value: value)
+    } else if value < 0 {
+      self.backwardScroll(value: value)
+    }
+  }
+  
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    let currentPage = round(scrollView.contentOffset.x / self.frame.width)
+    self.stoppedScrolling(page: currentPage)
+  }
+  
+  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    if !decelerate {
+      let currentPage = round(scrollView.contentOffset.x / self.frame.width)
+      self.stoppedScrolling(page: currentPage)
+    }
+  }
+  
+  func stoppedScrolling(page: CGFloat) {
+    currentPaged = page
+    print("Scroll finished")
+  }
+  
+  func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    print("finishAnimation")
   }
 }
