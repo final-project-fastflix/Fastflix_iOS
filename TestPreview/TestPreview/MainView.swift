@@ -77,32 +77,32 @@ class MainView: UIView {
   
   private func setupStackView() {
     view1.alpha = 0
-    view1.snp.makeConstraints {
+    view1.snp.remakeConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0)
       $0.width.equalTo(0)
     }
     
-    view2.snp.makeConstraints {
+    view2.snp.remakeConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0.6)
       $0.width.equalTo(width * 0.5)
     }
     
-    view3.snp.makeConstraints {
+    view3.snp.remakeConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0.2)
       $0.width.equalTo(width * 0.25)
     }
     
-    view4.snp.makeConstraints {
+    view4.snp.remakeConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0.2)
       $0.width.equalTo(width * 0.25)
     }
     
     view5.alpha = 0
-    view5.snp.makeConstraints {
+    view5.snp.remakeConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0)
       $0.width.equalTo(0)
@@ -241,12 +241,13 @@ extension MainView: UICollectionViewDelegate {
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let currentPage = (scrollView.contentOffset.x / self.frame.width)
     let value = currentPage - currentPaged
-    print("wantValue: ", value)
-    
-    if value > 0 {
+    let absValue = abs(value)
+    if value > 0 && absValue <= 1.1 {
       self.forwardScroll(value: value)
-    } else if value < 0 {
+    } else if value < 0 && absValue <= 1.1 {
       self.backwardScroll(value: value)
+    } else {
+      self.setupStackView()
     }
   }
   
@@ -264,10 +265,5 @@ extension MainView: UICollectionViewDelegate {
   
   func stoppedScrolling(page: CGFloat) {
     currentPaged = page
-    print("Scroll finished")
-  }
-  
-  func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-    print("finishAnimation")
   }
 }
