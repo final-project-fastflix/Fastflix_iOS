@@ -12,10 +12,6 @@ class ProfileSelectView: UIView {
   
   private let subUserSingle = SubUserSingleton.shared
   
-  // 프로필 바꾸고나서의 객체에 접근하기 위해서 private으로 선언하지 않음
-  let profileChangeVC = ProfileChangeVC()
-  
-  
   // 네이게이션뷰
   private lazy var navigationView: UIView = {
     let view = UIView()

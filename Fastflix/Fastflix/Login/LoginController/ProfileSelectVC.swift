@@ -69,7 +69,6 @@ final class ProfileSelectVC: UIViewController {
       changeButtonTapped()
     }
     
-    setupSNP()
     setUserViews()
     setupProfileLayout()
     
