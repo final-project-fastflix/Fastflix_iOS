@@ -85,13 +85,13 @@ final class LoginVC: UIViewController {
     self.present(navi, animated: false)
   }
   
-  // 고객센터버튼 눌렀을 때
+  // MARK: - 고객센터버튼 눌렀을 때
   @objc private func customerCenterTapped(_ sender: UIButton) {
     let customerCenterVC = CustomerCenterVC()
     present(customerCenterVC, animated: true)
   }
   
-  // 뒤로가기 버튼을 눌렀을 때
+  // MARK: - 뒤로가기 버튼을 눌렀을 때
   @objc private func backButtonTapped(_ sender: UIButton) {
     navigationController?.popViewController(animated: true)
   }
