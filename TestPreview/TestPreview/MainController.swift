@@ -7,11 +7,22 @@
 //
 
 import UIKit
+import SnapKit
 
 class MainController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-      
-    }
+  
+  let mainView = MainView()
+  
+  override func loadView() {
+    self.view = mainView
+  }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    mainView.disMissBtn.addTarget(self, action: #selector(didTapDisMissBtn(_:)), for: .touchUpInside)
+  }
+  
+  @objc func didTapDisMissBtn(_ sender: UIButton) {
+    dismiss(animated: true)
+  }
 }

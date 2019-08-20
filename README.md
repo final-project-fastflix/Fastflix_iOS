@@ -130,3 +130,9 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 19.08.09 feat: allen - my poked contents, fastflix original contents data hooking up.
 
 19.08.09  docs: tass - FINISH
+
+19.08.18  fix: tass - try Preview
+
+19.08.19  feat: tass - almost done Test Preview Animation
+
+19.08.19  fix: tass - Preview Animation Bugs
