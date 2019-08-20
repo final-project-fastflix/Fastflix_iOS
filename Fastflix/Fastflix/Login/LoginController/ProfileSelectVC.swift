@@ -36,11 +36,7 @@ final class ProfileSelectVC: UIViewController {
       numberOfUsers = subUserList?.count
     }
   }
-  
-  // MARK: - 레이아웃 설정을 위한 높이 관련 속성
-  private let firstYLine = UIScreen.main.bounds.height * 0.32
-  private lazy var secondYLine = firstYLine + 180
-  private lazy var thirdYLine = secondYLine + 180
+
   
   // MARK: - SeeMore뷰에서 왔는지(또는 로그인하면서 뷰를 띄웠는지) 여부
   // SeeMore뷰에서 접근하면 바로 "편집(editing)모드"로 가기 위함
@@ -51,8 +47,9 @@ final class ProfileSelectVC: UIViewController {
 //    subUserList = subUserSingle.subUserList
 //    numberOfUsers = subUserSingle.subUserList?.count
     
+    
+    setupAddTarget()
     navigationBarSetting()
-    configure()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -62,15 +59,15 @@ final class ProfileSelectVC: UIViewController {
     numberOfUsers = subUserSingle.subUserList?.count
     
     setDelegates()
-    addSubViews()
+//    addSubViews()
   
     // SeeMore뷰에서 직접 넘어왔다면 "변경"버튼까지 바로 누른 상태로 가기(변경버튼 -> 유저 isEditing상태가 됨)
     if isFromSeeMoreView {
       changeButtonTapped()
     }
     
-    setUserViews()
-    setupProfileLayout()
+//    setUserViews()
+//    setupProfileLayout()
     
   }
   
@@ -80,6 +77,18 @@ final class ProfileSelectVC: UIViewController {
   }
   
   
+  func setupAddTarget() {
+    rootView.changeButton.addTarget(self, action: #selector(changeButtonTapped), for: .touchUpInside)
+    rootView.finishButton.addTarget(self, action: #selector(finishButtonTapped(_:)), for: .touchUpInside)
+  }
+  
+  // 델리게이트 설정
+  private func setDelegates() {
+    [rootView.profileImageView1, rootView.profileImageView2, rootView.profileImageView3, rootView.profileImageView4, rootView.profileImageView5].forEach { $0.delegate = self }
+    rootView.addProfileView.delegate = self
+  }
+  
+
   // MARK: - "변경"버튼 누르면 UserView의 모든 isEditing속성을 바꿔서 편집가능한 상태로 만듦
   // 상단의 레이블 상태 변경
   @objc func changeButtonTapped() {
