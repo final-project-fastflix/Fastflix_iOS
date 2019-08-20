@@ -423,7 +423,6 @@ extension MainHomeVC: PreviewTableCellDelegate {
     guard let view = preViewPlayerVC else { return }
     present(view, animated: true)
   }
-  
 }
 
 extension MainHomeVC: PreViewPlayerVCDelegate {

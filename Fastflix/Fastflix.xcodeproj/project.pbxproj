@@ -32,6 +32,8 @@
 		47FF9DC522DE3C98005C7BAD /* DetailViewBelowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF9DC422DE3C98005C7BAD /* DetailViewBelowCell.swift */; };
 		47FF9DC722DE3CC4005C7BAD /* DetailViewBelowCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FF9DC622DE3CC4005C7BAD /* DetailViewBelowCollectionViewCell.swift */; };
 		4D80BA9E4F9865588E244065 /* Pods_Fastflix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E29600FEE1EEB7B6DD9E0171 /* Pods_Fastflix.framework */; };
+		520C020A230C7A0700DB1787 /* NewPreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520C0209230C7A0700DB1787 /* NewPreView.swift */; };
+		520C020C230C7D0900DB1787 /* NewPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520C020B230C7D0900DB1787 /* NewPreviewController.swift */; };
 		5295214E22D5D3E800174BC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5295214D22D5D3E800174BC1 /* AppDelegate.swift */; };
 		5295215522D5D3E900174BC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5295215422D5D3E900174BC1 /* Assets.xcassets */; };
 		5295216522D5D57F00174BC1 /* DataOfTass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5295216422D5D57F00174BC1 /* DataOfTass.swift */; };
@@ -117,6 +119,8 @@
 		47FF9DC222DE3C51005C7BAD /* DetailViewUpperCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewUpperCell.swift; sourceTree = "<group>"; };
 		47FF9DC422DE3C98005C7BAD /* DetailViewBelowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewBelowCell.swift; sourceTree = "<group>"; };
 		47FF9DC622DE3CC4005C7BAD /* DetailViewBelowCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewBelowCollectionViewCell.swift; sourceTree = "<group>"; };
+		520C0209230C7A0700DB1787 /* NewPreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPreView.swift; sourceTree = "<group>"; };
+		520C020B230C7D0900DB1787 /* NewPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPreviewController.swift; sourceTree = "<group>"; };
 		5295214A22D5D3E800174BC1 /* Fastflix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fastflix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5295214D22D5D3E800174BC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5295215422D5D3E900174BC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -329,6 +333,7 @@
 				C1FC3F2B22E6B9A1008E1FE9 /* MainPokeVC.swift */,
 				C143560322DC8E3E005189E9 /* PreViewPlayerVC.swift */,
 				47FF9DC022DE3C15005C7BAD /* DetailVC.swift */,
+				520C020B230C7D0900DB1787 /* NewPreviewController.swift */,
 				529BDC3922F924A5004D9B10 /* PlayerVC.swift */,
 				47AC179A22E234E700D6AACD /* PlayerViewController.swift */,
 				C1C522F722F4AEBA00B34866 /* LoadingVC.swift */,
@@ -343,6 +348,7 @@
 				C1FC3F3122E7025D008E1FE9 /* MainMovieView.swift */,
 				529BDC3D22F924D6004D9B10 /* PlayerView.swift */,
 				47212F5822FCA17D00A9DE35 /* MainPokeView.swift */,
+				520C0209230C7A0700DB1787 /* NewPreView.swift */,
 				478B2B7D22FB033900925759 /* FastFilixPlayerView.swift */,
 				5295216C22D5D62F00174BC1 /* FloatingView.swift */,
 				C1C522F922F4AECB00B34866 /* LoadingView.swift */,
@@ -715,6 +721,7 @@
 				C17A3C2422F8204800C4C29B /* LogoCollectionCell.swift in Sources */,
 				52BA343022DDE7EF005F8489 /* SubCell.swift in Sources */,
 				C1FC3EFE22E4899C008E1FE9 /* MainHomeVC.swift in Sources */,
+				520C020A230C7A0700DB1787 /* NewPreView.swift in Sources */,
 				C1C522FA22F4AECB00B34866 /* LoadingView.swift in Sources */,
 				C1E21BE622DF1BB400930115 /* LaunchScreenVC.swift in Sources */,
 				C1FC3F8E22F2FD0C008E1FE9 /* WatchingMoviesTableCell.swift in Sources */,
@@ -747,6 +754,7 @@
 				477F4F6B22E7630E003268F9 /* ProfileSelectVC.swift in Sources */,
 				C1FC3F2C22E6B9A1008E1FE9 /* MainPokeVC.swift in Sources */,
 				5295216722D5D59100174BC1 /* DataOfDevy.swift in Sources */,
+				520C020C230C7D0900DB1787 /* NewPreviewController.swift in Sources */,
 				C1FC3F0222E590CF008E1FE9 /* DownloadVC.swift in Sources */,
 				477F4F6922E76297003268F9 /* AddProfileView.swift in Sources */,
 				47FF9DC522DE3C98005C7BAD /* DetailViewBelowCell.swift in Sources */,
