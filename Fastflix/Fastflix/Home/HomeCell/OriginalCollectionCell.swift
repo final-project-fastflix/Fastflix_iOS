@@ -53,9 +53,11 @@ final class OriginalCollectionCell: UICollectionViewCell {
     originalImageView.kf.setImage(with: url, options: [.processor(DownsamplingImageProcessor(size: CGSize(width: 170, height: 370)))]) {
       switch $0 {
       case .success(let value):
-        print("img success")
+//        print("img success")
+        ()
       case .failure(let err):
-        print("img Err", err.localizedDescription)
+//        print("img Err", err.localizedDescription)
+        dump(err)
       }
     }
     

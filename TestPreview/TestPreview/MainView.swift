@@ -10,15 +10,17 @@ import UIKit
 
 class MainView: UIView {
   
+  var logoImgArr: [UIImage] = []
+  
   var currentPaged: CGFloat = 0
   
-  var width = UIScreen.main.bounds.width - (UIScreen.main.bounds.width * 0.1)
+  var width = UIScreen.main.bounds.width - 20
 
   lazy var testStackView: UIStackView = {
     let view = UIStackView(arrangedSubviews: views)
     view.axis = .horizontal
     view.distribution = .equalSpacing
-    view.alignment = .leading
+    view.alignment = .top
     view.spacing = 0
     view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height * 0.3)
     return view
@@ -67,6 +69,11 @@ class MainView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
+    view1.contentMode = .scaleAspectFit
+    view2.contentMode = .scaleAspectFit
+    view3.contentMode = .scaleAspectFit
+    view4.contentMode = .scaleAspectFit
+    view5.contentMode = .scaleAspectFit
     registerCells()
     addSubviews()
     setImage()
@@ -86,19 +93,19 @@ class MainView: UIView {
     view2.snp.remakeConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0.6)
-      $0.width.equalTo(width * 0.5)
+      $0.width.equalTo(width * 0.7)
     }
     
     view3.snp.remakeConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0.2)
-      $0.width.equalTo(width * 0.25)
+      $0.width.equalTo(width * 0.15)
     }
     
     view4.snp.remakeConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0.2)
-      $0.width.equalTo(width * 0.25)
+      $0.width.equalTo(width * 0.15)
     }
     
     view5.alpha = 0
@@ -111,6 +118,7 @@ class MainView: UIView {
   
   private func forwardScroll(value: CGFloat) {
     print("forward")
+    let absValue = abs(value)
     view1.snp.updateConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0)
@@ -120,26 +128,26 @@ class MainView: UIView {
     view2.snp.updateConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0.6)
-      $0.width.equalTo(width * 0.5 - (value * width * 0.5))
+      $0.width.equalTo(width * 0.7 - (absValue * width * 0.7))
     }
     
     view3.snp.updateConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0.2)
-      $0.width.equalTo(width * 0.25 + (value * width * 0.25))
+      $0.width.equalTo(width * 0.15 + (absValue * width * 0.55))
     }
     
     view4.snp.updateConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(0.2)
-      $0.width.equalTo(width * 0.25)
+      $0.width.equalTo(width * 0.15)
     }
     
     view5.alpha = value
     view5.snp.updateConstraints {
       $0.top.bottom.equalToSuperview()
 //      $0.width.equalToSuperview().multipliedBy(value * 0.2)
-      $0.width.equalTo(value * width * 0.25)
+      $0.width.equalTo(absValue * width * 0.15)
     }
   }
   
@@ -150,26 +158,26 @@ class MainView: UIView {
     view1.snp.updateConstraints {
       $0.top.bottom.equalToSuperview()
       //      $0.width.equalToSuperview().multipliedBy(0)
-      $0.width.equalTo(absValue * width * 0.5)
+      $0.width.equalTo(absValue * width * 0.7)
     }
     
     view2.snp.updateConstraints {
       $0.top.bottom.equalToSuperview()
       //      $0.width.equalToSuperview().multipliedBy(0.6)
-      $0.width.equalTo(width * 0.5 - (absValue * width * 0.25))
+      $0.width.equalTo(width * 0.7 - (absValue * width * 0.55))
     }
     
     view3.snp.updateConstraints {
       $0.top.bottom.equalToSuperview()
       //      $0.width.equalToSuperview().multipliedBy(0.2)
-      $0.width.equalTo(width * 0.25)
+      $0.width.equalTo(width * 0.15)
     }
     
 //    view4.alpha = 1 + value
     view4.snp.updateConstraints {
       $0.top.bottom.equalToSuperview()
       //      $0.width.equalToSuperview().multipliedBy(0.2)
-      $0.width.equalTo(width * 0.25 - (absValue * width * 0.25))
+      $0.width.equalTo(width * 0.15 - (absValue * width * 0.15))
     }
     
     view5.alpha = 1 - absValue
@@ -208,7 +216,7 @@ class MainView: UIView {
     disMissBtn.snp.makeConstraints {
       $0.centerY.equalTo(testStackView.snp.centerY)
       $0.trailing.equalToSuperview()
-      $0.width.height.equalToSuperview().multipliedBy(0.1)
+      $0.width.height.equalTo(20)
     }
   }
   

@@ -138,3 +138,5 @@ teamMembers: 권혁태(tass), 홍원표(allen), 전혜지(devy)
 19.08.19  fix: tass - Preview Animation Bugs
 
 19.08.19  feat: tass - Preview In MainProject
+
+19.08.22  feat: tass - almost done Preview

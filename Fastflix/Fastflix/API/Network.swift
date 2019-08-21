@@ -51,7 +51,6 @@ class APICenter {
     let header = [
       "Authorization": getToken()
     ]
-    print("errorreko", header)
     let url = RequestString.postRekoMovie.rawValue
     guard let convertImg = image.pngData() else {
       completion(.failure(ErrorType.NoData))
@@ -888,7 +887,7 @@ class APICenter {
   func getListMovieGenreData(genre: String, completion: @escaping (Result<[MoviesByGenre]>) -> ()) {
     let header = getHeader(needSubuser: true)
     let fullURL = RequestString.getListByFastFlixMovieURL.rawValue + "\(genre)/list/"
-    print("유알엘 찍어보기:", fullURL)
+//    print("유알엘 찍어보기:", fullURL)
     
     let encoding = fullURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
     

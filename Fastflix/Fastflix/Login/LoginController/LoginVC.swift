@@ -55,8 +55,8 @@ final class LoginVC: UIViewController {
     APICenter.shared.login(id: id, pw: pw) {
       switch $0 {
       case .success(let subUsers):
-        print("Login Success!!!")
-        print("value: ", subUsers)
+//        print("Login Success!!!")
+//        print("value: ", subUsers)
         // 로그인 성공하면 서브유저리스트를 싱글톤에 저장
         self.subUserSingle.subUserList = subUsers
         
@@ -65,7 +65,7 @@ final class LoginVC: UIViewController {
           self.executeLogIn()
         }
       case .failure(let err):
-        print("fail to login, reason: ", err)
+//        print("fail to login, reason: ", err)
         let message = """
         죄송합니다. 이 이메일주소를 사용하는 계정을
         찾을 수 없거나 비밀번호를 틀리셨습니다.
