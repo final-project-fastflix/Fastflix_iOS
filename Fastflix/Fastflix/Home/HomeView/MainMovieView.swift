@@ -12,7 +12,7 @@ import Kingfisher
 import AVKit
 
 protocol MainMovieViewDelegate: class {
-  func didTapPreview(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?)
+  func didTapPreview(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [URL?]?, idArr: [Int]?)
 }
 
 final class MainMovieView: UIView {
@@ -241,7 +241,7 @@ extension MainMovieView: UITableViewDelegate {
 
 
 extension MainMovieView: PreviewTableCellDelegate {
-  func didSelectItemAt(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
+  func didSelectItemAt(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [URL?]?, idArr: [Int]?) {
     myDelegate?.didTapPreview(indexPath: indexPath, logoArr: logoArr, videoItems: videoItems, idArr: idArr)
   }
 }

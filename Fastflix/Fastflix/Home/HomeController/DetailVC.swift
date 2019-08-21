@@ -189,8 +189,8 @@ extension DetailVC: PlayButtonDelegate {
   }
   
   func playButtonDidTap(movieId: Int) {
-    print("여기에 플레이어 붙이면 됩니다.")
-    print("run playVideo")
+//    print("여기에 플레이어 붙이면 됩니다.")
+//    print("run playVideo")
     let player = PlayerVC()
     
     let url = movieDetailData?.videoFile
@@ -213,7 +213,7 @@ extension DetailVC: SimilarMoviesDetailViewCellDelegate {
     APICenter.shared.getDetailData(id: movieId) {
       switch $0 {
       case .success(let movie):
-        print("디테일뷰 다시띄우기 위해 영화정보 다시 띄우기: ", movie.id, movie.name)
+//        print("디테일뷰 다시띄우기 위해 영화정보 다시 띄우기: ", movie.id, movie.name)
         DispatchQueue.main.async {
           let detailVC = DetailVC()
           detailVC.movieId = movieId
@@ -221,8 +221,8 @@ extension DetailVC: SimilarMoviesDetailViewCellDelegate {
           self.present(detailVC, animated: true)
         }
       case .failure(let err):
-        print("fail to login, reason: ", err)
-        
+//        print("fail to login, reason: ", err)
+        dump(err)
         let message = """
         죄송합니다. 해당 영화에 대한 정보를 가져오지
         못했습니다. 다시 시도해 주세요.

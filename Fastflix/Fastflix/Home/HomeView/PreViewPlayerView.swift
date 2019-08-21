@@ -27,7 +27,7 @@ class PreViewPlayerView: UIView {
   var mainURLs: [URL?]?
   var logoURLs: [URL?]?
   var idArr: [Int?]?
-  var playerItems: [AVPlayerItem]?
+  var playerItems: [URL?]?
   
   // MARK: - collectionView
   private let layout = UICollectionViewFlowLayout()
@@ -212,15 +212,16 @@ class PreViewPlayerView: UIView {
   }
   
   @objc private func dismissBtnDidTap(_ sender: UIButton) {
-    print(" 뒤로가여 ")
     
     guard let count = playerItems?.count else { return }
     
     for idx in 0..<count {
       let index = IndexPath(row: idx, section: 0)
       let cell = playCollectionView.cellForItem(at: index) as? PlayCollectionViewCell
+      cell?.player.pause()
       cell?.player.replaceCurrentItem(with: nil)
-//      cell?.playerLayer = nil
+//      cell?.player = AVPlayer()
+      cell?.playerLayer = nil
     }
     
     delegate?.dismissBtnDidTap()
@@ -291,9 +292,8 @@ extension PreViewPlayerView: UICollectionViewDelegate {
     if scrollView == playCollectionView {
       let currentPage = round(scrollView.contentOffset.x / self.frame.width)
       index = IndexPath(row: Int(currentPage), section: 0)
-      print("index play:", index)
       logoCollectionView.contentOffset.x = scrollView.contentOffset.x/3
-      var targetCell = logoCollectionView.cellForItem(at: index!) as? LogoCollectionCell
+      let targetCell = logoCollectionView.cellForItem(at: index!) as? LogoCollectionCell
       targetCell?.systemLayoutSizeFitting(CGSize(width: 200, height: 150))
     }
     if scrollView == logoCollectionView {
@@ -318,9 +318,10 @@ extension PreViewPlayerView: UICollectionViewDelegate {
   }
   
   func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-    if scrollView == logoCollectionView {
+    if scrollView == playCollectionView {
       let cell = playCollectionView.cellForItem(at: index ?? IndexPath(item: 0, section: 0)) as? PlayCollectionViewCell
       cell?.player.play()
     }
   }
+  
 }

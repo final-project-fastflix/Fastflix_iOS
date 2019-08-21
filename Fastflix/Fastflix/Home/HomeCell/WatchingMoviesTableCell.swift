@@ -154,7 +154,7 @@ extension WatchingMoviesTableCell: UICollectionViewDataSource {
     
     if let data = baseData?[indexPath.row] {
       
-      print("시청중인 콘텐츠",data)
+//      print("시청중인 콘텐츠",data)
       cell.configure(imageUrl: data.movie.verticalImage, id: data.movie.id, video: data.movie.videoFile ?? "", runningTime: data.totalMinute, progress: data.progressBar, toBe: data.toBeContinue)
 //      cell.playBtn.addTarget(self, action: #selector(self.collectionView(_:didSelectItemAt:)), for: .touchUpInside)
     }
@@ -175,15 +175,15 @@ extension WatchingMoviesTableCell: UICollectionViewDelegate {
     APICenter.shared.getDetailData(id: movieId) {
       switch $0 {
       case .success(let movie):
-        print("영화 플레이화면으로 전달: ", movie.id, movie.name)
+//        print("영화 플레이화면으로 전달: ", movie.id, movie.name)
         
         DispatchQueue.main.async {
           self.delegate?.WatchingMovielDidSelectItemAt(movieId: movieId, url: movie.videoFile, movieTitle: movie.name)
         }
         
       case .failure(let err):
-        print("fail to login, reason: ", err)
-        
+//        print("fail to login, reason: ", err)
+        dump(err)
         let message = """
         죄송합니다. 해당 영화에 대한 정보를 가져오지
         못했습니다. 다시 시도해 주세요.

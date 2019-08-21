@@ -126,14 +126,14 @@ extension ProfileSelectVC: UserViewDelegate {
   
   // 1) 편집이 가능하지 않은 상태(!isEditing) 로그인 하기 위해서 특정 유저를 선택 ====> 홈화면으로
   func didSelectUser(tag: Int) {
-    print("유저 선택하기 눌렸당, 서브유저아이디 Tag:", tag)
+//    print("유저 선택하기 눌렸당, 서브유저아이디 Tag:", tag)
     APICenter.shared.saveSubUserID(id: tag)
     AppDelegate.instance.reloadRootView()
   }
   
   // 2) 편집이 가능한 상태(isEditing)에서 프로필 변경을 위한 특정 유저 선택
   func profileChangeTapped(tag: Int, userName: String, userImage: UIImage, imageURL: String) {
-    print("프로필 변경을 위한 - 특정 유저 선택 하기 눌렀당")
+//    print("프로필 변경을 위한 - 특정 유저 선택 하기 눌렀당")
     
     // 유저에 대한 정보는 UserView에서 받아와서 profileChangeVC를 띄움
     profileChangeVC.subUserIDtag = tag
