@@ -47,44 +47,126 @@ class APICenter {
   
   
   func rekoMovie(image: UIImage, completion: @escaping (Result<RekoMovie>) -> ()) {
-    let header = getHeader(needSubuser: false)
-    print("errorreko", header)
+//    let header = getHeader(needSubuser: false)
+    let header = [
+      "Authorization": getToken()
+    ]
     let url = RequestString.postRekoMovie.rawValue
     guard let convertImg = image.pngData() else {
       completion(.failure(ErrorType.NoData))
       return }
+    let testData = Data(convertImg)
+    let imgStr = String(data: convertImg, encoding: .ascii)
+    let body = [
+        "image": imgStr
+      ]
     
-    
-    Alamofire.upload(multipartFormData: { multi in
-//      multi.append(convertImg, withName: "image", mimeType: "image/png")
-      multi.append(convertImg, withName: "image", fileName: "image", mimeType: "image/png")
+    Alamofire.upload(multipartFormData: { (multi) in
+//      multi.append(InputStream(data: convertImg), withLength: UInt64.init(1), headers: header)
+      multi.append(convertImg, withName: "image")
     }, to: url, method: .post, headers: header) { (result) in
       switch result {
       case .success(request: let req, streamingFromDisk: _, streamFileURL: _):
-        req.responseData(queue: .main, completionHandler: { (result) in
-          
-          switch result.result {
-          case .success(let value):
-            print("errorreko", value)
-            let test = try? JSONSerialization.jsonObject(with: value) as? [Any]
-            print("errorreko", test)
-            guard let data = try? JSONDecoder().decode(RekoMovie.self, from: value) else {
-              completion(.failure(ErrorType.FailToParsing))
-              return
+        req.responseData(queue: .global()
+          , completionHandler: { (data) in
+            switch data.result {
+            case .success(let value):
+              guard let result = try? JSONDecoder().decode(RekoMovie.self, from: value) else {
+                completion(.failure(ErrorType.FailToParsing))
+                return }
+              
+              completion(.success(result))
+            case .failure(let err):
+              dump(err)
+              completion(.failure(ErrorType.networkError))
             }
-            completion(.success(data))
-            
-          case .failure(let err):
-            dump(err)
-            completion(.failure(ErrorType.networkError))
-          }
         })
+        
         
       case .failure(let err):
         dump(err)
         completion(.failure(ErrorType.networkError))
       }
     }
+    
+//    Alamofire.upload(body!, to: url, method: .post, headers: header)
+//      .responseData(queue: .main, completionHandler: { (result) in
+//
+//        switch result.result {
+//        case .success(let value):
+//          print("errorreko", value)
+//          let test = try? JSONSerialization.jsonObject(with: value) as? [Any]
+//          print("errorreko", test)
+//          print("errorreko", result.response?.statusCode)
+//
+//          guard let data = try? JSONDecoder().decode(RekoMovie.self, from: value) else {
+//            completion(.failure(ErrorType.FailToParsing))
+//            return
+//          }
+//          completion(.success(data))
+//
+//        case .failure(let err):
+//          dump(err)
+//          completion(.failure(ErrorType.networkError))
+//        }
+//      })
+    
+    
+  
+//    let req1 = Alamofire.request(req!)
+////    req.response
+//      req1.responseData(queue: .main, completionHandler: { (result) in
+//
+//        switch result.result {
+//        case .success(let value):
+//          print("errorreko", value)
+//          let test = try? JSONSerialization.jsonObject(with: value) as? [Any]
+//          print("errorreko", test)
+//          print("errorreko", result.response?.statusCode)
+//
+//          guard let data = try? JSONDecoder().decode(RekoMovie.self, from: value) else {
+//            completion(.failure(ErrorType.FailToParsing))
+//            return
+//          }
+//          completion(.success(data))
+//
+//        case .failure(let err):
+//          dump(err)
+//          completion(.failure(ErrorType.networkError))
+//        }
+//      })
+    
+    
+//    Alamofire.upload(multipartFormData: { multi in
+////      multi.append(convertImg, withName: "image", mimeType: "image/png")
+//      multi.append(convertImg, withName: "image", fileName: "image", mimeType: "image/png")
+//    }, to: url, method: .post, headers: header) { (result) in
+//      switch result {
+//      case .success(request: let req, streamingFromDisk: _, streamFileURL: _):
+//        req.responseData(queue: .main, completionHandler: { (result) in
+//
+//          switch result.result {
+//          case .success(let value):
+//            print("errorreko", value)
+//            let test = try? JSONSerialization.jsonObject(with: value) as? [Any]
+//            print("errorreko", test)
+//            guard let data = try? JSONDecoder().decode(RekoMovie.self, from: value) else {
+//              completion(.failure(ErrorType.FailToParsing))
+//              return
+//            }
+//            completion(.success(data))
+//
+//          case .failure(let err):
+//            dump(err)
+//            completion(.failure(ErrorType.networkError))
+//          }
+//        })
+//
+//      case .failure(let err):
+//        dump(err)
+//        completion(.failure(ErrorType.networkError))
+//      }
+//    }
   }
   
   // post pause movie time
@@ -805,7 +887,7 @@ class APICenter {
   func getListMovieGenreData(genre: String, completion: @escaping (Result<[MoviesByGenre]>) -> ()) {
     let header = getHeader(needSubuser: true)
     let fullURL = RequestString.getListByFastFlixMovieURL.rawValue + "\(genre)/list/"
-    print("유알엘 찍어보기:", fullURL)
+//    print("유알엘 찍어보기:", fullURL)
     
     let encoding = fullURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
     

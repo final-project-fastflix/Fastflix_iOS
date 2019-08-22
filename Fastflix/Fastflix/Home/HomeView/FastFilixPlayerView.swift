@@ -33,7 +33,7 @@ final class FastFilixPlayerView: UIView {
     return label
   }()
 
-  lazy var closeButton: UIButton = {
+  private lazy var closeButton: UIButton = {
     let button = UIButton(type: .system)
     button.tintColor = .white
     let image = UIImage(named: "close")
@@ -44,7 +44,7 @@ final class FastFilixPlayerView: UIView {
   }()
   
   // 닫기버튼 잘 안눌려서 그 위에 조금 큰 버튼 달기
-  let bigCloseButton: UIButton = {
+  private let bigCloseButton: UIButton = {
     let button = UIButton(type: .custom)
     button.backgroundColor = .clear
     button.addTarget(self, action: #selector(didTapBtns), for: .touchUpInside)
@@ -53,7 +53,7 @@ final class FastFilixPlayerView: UIView {
   }()
 
   // 🔸뒤로가기 버튼 관련
-  let backWardButton: UIButton = {
+  private let backWardButton: UIButton = {
     let button = UIButton(type: .system)
     button.tintColor = .white
     let image = UIImage(named: "backward")
@@ -63,7 +63,7 @@ final class FastFilixPlayerView: UIView {
     return button
   }()
 
-  let backImageView: UIImageView = {
+  private let backImageView: UIImageView = {
     let imageView = UIImageView()
     let image = UIImage(named: "circle")
     imageView.image = image
@@ -71,7 +71,7 @@ final class FastFilixPlayerView: UIView {
     return imageView
   }()
 
-  let backLabel: UILabel = {
+  private let backLabel: UILabel = {
     let label = UILabel()
     label.text = "10"
     label.textColor = .white
@@ -80,7 +80,7 @@ final class FastFilixPlayerView: UIView {
     return label
   }()
 
-  let backMovingLabel: UILabel = {
+  private let backMovingLabel: UILabel = {
     let label = UILabel()
     label.text = "-10"
     label.textColor = .white
@@ -91,7 +91,7 @@ final class FastFilixPlayerView: UIView {
   }()
 
   // 🔸멈추기 및 재생 버튼
-  let pausePlayButton: UIButton = {
+  private let pausePlayButton: UIButton = {
     let button = UIButton(type: .system)
     button.tintColor = .white
     let image = UIImage(named: "pause")
@@ -102,7 +102,7 @@ final class FastFilixPlayerView: UIView {
   }()
 
   // 🔸앞으로가기 버튼 관련
-  let forwardButton: UIButton = {
+  private let forwardButton: UIButton = {
     let button = UIButton(type: .system)
     button.tintColor = .white
     let image = UIImage(named: "forward")
@@ -112,7 +112,7 @@ final class FastFilixPlayerView: UIView {
     return button
   }()
 
-  let forwardImageView: UIImageView = {
+  private let forwardImageView: UIImageView = {
     let imageView = UIImageView()
     let image = UIImage(named: "circle")
     imageView.image = image
@@ -120,7 +120,7 @@ final class FastFilixPlayerView: UIView {
     return imageView
   }()
 
-  let forwardLabel: UILabel = {
+  private let forwardLabel: UILabel = {
     let label = UILabel()
     label.text = "10"
     label.textColor = .white
@@ -129,7 +129,7 @@ final class FastFilixPlayerView: UIView {
     return label
   }()
 
-  let forwardMovingLabel: UILabel = {
+  private let forwardMovingLabel: UILabel = {
     let label = UILabel()
     label.text = "+10"
     label.textColor = .white
@@ -140,7 +140,7 @@ final class FastFilixPlayerView: UIView {
   }()
 
   // 🔸하단 슬라이더 관련 스택뷰
-  lazy var sliderStackView: UIStackView = {
+  private lazy var sliderStackView: UIStackView = {
     let sview = UIStackView(arrangedSubviews: [mainSlider, movieRunningTimeLabel])
     sview.axis = .horizontal
     sview.distribution = .fill
@@ -165,7 +165,7 @@ final class FastFilixPlayerView: UIView {
   }()
 
   // 🔸하단 자막 및 음성 버튼 관련
-  lazy var subtitleStackView: UIStackView = {
+  private lazy var subtitleStackView: UIStackView = {
     let sview = UIStackView(arrangedSubviews: [subtitleImageButton, subtitleButton])
     sview.axis = .horizontal
     sview.distribution = .fill
@@ -173,7 +173,7 @@ final class FastFilixPlayerView: UIView {
     return sview
   }()
 
-  let subtitleImageButton: UIButton = {
+  private let subtitleImageButton: UIButton = {
     let button = UIButton(type: .system)
     button.tintColor = .white
     let image = UIImage(named: "buble")
@@ -183,7 +183,7 @@ final class FastFilixPlayerView: UIView {
     return button
   }()
 
-  let subtitleButton: UIButton = {
+  private let subtitleButton: UIButton = {
     let button = UIButton(type: .system)
     button.setTitle("자막 및 음성", for: .normal)
     button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
@@ -229,11 +229,16 @@ final class FastFilixPlayerView: UIView {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    print("layoutSubviews")
+    
     addSubviews()
     setupSNP()
   }
+  
+  private func configure() {
+//    self.backgroundColor = UIColor.black.withAlphaComponent(0.7)
 
+  }
+  
   private func addSubviews() {
 
     views.forEach { self.addSubview($0) }
@@ -343,15 +348,15 @@ final class FastFilixPlayerView: UIView {
   }
 
   @objc private func tapScreen() {
-    print("runInView")
     delegate?.didTapScreen()
+    
   }
 
   @objc private func didTapBtns(_ sender: UIButton) {
+    
     switch sender.tag {
     case 1:
       delegate?.didTapPlay()
-//      pausePlayButton.isSelected.toggle()
       pauseAndPlayDidTap(sender)
     case 2:
       delegate?.jumpForward()
@@ -361,7 +366,6 @@ final class FastFilixPlayerView: UIView {
       backwardButtonAnimation()
     case 4:
       delegate?.didTapDismiss()
-//      closeButtonDidTap(sender)
     default:
       break
     }
@@ -374,17 +378,25 @@ final class FastFilixPlayerView: UIView {
 
   func showNavigator() {
     views.forEach { $0.isHidden = !$0.isHidden }
+    // 여러 뷰 중에 하나가 Hidden상태일때, 백그라운드도 검정색 알파가 들어가게 바뀌어야 함
+    if movieTitleLabel.isHidden {
+      self.backgroundColor = .clear
+    }else {
+      self.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+    }
   }
 
   func hideNavigator() {
     views.forEach { $0.isHidden = true }
+    if movieTitleLabel.isHidden {
+      self.backgroundColor = .clear
+    }
   }
 
   // 🔸자막 및 음성 버튼 눌렀을때
   @objc private func subtitleButtonDidTap(_ sender: UIButton) {
 
   }
-
 
   // 🔸멈추기 및 재생 버튼 눌렀을때
   @objc private func pauseAndPlayDidTap(_ sender: UIButton) {
@@ -458,7 +470,6 @@ final class FastFilixPlayerView: UIView {
         self.forwardMovingLabel.alpha = 1
       })
       UIView.addKeyframe(withRelativeStartTime: 0.8, relativeDuration: 0.2, animations: {
-
         self.forwardMovingLabel.alpha = 0
       })
       // 끝나면 제자리로 돌아가기

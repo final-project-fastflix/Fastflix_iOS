@@ -16,7 +16,7 @@ class MainMovieVC: UIViewController {
   
   let categoryVC = CategorySelectVC()
   
-  var preViewPlayerVC: PreViewPlayerVC? = PreViewPlayerVC()
+  var preViewPlayerVC: NewPreviewController? = NewPreviewController()
   
   let mainMovieView = MainMovieView()
   
@@ -80,8 +80,6 @@ extension MainMovieVC: FloatingViewDelegate {
   }
   
   func didTapPoke() {
-    
-    print("일단 눌러는 지는 겁니까????")
 
     let mainPokeVC = MainPokeVC()
     
@@ -106,7 +104,8 @@ extension MainMovieVC: FloatingViewDelegate {
         }
         
       case .failure(let err):
-        print("fail to parsing, reason: ", err)
+//        print("fail to parsing, reason: ", err)
+        dump(err)
         let message = """
           죄송합니다. 찜 정보를 가져오는데
           실패했습니다.
@@ -136,7 +135,7 @@ extension MainMovieVC: CategorySelectVCDelegate {
   
   func sendData(data: [RequestMovieElement], keys: [String]) {
     //    let view = self.view as! MainMovieView
-    print("runrun")
+//    print("runrun")
     mainMovieView.receiveData = data
     mainMovieView.receiveKeys = keys
     mainMovieView.tableView.reloadData()
@@ -148,7 +147,7 @@ extension MainMovieVC: SubTableCellDelegate {
   func didSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
     // 영화 화면에서 디테일뷰 띄우기
     DispatchQueue.main.async {
-      print("영화정보 디테일: ", movieId, movieInfo.name)
+//      print("영화정보 디테일: ", movieId, movieInfo.name)
       let detailVC = DetailVC()
       detailVC.movieId = movieId
       detailVC.movieDetailData = movieInfo
@@ -163,12 +162,11 @@ extension MainMovieVC: SubTableCellDelegate {
 }
 
 extension MainMovieVC: MainMovieViewDelegate {
-  func didTapPreview(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?) {
-    preViewPlayerVC = PreViewPlayerVC()
+  func didTapPreview(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [URL?]?, idArr: [Int]?) {
+    preViewPlayerVC = NewPreviewController()
     preViewPlayerVC?.logoURLs = logoArr
     preViewPlayerVC?.playerItems = videoItems
     preViewPlayerVC?.idArr = idArr
-    preViewPlayerVC?.delegate = self
     guard let view = preViewPlayerVC else { return }
     present(view, animated: true)
   }
@@ -189,8 +187,8 @@ extension MainMovieVC: MainImageTableCellDelegate {
           self.present(detailVC, animated: true)
         }
       case .failure(let err):
-        print("fail to login, reason: ", err)
-        
+//        print("fail to login, reason: ", err)
+        dump(err)
         let message = """
         죄송합니다. 해당 영화에 대한 정보를 가져오지
         못했습니다. 다시 시도해 주세요.
@@ -203,7 +201,7 @@ extension MainMovieVC: MainImageTableCellDelegate {
   }
   
   func playVideo(id: Int) {
-    print("run playVideo")
+//    print("run playVideo")
     let player = PlayerVC()
     
     let movieId = id
@@ -211,7 +209,7 @@ extension MainMovieVC: MainImageTableCellDelegate {
     APICenter.shared.getDetailData(id: movieId) {
       switch $0 {
       case .success(let movie):
-        print("디테일뷰 다시띄우기 위해 영화정보 다시 띄우기: ", movie.id, movie.name)
+//        print("디테일뷰 다시띄우기 위해 영화정보 다시 띄우기: ", movie.id, movie.name)
         
         // 영화 메인무비 정보
         let url = movie.videoFile
@@ -225,8 +223,8 @@ extension MainMovieVC: MainImageTableCellDelegate {
         }
         
       case .failure(let err):
-        print("fail to login, reason: ", err)
-        
+//        print("fail to login, reason: ", err)
+        dump(err)
         let message = """
         죄송합니다. 해당 영화에 대한 정보를 가져오지
         못했습니다. 다시 시도해 주세요.
@@ -241,7 +239,6 @@ extension MainMovieVC: MainImageTableCellDelegate {
 
 extension MainMovieVC: PreViewPlayerVCDelegate {
   func finishVideo() {
-    print("아에헹")
     preViewPlayerVC = nil
     AppDelegate.instance.checkLoginState()
   }

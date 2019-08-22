@@ -28,7 +28,7 @@ final class LaunchScreenVC: UIViewController {
 //    }
     
     // 3초 뒤에 뷰 컨트롤러를 띄우는거
-    Timer.scheduledTimer(withTimeInterval: 6, repeats: false) { _ in
+    Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
       let appDelegate =  AppDelegate.instance
       appDelegate.checkLoginState()
     }

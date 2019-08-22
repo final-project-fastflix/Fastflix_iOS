@@ -323,7 +323,7 @@ final class DetailViewUpperCell: UITableViewCell {
   
   // 디스미스(닫기) 버튼 - 델리게이트로 전달됨
   @objc private func didTapDismissBtn(_ sender: UIButton) {
-    print("dismiss")
+//    print("dismiss")
     delegate?.didTapDismissBtn()
   }
   
@@ -470,12 +470,12 @@ final class DetailViewUpperCell: UITableViewCell {
   }
   
   @objc private func pokeBtnDidTap(_ sender: UIButton) {
-    print("포크버튼 눌렀습니다용")
+//    print("포크버튼 눌렀습니다용")
     
     APICenter.shared.toggleForkMovie(movieID: movieId!) {
       switch $0 {
       case .success(let success):
-        print("디테일뷰에서 영화찜하기 성공: ", success)
+//        print("디테일뷰에서 영화찜하기 성공: ", success)
         DispatchQueue.main.async {
           if success == 1 {
             self.isPoked = true

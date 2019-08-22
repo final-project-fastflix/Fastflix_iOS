@@ -62,7 +62,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     // 🔶토큰값이 있을때 바로 로그인할때 서브유저리스트 확인 프로세스 추가🔶
     // 토큰이 있다면 =====> 서브유저리스트를 받아서 싱글톤에 저장 (유저디폴트로 변경 예정)
     if token != nil {
-      beforeLoginVC.downloadUserList()
+      beforeLoginVC.downloadSubUserList()
     }
     
     // "token"값 nil일때는 1)안내화면으로 / nil이 아닐때는 2) 홈화면으로

@@ -205,7 +205,7 @@ final class MainImageTableCell: UITableViewCell {
     APICenter.shared.toggleForkMovie(movieID: movieId!) {
       switch $0 {
       case .success(let success):
-        print("메인무비 영화찜하기 성공: ", success)
+//        print("메인무비 영화찜하기 성공: ", success)
         DispatchQueue.main.async {
           if success == 1 {
             self.isPoked = true
@@ -214,7 +214,8 @@ final class MainImageTableCell: UITableViewCell {
           }
         }
       case .failure(let err):
-        print("reason: ", err)
+//        print("reason: ", err)
+        dump(err)
       }
     }
     pokeButtonSetting()
@@ -230,7 +231,7 @@ final class MainImageTableCell: UITableViewCell {
   
   @objc private func didTapToInfo() {
     delegate?.mainImageCelltoDetailVC(id: movieId!)
-    print("셀에서 버튼누르기")
+//    print("셀에서 버튼누르기")
   }
   
   

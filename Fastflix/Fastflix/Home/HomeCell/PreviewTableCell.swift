@@ -12,7 +12,7 @@ import Kingfisher
 import AVKit
 
 protocol PreviewTableCellDelegate: class {
-  func didSelectItemAt(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [AVPlayerItem]?, idArr: [Int]?)
+  func didSelectItemAt(indexPath: IndexPath, logoArr: [URL?]?, videoItems: [URL?]?, idArr: [Int]?)
 }
 
 final class PreviewTableCell: UITableViewCell {
@@ -60,8 +60,8 @@ final class PreviewTableCell: UITableViewCell {
     self.logoURLs = logoArr.map { URL(string: $0) }
     self.videoPaths = videoArr.map { URL(string: $0) }
     self.idArr = idArr
-    guard let path = videoPaths else { return }
-    self.playerItems = path.map { AVPlayerItem(url: $0!) }
+//    guard let path = videoPaths else { return }
+//    self.playerItems = path.map { AVPlayerItem(url: $0!) }
   }
   
   // MARK: - addSubViews
@@ -122,7 +122,7 @@ extension PreviewTableCell: UICollectionViewDataSource {
 extension PreviewTableCell: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //    print("indexPath.row: ", indexPath.row)
-    delegate?.didSelectItemAt(indexPath: indexPath, logoArr: logoURLs!, videoItems: playerItems!, idArr: idArr!)
+    delegate?.didSelectItemAt(indexPath: indexPath, logoArr: logoURLs!, videoItems: videoPaths!, idArr: idArr!)
     
   }
 }

@@ -76,7 +76,7 @@ extension MainPokeVC: SubTableCellDelegate {
   func didSelectItemAt(movieId: Int, movieInfo: MovieDetail) {
     // 영화 화면에서 디테일뷰 띄우기
     DispatchQueue.main.async {
-      print("영화정보 디테일: ", movieId, movieInfo.name)
+//      print("영화정보 디테일: ", movieId, movieInfo.name)
       let detailVC = DetailVC()
       detailVC.movieId = movieId
       detailVC.movieDetailData = movieInfo
@@ -115,7 +115,7 @@ extension MainPokeVC: FloatingViewDelegate {
   }
   
   func didTapPoke() {
-    print("일단 눌러는 지는 겁니까????")
+//    print("일단 눌러는 지는 겁니까????")
     
     
   }

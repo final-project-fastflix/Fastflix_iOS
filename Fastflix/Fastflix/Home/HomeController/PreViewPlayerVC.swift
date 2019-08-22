@@ -21,7 +21,7 @@ final class PreViewPlayerVC: UIViewController {
   var mainURLs: [URL?]?
   var logoURLs: [URL?]?
   var idArr: [Int?]?
-  var playerItems: [AVPlayerItem]?
+  var playerItems: [URL?]?
   
 //  private let url = URL(string: preViewUrl)!
   
@@ -46,36 +46,15 @@ final class PreViewPlayerVC: UIViewController {
     return .lightContent
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    
-//    NotificationCenter.default.addObserver(self, selector: #selector(didFinishVideo(_:)), name: .AVPlayerItemDidPlayToEndTime, object: playerViewController.player?.currentItem)
-//
-//    let player = AVPlayer(url: url)
-//    playerViewController.player = player
-//    present(playerViewController, animated: true) {
-//      player.play()
-//    }
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
 
     view.backgroundColor = .clear
   }
   
-  override func viewDidDisappear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    setupSNP()
-  }
-  
   @objc func dismissBtnDidTap(_ sender: UIButton) {
     delegate?.finishVideo()
     
-  }
-  
-  private func setupSNP() {
-
   }
   
   @objc func didFinishVideo(_ sender: NSNotification) {

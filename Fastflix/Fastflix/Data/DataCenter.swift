@@ -189,11 +189,9 @@ class DataCenter {
       switch result {
       case .success(let value):
         self.fastFlixOriginal = value
-        print("오리지널 값은 나오니????", value)
         self.group.leave()
       case .failure(let err):
         dump(err)
-        print("오리지널 값이 안나옴")
         self.fastFlixOriginal = nil
         self.group.leave()
       }
