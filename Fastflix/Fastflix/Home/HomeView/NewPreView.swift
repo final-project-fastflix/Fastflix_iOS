@@ -162,17 +162,20 @@ final class NewPreView: UIView {
     
     guard let urls = logoURLs else { return }
     print("test middle")
-    for url in urls {
-      group.enter()
-      do {
-        let data = try Data(contentsOf: url!)
-        imgArr.append(UIImage(data: data)!.cropAlpha())
-        group.leave()
-      } catch(let err) {
-        print(err.localizedDescription)
-        group.leave()
+    
+      for url in urls {
+        group.enter()
+        do {
+          let data = try Data(contentsOf: url!)
+          self.imgArr.append(UIImage(data: data)!.cropAlpha())
+          group.leave()
+        } catch(let err) {
+          print(err.localizedDescription)
+          group.leave()
+        }
       }
-    }
+    
+    
     
     group.notify(queue: .global()) {
       print("test finish", self.imgArr)
