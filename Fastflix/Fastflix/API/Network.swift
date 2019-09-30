@@ -47,34 +47,34 @@ class APICenter {
   
   
   func rekoMovie(image: UIImage, completion: @escaping (Result<RekoMovie>) -> ()) {
-//    let header = getHeader(needSubuser: false)
-    let header = [
-      "Authorization": getToken()
-    ]
+    let header = getHeader(needSubuser: false)
+    
     let url = RequestString.postRekoMovie.rawValue
-    guard let convertImg = image.pngData() else {
-      completion(.failure(ErrorType.NoData))
-      return }
-    let testData = Data(convertImg)
-    let imgStr = String(data: convertImg, encoding: .ascii)
-    let body = [
-        "image": imgStr
-      ]
+    
+    var jpegData = Data()
+    
+    for value in (1...10).reversed() {
+      let idx = (Double(value) * 0.1)
+      if let data = image.jpegData(compressionQuality: CGFloat(idx)) {
+        if data.count < 999999 {
+          jpegData = data
+          break
+        }
+      }
+    }
     
     Alamofire.upload(multipartFormData: { (multi) in
-//      multi.append(InputStream(data: convertImg), withLength: UInt64.init(1), headers: header)
-      multi.append(convertImg, withName: "image")
+      multi.append(jpegData, withName: "image", fileName: "image.jpeg", mimeType: "image/jpeg")
     }, to: url, method: .post, headers: header) { (result) in
       switch result {
       case .success(request: let req, streamingFromDisk: _, streamFileURL: _):
-        req.responseData(queue: .global()
+        req.responseData(queue: .main
           , completionHandler: { (data) in
             switch data.result {
             case .success(let value):
               guard let result = try? JSONDecoder().decode(RekoMovie.self, from: value) else {
                 completion(.failure(ErrorType.FailToParsing))
                 return }
-              
               completion(.success(result))
             case .failure(let err):
               dump(err)
